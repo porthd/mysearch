@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="en" datatype="plaintext" original="EXT:mysearch/Resources/Private/Language/locallang_backend" date="2020-08-27T11:27:40Z" product-name="mysearch">
+		<header/>
+		<body>
+			<trans-unit id="flex.linkBase.htaccessParam.tab.title" resname="flex.linkBase.htaccessParam.tab.title">
+				<source>htaccess-parameter</source>
+				<target>htaccess-parameter</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.htaccessParam.tab.message" resname="flex.linkBase.htaccessParam.tab.message">
+				<source>currently not defined: alias for login-data to access with a htaccess-password (not in use)</source>
+				<target>currently not defined: alias for login-data to access with a htaccess-password (not in use)</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.htaccessParam.field.userName" resname="flex.linkBase.htaccessParam.field.userName">
+				<source>alias for the username</source>
+				<target>alias for the userName</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.htaccessParam.field.passWord" resname="flex.linkBase.htaccessParam.field.passWord">
+				<source>alias for the password</source>
+				<target>alias for the password</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.htaccessParam.field.yamlMapper" resname="flex.linkBase.htaccessParam.field.yamlMapper">
+				<source>nmae of the yaml-file containing  the alias-definitions</source>
+				<target>nmae of the yaml-file containing  the alias-definitions</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.htaccessParam.tab.title" resname="flex.myIndex.htaccessParam.tab.title">
+				<source>htaccess-parameter</source>
+				<target>htaccess-parameter</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.htaccessParam.tab.message" resname="flex.myIndex.htaccessParam.tab.message">
+				<source>currently not defined: alias for login-data to access with a htaccess-password (not in use)</source>
+				<target>currently not defined: alias for login-data to access with a htaccess-password (not in use)</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.htaccessParam.field.userName" resname="flex.myIndex.htaccessParam.field.userName">
+				<source>alias for the username</source>
+				<target>alias for the userName</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.htaccessParam.field.passWord" resname="flex.myIndex.htaccessParam.field.passWord">
+				<source>alias for the password</source>
+				<target>alias for the password</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.htaccessParam.field.yamlMapper" resname="flex.myIndex.htaccessParam.field.yamlMapper">
+				<source>nmae of the yaml-file containing  the alias-definitions</source>
+				<target>nmae of the yaml-file containing  the alias-definitions</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.loginParam.tab.title" resname="flex.linkBase.loginParam.tab.title">
+				<source>htaccess-parameter</source>
+				<target>htaccess-parameter</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.loginParam.tab.message" resname="flex.linkBase.loginParam.tab.message">
+				<source>currently not defined: alias for login-data to access with a htaccess-password (not in use)</source>
+				<target>currently not defined: alias for login-data to access with a htaccess-password (not in use)</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.loginParam.field.userName" resname="flex.linkBase.loginParam.field.userName">
+				<source>alias for the username</source>
+				<target>alias for the userName</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.loginParam.field.passWord" resname="flex.linkBase.loginParam.field.passWord">
+				<source>alias for the password</source>
+				<target>alias for the password</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.loginParam.field.yamlMapper" resname="flex.linkBase.loginParam.field.yamlMapper">
+				<source>nmae of the yaml-file containing  the alias-definitions</source>
+				<target>nmae of the yaml-file containing  the alias-definitions</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.loginParam.tab.title" resname="flex.myIndex.loginParam.tab.title">
+				<source>htaccess-parameter</source>
+				<target>htaccess-parameter</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.loginParam.tab.message" resname="flex.myIndex.loginParam.tab.message">
+				<source>currently not defined: alias for login-data to access with a htaccess-password (not in use)</source>
+				<target>currently not defined: alias for login-data to access with a htaccess-password (not in use)</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.loginParam.field.userName" resname="flex.myIndex.loginParam.field.userName">
+				<source>alias for the username</source>
+				<target>alias for the userName</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.loginParam.field.passWord" resname="flex.myIndex.loginParam.field.passWord">
+				<source>alias for the password</source>
+				<target>alias for the password</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.loginParam.field.yamlMapper" resname="flex.myIndex.loginParam.field.yamlMapper">
+				<source>nmae of the yaml-file containing  the alias-definitions</source>
+				<target>nmae of the yaml-file containing  the alias-definitions</target>
+			</trans-unit>
+
+			<trans-unit id="flex.linkBase.paymentParam.tab.title" resname="flex.linkBase.paymentParam.tab.title">
+				<source>htaccess-parameter</source>
+				<target>htaccess-parameter</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.paymentParam.tab.message" resname="flex.linkBase.paymentParam.tab.message">
+				<source>currently not defined: alias for login-data to access with a htaccess-password (not in use)</source>
+				<target>currently not defined: alias for login-data to access with a htaccess-password (not in use)</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.paymentParam.field.userName" resname="flex.linkBase.paymentParam.field.userName">
+				<source>alias for the username</source>
+				<target>alias for the userName</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.paymentParam.field.passWord" resname="flex.linkBase.paymentParam.field.passWord">
+				<source>alias for the password</source>
+				<target>alias for the password</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.paymentParam.field.additionalParam" resname="flex.linkBase.paymentParam.field.additionalParam">
+				<source>alias for JSON-string with addional-Datas</source>
+				<target>alias for JSON-string with addional-Datas</target>
+			</trans-unit>
+			<trans-unit id="flex.linkBase.paymentParam.field.yamlMapper" resname="flex.linkBase.paymentParam.field.yamlMapper">
+				<source>nmae of the yaml-file containing  the alias-definitions</source>
+				<target>nmae of the yaml-file containing  the alias-definitions</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.paymentParam.tab.title" resname="flex.myIndex.paymentParam.tab.title">
+				<source>htaccess-parameter</source>
+				<target>htaccess-parameter</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.paymentParam.tab.message" resname="flex.myIndex.paymentParam.tab.message">
+				<source>currently not defined: alias for login-data to access with a htaccess-password (not in use)</source>
+				<target>currently not defined: alias for login-data to access with a htaccess-password (not in use)</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.paymentParam.field.userName" resname="flex.myIndex.paymentParam.field.userName">
+				<source>alias for the username</source>
+				<target>alias for the userName</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.paymentParam.field.passWord" resname="flex.myIndex.paymentParam.field.passWord">
+				<source>alias for the password</source>
+				<target>alias for the password</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.paymentParam.field.additionalParam" resname="flex.myIndex.paymentParam.field.additionalParam">
+				<source>alias for JSON-string with addional-Datas</source>
+				<target>alias for JSON-string with addional-Datas</target>
+			</trans-unit>
+			<trans-unit id="flex.myIndex.paymentParam.field.yamlMapper" resname="flex.myIndex.paymentParam.field.yamlMapper">
+				<source>nmae of the yaml-file containing  the alias-definitions</source>
+				<target>nmae of the yaml-file containing  the alias-definitions</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

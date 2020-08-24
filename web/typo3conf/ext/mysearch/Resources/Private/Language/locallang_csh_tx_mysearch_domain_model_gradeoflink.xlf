@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:mysearch/Resources/Private/Language/locallang_csh" date="2020-08-27T11:27:40Z" product-name="mysearch">
+		<header/>
+		<body>
+			<trans-unit id="name.description" resname="name.description">
+				<source>tiltel in the backend</source>
+			</trans-unit>
+			<trans-unit id="translationkey.description" resname="translationkey.description">
+				<source>translatable title for the valuepicker in other tables </source>
+			</trans-unit>
+			<trans-unit id="ident.description" resname="ident.description">
+				<source>unique identifier in valuepicker</source>
+			</trans-unit>
+			<trans-unit id="description.description" resname="description.description">
+				<source>optional description for internal use</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

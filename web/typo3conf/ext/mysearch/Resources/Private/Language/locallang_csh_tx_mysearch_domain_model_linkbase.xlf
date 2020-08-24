@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:mysearch/Resources/Private/Language/locallang_csh" date="2020-08-27T11:27:40Z" product-name="mysearch">
+		<header/>
+		<body>
+			<trans-unit id="link.description" resname="link.description">
+				<source>Webpage or absolute filepath to index in searchengine - one link for one index</source>
+			</trans-unit>
+			<trans-unit id="link_hash.description" resname="link_hash.description">
+				<source>hash of the link</source>
+			</trans-unit>
+			<trans-unit id="link_score_factor.description" resname="link_score_factor.description">
+				<source>defaultvalue is 1</source>
+			</trans-unit>
+			<trans-unit id="index_ident.description" resname="index_ident.description">
+				<source>use valuepicker - allows the selection of indexing</source>
+			</trans-unit>
+			<trans-unit id="index_score_factor.description" resname="index_score_factor.description">
+				<source>default-value is 1</source>
+			</trans-unit>
+			<trans-unit id="type.description" resname="type.description">
+				<source>source
+thesis
+overview
+archive
+news
+chats
+logs</source>
+			</trans-unit>
+			<trans-unit id="grade.description" resname="grade.description">
+				<source>super
+good
+solid
+sufficient
+poor
+faulty
+bad</source>
+			</trans-unit>
+			<trans-unit id="title.description" resname="title.description">
+				<source>Title given by expert</source>
+			</trans-unit>
+			<trans-unit id="description.description" resname="description.description">
+				<source>description by expert. it should contain at least all relevant keywords</source>
+			</trans-unit>
+			<trans-unit id="crawl_deep.description" resname="crawl_deep.description">
+				<source>If you use the startpoint of bokkmarke as crawlpoints to explore more informationens</source>
+			</trans-unit>
+			<trans-unit id="crawl_start_link.description" resname="crawl_start_link.description">
+				<source>detect the nearest crawlstartlink</source>
+			</trans-unit>
+			<trans-unit id="crawl_connections.description" resname="crawl_connections.description">
+				<source>count the number cof citation while you are crawling</source>
+			</trans-unit>
+			<trans-unit id="login_param.description" resname="login_param.description">
+				<source>Some pages needs a login - not used yet</source>
+			</trans-unit>
+			<trans-unit id="htaccess_param.description" resname="htaccess_param.description">
+				<source>Some pages needs a htaccess-login - not used yet</source>
+			</trans-unit>
+			<trans-unit id="payment_param.description" resname="payment_param.description">
+				<source>Some pages needs a login - not used yet</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

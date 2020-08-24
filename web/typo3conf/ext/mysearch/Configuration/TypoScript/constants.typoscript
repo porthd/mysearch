@@ -1,0 +1,15 @@
+
+plugin.tx_mysearch_mysearch {
+    view {
+        # cat=plugin.tx_mysearch_mysearch/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:mysearch/Resources/Private/Templates/
+        # cat=plugin.tx_mysearch_mysearch/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:mysearch/Resources/Private/Partials/
+        # cat=plugin.tx_mysearch_mysearch/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:mysearch/Resources/Private/Layouts/
+    }
+    persistence {
+        # cat=plugin.tx_mysearch_mysearch//a; type=string; label=Default storage PID
+        storagePid =
+    }
+}

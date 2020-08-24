@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:mysearch/Resources/Private/Language/locallang" date="2020-08-27T11:27:40Z" product-name="mysearch">
+		<header/>
+		<body>
+			<trans-unit id="tx_mysearch_domain_model_myindex" resname="tx_mysearch_domain_model_myindex">
+				<source>My Index</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.name" resname="tx_mysearch_domain_model_myindex.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.vendor" resname="tx_mysearch_domain_model_myindex.vendor">
+				<source>Vendor</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.description" resname="tx_mysearch_domain_model_myindex.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.index_ident" resname="tx_mysearch_domain_model_myindex.index_ident">
+				<source>Index Ident</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.index_score_factor" resname="tx_mysearch_domain_model_myindex.index_score_factor">
+				<source>Index Score Factor</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.title_trans_key" resname="tx_mysearch_domain_model_myindex.title_trans_key">
+				<source>Title Trans Key</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.description_trans_key" resname="tx_mysearch_domain_model_myindex.description_trans_key">
+				<source>Description Trans Key</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.linkbase_files_folder" resname="tx_mysearch_domain_model_myindex.linkbase_files_folder">
+				<source>Linkbase Files Folder</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.default_type" resname="tx_mysearch_domain_model_myindex.default_type">
+				<source>Default Type</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.default_grade" resname="tx_mysearch_domain_model_myindex.default_grade">
+				<source>Default Grade</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.login_param" resname="tx_mysearch_domain_model_myindex.login_param">
+				<source>Login Param</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.htaccess_param" resname="tx_mysearch_domain_model_myindex.htaccess_param">
+				<source>Htaccess Param</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_myindex.payment_param" resname="tx_mysearch_domain_model_myindex.payment_param">
+				<source>Payment Param</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase" resname="tx_mysearch_domain_model_linkbase">
+				<source>Link Base</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.link" resname="tx_mysearch_domain_model_linkbase.link">
+				<source>Link</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.link_hash" resname="tx_mysearch_domain_model_linkbase.link_hash">
+				<source>Link Hash</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.link_score_factor" resname="tx_mysearch_domain_model_linkbase.link_score_factor">
+				<source>Link Score Factor</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.index_ident" resname="tx_mysearch_domain_model_linkbase.index_ident">
+				<source>Index Ident</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.index_score_factor" resname="tx_mysearch_domain_model_linkbase.index_score_factor">
+				<source>Index Score Factor</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.type" resname="tx_mysearch_domain_model_linkbase.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.grade" resname="tx_mysearch_domain_model_linkbase.grade">
+				<source>Grade</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.title" resname="tx_mysearch_domain_model_linkbase.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.description" resname="tx_mysearch_domain_model_linkbase.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.crawl_deep" resname="tx_mysearch_domain_model_linkbase.crawl_deep">
+				<source>Crawl Deep</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.crawl_start_link" resname="tx_mysearch_domain_model_linkbase.crawl_start_link">
+				<source>Crawl Start Link</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.crawl_connections" resname="tx_mysearch_domain_model_linkbase.crawl_connections">
+				<source>Crawl Connections</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.login_param" resname="tx_mysearch_domain_model_linkbase.login_param">
+				<source>Login Param</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.htaccess_param" resname="tx_mysearch_domain_model_linkbase.htaccess_param">
+				<source>Htaccess Param</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_linkbase.payment_param" resname="tx_mysearch_domain_model_linkbase.payment_param">
+				<source>Payment Param</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_typeoflink" resname="tx_mysearch_domain_model_typeoflink">
+				<source>Type Of Link</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_typeoflink.name" resname="tx_mysearch_domain_model_typeoflink.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_typeoflink.translationkey" resname="tx_mysearch_domain_model_typeoflink.translationkey">
+				<source>Translationkey</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_typeoflink.ident" resname="tx_mysearch_domain_model_typeoflink.ident">
+				<source>Ident</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_typeoflink.description" resname="tx_mysearch_domain_model_typeoflink.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_gradeoflink" resname="tx_mysearch_domain_model_gradeoflink">
+				<source>Grade Of Link</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_gradeoflink.name" resname="tx_mysearch_domain_model_gradeoflink.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_gradeoflink.translationkey" resname="tx_mysearch_domain_model_gradeoflink.translationkey">
+				<source>Translationkey</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_gradeoflink.ident" resname="tx_mysearch_domain_model_gradeoflink.ident">
+				<source>Ident</source>
+			</trans-unit>
+			<trans-unit id="tx_mysearch_domain_model_gradeoflink.description" resname="tx_mysearch_domain_model_gradeoflink.description">
+				<source>Description</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

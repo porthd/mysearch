@@ -1,0 +1,87 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://composer.typo3.org/"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/FriendsOfTYPO3/extension_builder/"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/TYPO3-Console/TYPO3-Console"
+        }
+    ],
+    "config": {
+        "secure-http": true
+    },
+    "name": "porth/mysearch",
+    "description": "google with your own local search-enginge in the internet. build your own search-robots.",
+    "license": "proprietary",
+    "require": {
+        "php": ">7.2.0 <7.3.99",
+        "ext-pdo": "*",
+        "ext-dom": "*",
+        "ext-xml": "*",
+        "helhum/dotenv-connector": "~2.1.0",
+        "typo3/cms-about": "^10.4.6",
+        "typo3/cms-adminpanel": "^10.4.6",
+        "typo3/cms-backend": "^10.4.6",
+        "typo3/cms-belog": "^10.4.6",
+        "typo3/cms-beuser": "^10.4.6",
+        "typo3/cms-core": "^10.4.6",
+        "typo3/cms-extbase": "^10.4.6",
+        "typo3/cms-extensionmanager": "^10.4.6",
+        "typo3/cms-filelist": "^10.4.6",
+        "typo3/cms-fluid": "^10.4.6",
+        "typo3/cms-frontend": "^10.4.6",
+        "typo3/cms-install": "^10.4.6",
+        "typo3/cms-felogin": "^10.4.6",
+        "typo3/cms-fluid-styled-content": "^10.4.6",
+        "typo3/cms-form": "^10.4.6",
+        "typo3/cms-impexp": "^10.4.6",
+        "typo3/cms-indexed-search": "^10.4.6",
+        "typo3/cms-info": "^10.4.6",
+        "typo3/cms-linkvalidator": "^10.4.6",
+        "typo3/cms-lowlevel": "^10.4.6",
+        "typo3/cms-recordlist": "^10.4.6",
+        "typo3/cms-recycler": "^10.4.6",
+        "typo3/cms-redirects": "^10.4.6",
+        "typo3/cms-reports": "^10.4.6",
+        "typo3/cms-rte-ckeditor": "^10.4.6",
+        "typo3/cms-saltedpasswords": "^10.4.6",
+        "typo3/cms-setup": "^10.4.6",
+        "typo3/cms-scheduler": "^10.4.6",
+        "typo3/cms-seo": "^10.4.6",
+        "typo3/cms-sys-note": "^10.4.6",
+        "typo3/cms-t3editor": "^10.4.6",
+        "typo3/cms-tstemplate": "^10.4.6",
+        "typo3/cms-viewpage": "^10.4.6",
+        "typo3/cms-workspaces": "^10.4.6",
+        "typo3/cms-introduction": "^4.2.0",
+        "spatie/crawler": "^4.7.4",
+        "elastic/nelasticsearch-php": "^7.9.0",
+        "phpunit/phpunit": "~8.5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Porth\\Mysearch\\": "web/typo3conf/ext/mysearch/Classes"
+        }
+    },
+    "extra": {
+        "helhum/typo3-console": {
+            "install-binary": false,
+            "install-extension-dummy": false
+        },
+        "typo3/cms": {
+            "cms-package-dir": "vendor/typo3/cms",
+            "web-dir": "web"
+        },
+        "helhum/dotenv-connector": {
+            "env-dir": ".env",
+            "allow-overrides": true,
+            "cache-dir": "var/cache"
+        }
+    }
+}

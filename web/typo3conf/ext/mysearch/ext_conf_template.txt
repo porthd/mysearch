@@ -1,0 +1,11 @@
+# cat=mysearch/methods; type=bool; label=LLL:EXT:mysearch/Resources/Private/Language/locallang_backend.xlf:ext.template.config.methods.useInternalIndexer
+useInternalIndexer = 1
+
+# cat=mysearch/methods; type=bool; label=LLL:EXT:mysearch/Resources/Private/Language/locallang_backend.xlf:ext.template.config.methods.useInternalCrawler
+useInternalCrawler = 1
+
+# cat=mysearch/methods; type=bool; label=LLL:EXT:mysearch/Resources/Private/Language/locallang_backend.xlf:ext.template.config.methods.useInternalSearch
+useInternalSearch = 1
+
+# cat=svt/resources; type=string; label=LLL:EXT:mysearch/Resources/Private/Language/locallang_backend.xlf:ext.template.config.resource.absoluteYamlPath
+useAbsoluteYamlPath =
