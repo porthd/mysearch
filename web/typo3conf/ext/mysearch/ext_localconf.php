@@ -5,16 +5,23 @@ call_user_func(
     function()
     {
 
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+
+        $iconRegistry->registerIcon(
+            'mysearch-plugin-mysearch',
+            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+            ['source' => 'EXT:mysearch/Resources/Public/Icons/Extension.svg']
+        );
+
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Porthd.Mysearch',
             'Mysearch',
             [
-                'MyIndex' => 'dashBoard, show, list, simpleSearch, multiSearch, customSearch, deleteIndex, writeInIndex, deleteFromIndex, errorPage',
-                'LinkBase' => 'list, show',
+                'MyIndex' => 'mySearch, error',
             ],
             // non-cacheable actions
             [
-                'MyIndex' => 'dashBoard, simpleSearch, multiSearch, customSearch, deleteIndex, writeInIndex, deleteFromIndex, errorPage'
+                'MyIndex' => 'mySearch, error',
             ]
         );
 
@@ -37,13 +44,6 @@ call_user_func(
                 }
            }'
         );
-		$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-
-			$iconRegistry->registerIcon(
-				'mysearch-plugin-mysearch',
-				\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-				['source' => 'EXT:mysearch/Resources/Public/Icons/user_plugin_mysearch.svg']
-			);
 
     }
 );

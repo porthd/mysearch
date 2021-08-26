@@ -1,0 +1,36 @@
+base: 'https://mysearch.ddev.site/'
+baseVariants:
+  -
+    base: 'https://mysearch.ddev.site/'
+    condition: 'applicationContext == "Production"'
+languages:
+  -
+    title: Deutsch
+    enabled: true
+    languageId: '2'
+    base: /
+    typo3Language: de
+    locale: de_DE.UTF-8
+    iso-639-1: de
+    navigationTitle: Deutsch
+    hreflang: en-DE
+    direction: ''
+    flag: de
+    websiteTitle: 'MySearch - Dene Seite zu deiner persönlichen Suchmaschine'
+  -
+    title: English
+    enabled: true
+    base: /en/
+    typo3Language: default
+    locale: en_GB.UTF-8
+    iso-639-1: en
+    websiteTitle: 'mysearch - your page to your personal search-engine'
+    navigationTitle: English
+    hreflang: en-GB
+    direction: ''
+    fallbackType: strict
+    fallbacks: '2'
+    flag: en-us-gb
+    languageId: '0'
+rootPageId: 1
+websiteTitle: 'Mysearch - deine Seite für deine persönliche Suchmaschine'

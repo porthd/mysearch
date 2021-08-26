@@ -21,11 +21,21 @@ return [
     'EXTENSIONS' => [
         'backend' => [
             'backendFavicon' => '',
-            'backendLogo' => '',
-            'loginBackgroundImage' => '',
+            'backendLogo' => 'EXT:mysearch/Resources/Public/Icons/BackendIcon.svg',
+            'loginBackgroundImage' => 'EXT:mysearch/Resources/Public/Icons/BackendIcon.svg',
             'loginFootnote' => '',
             'loginHighlightColor' => '',
-            'loginLogo' => '',
+            'loginLogo' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
+        ],
+        'bootstrap_package' => [
+            'disableCssProcessing' => '0',
+            'disableFontLoader' => '0',
+            'disableGoogleFontCaching' => '0',
+            'disablePageTsBackendLayouts' => '0',
+            'disablePageTsContentElements' => '0',
+            'disablePageTsRTE' => '0',
+            'disablePageTsTCEFORM' => '0',
+            'disablePageTsTCEMAIN' => '0',
         ],
         'extensionmanager' => [
             'automaticInstallation' => '1',
@@ -115,6 +125,7 @@ return [
         ],
         'sitename' => 'mksearch',
         'systemMaintainers' => [
+            1,
             1,
         ],
     ],

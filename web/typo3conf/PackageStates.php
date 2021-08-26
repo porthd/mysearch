@@ -41,6 +41,12 @@ return [
         'backend' => [
             'packagePath' => 'typo3/sysext/backend/',
         ],
+        'info' => [
+            'packagePath' => 'typo3/sysext/info/',
+        ],
+        'linkvalidator' => [
+            'packagePath' => 'typo3/sysext/linkvalidator/',
+        ],
         'reports' => [
             'packagePath' => 'typo3/sysext/reports/',
         ],
@@ -71,9 +77,6 @@ return [
         'felogin' => [
             'packagePath' => 'typo3/sysext/felogin/',
         ],
-        'info' => [
-            'packagePath' => 'typo3/sysext/info/',
-        ],
         'lowlevel' => [
             'packagePath' => 'typo3/sysext/lowlevel/',
         ],
@@ -91,6 +94,15 @@ return [
         ],
         'viewpage' => [
             'packagePath' => 'typo3/sysext/viewpage/',
+        ],
+        'bootstrap_package' => [
+            'packagePath' => 'typo3conf/ext/bootstrap_package/',
+        ],
+        'introduction' => [
+            'packagePath' => 'typo3conf/ext/introduction/',
+        ],
+        'mysearch' => [
+            'packagePath' => 'typo3conf/ext/mysearch/',
         ],
     ],
     'version' => 5,

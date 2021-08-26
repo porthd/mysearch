@@ -20,11 +20,11 @@
     "description": "google with your own local search-enginge in the internet. build your own search-robots.",
     "license": "proprietary",
     "require": {
-        "php": ">7.2.0 <7.3.99",
+        "php": "^7.4.0",
         "ext-pdo": "*",
         "ext-dom": "*",
         "ext-xml": "*",
-        "helhum/dotenv-connector": "~2.1.0",
+        "helhum/dotenv-connector": "~3.0.0",
         "typo3/cms-about": "^10.4.6",
         "typo3/cms-adminpanel": "^10.4.6",
         "typo3/cms-backend": "^10.4.6",
@@ -50,7 +50,6 @@
         "typo3/cms-redirects": "^10.4.6",
         "typo3/cms-reports": "^10.4.6",
         "typo3/cms-rte-ckeditor": "^10.4.6",
-        "typo3/cms-saltedpasswords": "^10.4.6",
         "typo3/cms-setup": "^10.4.6",
         "typo3/cms-scheduler": "^10.4.6",
         "typo3/cms-seo": "^10.4.6",
@@ -60,13 +59,14 @@
         "typo3/cms-viewpage": "^10.4.6",
         "typo3/cms-workspaces": "^10.4.6",
         "typo3/cms-introduction": "^4.2.0",
-        "spatie/crawler": "^4.7.4",
-        "elastic/nelasticsearch-php": "^7.9.0",
+        "elasticsearch/elasticsearch": "^7.0"
+    },
+    "require-dev": {
         "phpunit/phpunit": "~8.5.1"
     },
     "autoload": {
         "psr-4": {
-            "Porth\\Mysearch\\": "web/typo3conf/ext/mysearch/Classes"
+            "Porthd\\Mysearch\\": "web/typo3conf/ext/mysearch/Classes"
         }
     },
     "extra": {
