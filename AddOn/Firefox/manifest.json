@@ -12,6 +12,18 @@
     "webRequestBlocking",
     "<all_urls>"
   ],
+
+  "browser_action": {
+    "default_icon": "icons/mysearch.svg",
+    "default_title": "MySearch-Index",
+    "default_popup": "popup/choose_index.html"
+  },
+  "web_accessible_resources": [
+    "icons/type/private.svg",
+    "icons/type/docs.svg",
+    "icons/type/science.svg",
+    "icons/type/arts.svg"
+  ],
   "icons": {
     "16": "icons/mysearch.svg",
     "19": "icons/mysearch.svg",

@@ -1,0 +1,17 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 297.0 297.0" style="enable-background:new 0 0 297.0 297.0;" xml:space="preserve">
+		<g>
+			<ellipse cx="0" cy="0" rx="80" ry="180"
+					 transform="rotate(45) translate(210)"
+					 style="stroke:darkgreen; stroke-width:15;fill-opacity:0;"/>
+			<ellipse cx="0" cy="0" rx="80" ry="180"
+					 transform="rotate(-45) translate(0,210)"
+					 style="stroke:darkgreen; stroke-width:15;fill-opacity:0;"/>
+			<circle cx="148" cy="148" r="35"
+					style="stroke:red; fill:#faa;; fill-opacity:1.0;stroke-width:5;" />
+			<circle cx="268" cy="125" r="20"
+					style=" fill:blue; stroke:#9cf;stroke-width:25;" />
+			<circle cx="170" cy="265" r="20"
+					style=" fill:blue; stroke:#9cf;stroke-width:25;" />
+		</g>
+</svg>

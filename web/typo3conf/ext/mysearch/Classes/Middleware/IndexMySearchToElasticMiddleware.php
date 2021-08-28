@@ -39,7 +39,8 @@ class IndexMySearchToElasticMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($request->getAttribute('normalizedParams')->getRequestUri() === SelfConst::ELASTIC_INDEX_ROUTE_NAME) {
+        $hello = 'World';
+        if (trim($request->getAttribute('normalizedParams')->getRequestUri(), DIRECTORY_SEPARATOR) === SelfConst::ELASTIC_INDEX_ROUTE_NAME) {
             $responseFactory = GeneralUtility::makeInstance(ResponseFactory::class);
             $response = $responseFactory->createResponse();
             $response->withStatus(200, 'Content-editing is remove.')

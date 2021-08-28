@@ -25,5 +25,5 @@ class SelfConst
 {
 
     public const SELF_NAME = 'mysearch';
-    public const ELASTIC_INDEX_ROUTE_NAME = 'mysearch';
+    public const ELASTIC_INDEX_ROUTE_NAME = 'search';
 }

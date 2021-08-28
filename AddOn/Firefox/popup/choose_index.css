@@ -1,0 +1,26 @@
+div.btn  {
+
+    float: left;
+    padding-left: 40px;
+    width: 120px;
+    height: 40px;
+}
+.active {
+    border: #c39 solid 0.4rem;
+}
+.science {
+    background-position: left;
+    background: url(../icons/type/science.svg) no-repeat;
+}
+.private {
+    background-position: left;
+    background: url(../icons/type/private.svg) no-repeat;
+}
+.docs {
+    background-position: left;
+    background: url(../icons/type/docs.svg) no-repeat;
+}
+.arts {
+    background-position: left;
+    background: url(../icons/type/arts.svg) no-repeat;
+}
