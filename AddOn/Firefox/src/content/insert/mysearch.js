@@ -59,6 +59,7 @@ function getHeadlineList() {
     return result;
 }
 
+// parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
 let uri = document.location,
     content = {
         index: uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'],

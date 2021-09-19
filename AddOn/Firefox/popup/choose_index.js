@@ -13,24 +13,31 @@ If it's on a button which contains class "clear":
   Reload the page.
   Close the popup. This is needed, as the content script malfunctions after page reloads.
 */
-var internKey = 'flags';
-    flags= {
+var internKey = 'flags',
+    flags = flags ||{};
+console.log('flags 0');
+console.log(flags);
+browser.storage.local.get(internKey, (result) => {
+    flags = result[internKey];
+});
+console.log('flags 1');
+console.log(flags);
+console.log('flags 1 after');
+if (!Object.keys(flags).length ) {
+    console.log('reset');
+    flags = {
         arts: false,
-        docs: true,
+            docs: true,
         private: false,
         science: true,
-    };
-browser.storage.local.set({internKey:flags}, ()=> {
-    console.log('flags is setted');
-});
-let dummy = browser.storage.local.get(internKey, (result) => {
-    console.log(result);
-    console.log('flags: ' + result.flags.docs);
-    console.log(result[internKey].docs);
-    return result[internKey].docs;
-});
-console.log('dummy');
-console.log(dummy);
+    }
+    browser.storage.local.set({internKey:   flags}, ()=> {
+        console.log('flags are set');
+    });
+}
+console.log('flags after if');
+console.log('flags 2');
+console.log(flags);
 //     browser.storage.local.set({
 //         arts: false,
 //         docs: true,

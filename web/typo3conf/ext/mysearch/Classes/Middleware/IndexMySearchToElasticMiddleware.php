@@ -23,12 +23,17 @@ namespace Porthd\Mysearch\Middleware;
 
 
 use Porthd\Mysearch\Config\SelfConst;
+
+use Porthd\Mysearch\Domain\Model\IndexerFlowLog;
+use Porthd\Mysearch\Elasticsearch\Indexer\IndexerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Http\ResponseFactory;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 
 /**
  * Class ResourcesForFrontendEditing
@@ -37,23 +42,164 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class IndexMySearchToElasticMiddleware implements MiddlewareInterface
 {
 
+// mainly develeped by  https://www.glohbe.de/de/elasticsearch-mit-php/ (german explainatiuon about elasticSearch with PHP)
+
+    /** @var ResponseFactoryInterface */
+    private $responseFactory;
+
+    public function __construct(ResponseFactoryInterface $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+    }
+
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $hello = 'World';
-        if (trim($request->getAttribute('normalizedParams')->getRequestUri(), DIRECTORY_SEPARATOR) === SelfConst::ELASTIC_INDEX_ROUTE_NAME) {
-            $responseFactory = GeneralUtility::makeInstance(ResponseFactory::class);
-            $response = $responseFactory->createResponse();
-            $response->withStatus(200, 'Content-editing is remove.')
-                ->withHeader('Content-Type', 'application/json; charset=utf-8')
-                ->getBody()->write(
-                    json_encode([
-                        'status' => 'ok',
-                    ])
-                );
-            return $response;
+        $testSubRoute = getenv(SelfConst::ELASTIC_INDEX_ROUTE_NAME) ?? SelfConst::ELASTIC_INDEX_ROUTE_NAME;
+        if (trim($request->getAttribute('normalizedParams')->getRequestUri(), DIRECTORY_SEPARATOR) === $testSubRoute) {
+            $floatLog = new IndexerFlowLog();
+            $floatLog->orig = $_REQUEST;
+            $flagIndex = true;
+            if ($flagBasicContained = $this->containExpectedParam($floatLog)) {
+                // the indexerlist contains only the
+                if (!empty($indexerList = $this->getInderClasses($floatLog))) {
+                    $flagFlow = true;
+                    $flagFlow = $flagFlow && $this->normalizeData($floatLog, $indexerList); // $orig=>$normalized;
+                    $flagFlow = $flagFlow && $this->extendData($floatLog, $indexerList); // $normalized=>$extended;
+                    $flagFlow = $flagFlow && $this->reviewData($floatLog, $indexerList); // $extended=>$reviewed;
+                    $flagFlow = $flagFlow && $this->reduceData($floatLog, $indexerList); // $reviewed=>$reduce;
+                    $flagIndex = $this->buildData($floatLog, $indexerList); // $reduce=>$builded;
+                }
 
+            }
+            if ((!$flagBasicContained) ||
+                (empty($flagFlow)) ||
+                (!$flagIndex)
+            ) {
+                return GeneralUtility::makeInstance(ErrorController::class)
+                    ->unavailableAction(
+                        $request,
+                        'The request could not be solved. The workflow has the following infos.' . print_r($floatLog,
+                            true)
+                    );
+            }
+            $response = $this->responseFactory->createResponse()
+                ->withHeader('Content-Type', 'application/json; charset=utf-8');
+            $response->getBody()->write(
+                json_encode($floatLog->builded)
+            );
+            return $response;
         }
         return $handler->handle($request);
+    }
+
+    protected function containExpectedParam($floatLog): boolean
+    {
+        $flag = true;
+        foreach (SelfConst::BASIC_REQUEST_KEY_LIST as $requestKey) {
+            $flag = $flag && (isset($floatLog->orig[$requestKey]));
+        }
+        return $flag;
+    }
+
+    protected function normalizeData($floatLog, $indexerList)
+    {
+        return $this->generalFlowData(
+            $floatLog,
+            SelfConst::METHOD_NORMALIZE,
+            $indexerList);
+    }
+
+    protected function extendData($floatLog, $indexerList)
+    {
+        return $this->generalFlowData(
+            $floatLog,
+            SelfConst::METHOD_EXTEND,
+            $indexerList);
+    }
+
+    protected function reviewData($floatLog, $indexerList)
+    {
+        return $this->generalFlowData(
+            $floatLog,
+            SelfConst::METHOD_REVIEW,
+            $indexerList);
+    }
+
+    protected function reduceData($floatLog, $indexerList)
+    {
+        return $this->generalFlowData(
+            $floatLog,
+            SelfConst::METHOD_REDUCE,
+            $indexerList);
+    }
+
+    protected function generalFlowData($floatLog, $methodList, $indexerList)
+    {
+
+        $method = $methodList['name'];
+        $fromName = $methodList['from'];
+        $toName = $methodList['to'];
+
+        $result = [];
+        foreach ($indexerList as $indexer) {
+            $result[] = $indexer->$method($floatLog->$fromName);
+        }
+        $floatLog->$toName = array_merge(...$result);
+        return (!empty($floatLog->$toName));
+    }
+
+    protected function buildData($floatLog, $indexerList)
+    {
+        $method = SelfConst::METHOD_BUILD['name'];
+        $fromName = SelfConst::METHOD_BUILD['from'];
+        $toName = SelfConst::METHOD_BUILD['to'];
+
+//        $elasticApi = GeneralUtility::makeInstance(BasicInsert::class);
+        $result = [];
+        /** @var IndexerInterface $indexer */
+        $indexed = [];
+        foreach ($indexerList as $indexer) {
+            $myIndex = $indexer->indexName($floatLog->$fromName) ?? SelfConst::SELF_NAME;
+            if (SelfConst::SELF_NAME !== strtolower($myIndex)) {
+                $buildBody = $indexer->$method($floatLog->$fromName);
+                $params = [
+                    'index' => $myIndex,
+                    'type' => $indexer->typeName($buildBody) ?? SelfConst::SELF_NAME,
+                    'id' => $indexer->idName($buildBody) ?? hash('sha512', json_encode($buildBody)),
+                    'body' => $buildBody,
+                ];
+                try {
+                    // Alles hat geklappt
+                    $indexed[] = $indexer->insert($params);
+                } catch (\Exception $e) {
+                    // Speichern fehlgeschlagen
+                    $floatLog->$toName = array_merge(...$indexed);
+                    return false;
+                }
+            }
+            $result[] = $indexed;
+        }
+        $buildBody = array_merge($result[]);
+        $params = [
+            'index' => SelfConst::SELF_NAME,
+            'type' => SelfConst::SELF_NAME,
+            'id' => $indexer->idName($buildBody) ?? hash(
+                    'sha512',
+                    SelfConst::SELF_NAME . json_encode($buildBody) . SelfConst::SELF_NAME
+                ),
+            'body' => $buildBody,
+        ];
+        try {
+            // Alles hat geklappt
+            $indexed[] = $indexer->insert($params);
+        } catch (\Exception $e) {
+            // Speichern fehlgeschlagen
+            $floatLog->$toName = array_merge(...$indexed);
+            return false;
+        }
+        $floatLog->$toName = array_merge(...$indexed);
+        return (!empty($floatLog->$toName));
     }
 
 }

@@ -1,5 +1,6 @@
 # https://github.com/drud/ddev/issues/1659
 # https://github.com/drud/ddev-contrib/tree/master/docker-compose-services/elastichq
+# https://stackoverflow.com/questions/54575785/how-can-i-use-an-elasticsearch-add-on-container-service-with-ddev
 version: '3.6'
 services:
   elastichq:

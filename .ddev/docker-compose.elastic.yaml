@@ -27,6 +27,6 @@ services:
 
 volumes:
   elasticsearch:
-
+    name: "${DDEV_SITENAME}-elasticsearch"
 #https://github.com/drud/ddev/issues/1659
 #https://github.com/drud/ddev-contrib/tree/master/docker-compose-services/elastichq

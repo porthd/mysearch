@@ -17,6 +17,7 @@ namespace Porthd\Mysearch\Controller;
  */
 class MySearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+    // https://www.glohbe.de/de/elasticsearch-mit-php/
     /**
      * action searchPage
      *
@@ -24,6 +25,7 @@ class MySearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     public function mySearchPageAction()
     {
+
     }
 
     /**
