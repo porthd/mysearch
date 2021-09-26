@@ -5,7 +5,7 @@ namespace Porthd\Mysearch\Domain\Model;
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
 use Porthd\Mysearch\Config\SelfConst;
 
-class Insert implements InsertInterface
+class BasicData implements DataDocumentInterface
 {
     /** @var array */
     public $body;
@@ -18,6 +18,9 @@ class Insert implements InsertInterface
 
     /** @var string  */
     public $type = '';
+
+    /** @var DataDocumentInterface  */
+    public $more = null;
 
     /**
      * @return array
@@ -81,6 +84,23 @@ class Insert implements InsertInterface
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+
+    /**
+     * @return DataDocumentInterface|null
+     */
+    public function getMore(): ?DataDocumentInterface
+    {
+        return $this->more;
+    }
+
+    /**
+     * @param DataDocumentInterface|null $more
+     */
+    public function setMore(?DataDocumentInterface $more): void
+    {
+        $this->type = $more;
     }
 
 

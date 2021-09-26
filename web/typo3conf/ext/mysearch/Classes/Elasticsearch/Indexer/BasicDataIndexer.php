@@ -5,12 +5,13 @@ namespace Porthd\Mysearch\Elasticsearch\Indexer;
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Porthd\Mysearch\Config\SelfConst;
+use Porthd\Mysearch\Domain\Model\DataDocumentInterface;
 
 
-class BasicInsertIndexer implements IndexerInterface
+class BasicDataIndexer implements IndexerInterface
 {
 
-    protected const SELF_NAME = 'Porthd_Mysearch_BasicInsertIndexer';
+    protected const SELF_NAME = 'Porthd_Mysearch_BasicDataIndexer';
     public $es;
 
     function __construct()
@@ -27,14 +28,44 @@ class BasicInsertIndexer implements IndexerInterface
         return self::SELF_NAME;
     }
 
-    public function flagRequestToIndex(array $request):boolean
+    /**
+     * @return DataDocumentInterface|null
+     */
+    public function makeDataModelExtend():?DataDocumentInterface
+    {
+        return new \Porthd\Mysearch\Domain\Model\BasicData();
+    }
+
+    public function getNeededRawData():array
+    {
+        return SelfConst::BASIC_REQUEST_KEY_LIST;
+    }
+
+    public function normalizeRequest(array &$requestData):bool
     {
         return true;
     }
-
-    public function normalizeRequest(array $request):array
+    public function extendRequest(array &$requestData):bool
     {
-        return $request;
+        return true;
+    }
+    public function reviewRequest(array &$requestData):bool
+    {
+        return true;
+    }
+    public function reduceRequest(array &$requestData):bool
+    {
+        return true;
+    }
+    public function buildRequest(array &$requestData):bool
+    {
+
+        return true;
+    }
+
+    public function flagRequestToIndex(array $request):boolean
+    {
+        return true;
     }
 
 //    public function buildParamArray(array $normalizedParam)
@@ -67,19 +98,19 @@ class BasicInsertIndexer implements IndexerInterface
         }
     }
 
-    public function indexName(array $request):?string
+    public function indexName(array &$request):?string
     {
         return null;
     }
-    public function typeName(array $request):?string
+    public function typeName(array &$request):?string
     {
         return null;
     }
-    public function idName(array $request):?string
+    public function idName(array &$request):?string
     {
         return null;
     }
-    public function contentList(array $request):array
+    public function contentList(array &$request):array
     {
         return $request;
     }

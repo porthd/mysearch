@@ -35,31 +35,12 @@ class SelfConst
     public const SELF_DOMAIN_NAME = 'http://mysearch.ddev.site';
     public const SELF_DOMAIN_ELASTIC_ADDPORT = ':9200';
 
-    public const METHOD_NORMALIZE =  [
-        'name' => 'normalizeRequest',
-        'from' => 'orig',
-        'to' => 'normalized',
-        ];
-    public const METHOD_EXTEND =  [
-        'name' => 'extendRequest',
-        'from' => 'normalized',
-        'to' => 'extended',
-    ];
-    public const METHOD_REVIEW =  [
-        'name' => 'reviewRequest',
-        'from' => 'extend',
-        'to' => 'review',
-        ];
-    public const METHOD_REDUCE =  [
-        'name' => 'reduceRequest',
-        'from' => 'review',
-        'to' => 'reduce',
-        ];
-    public const METHOD_BUILD =  [
-        'name' => 'buildRequest',
-        'from' => 'reduce',
-        'to' => 'build',
-        ];
+    public const METHOD_NORMALIZE =  'normalizeRequest';
+    public const METHOD_EXTEND =  'extendRequest';
+    public const METHOD_REVIEW =  'reviewRequest';
+    public const METHOD_REDUCE =  'reduceRequest';
+    public const METHOD_BUILD =  'buildAndInsert';
+    public const METHOD_ERRORMESSAGE =  'ERROR_MESSAGE';
 
     public const BASIC_REQUEST_KEY_LIST = [
         'index',

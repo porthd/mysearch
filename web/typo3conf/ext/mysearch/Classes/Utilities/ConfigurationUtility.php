@@ -112,15 +112,19 @@ class ConfigurationUtility
      * example for input:
      * $listOfCustomTimerClasses[YearlyTimer::timerIndexValue()] = DailyTimer::class;
      *
-     * @param array $listOfTimerClasses
      * @api
      *
+     * @param $extName
+     * @param $type
+     * @param $excludeType
+     * @param $checkClassName
+     * @return array|void
      */
     public static function extractCustomClassesForExtension(
         $extName,
         $type,
         $excludeType,
-        $checkClass,
+        $checkClassName
     )
     {
         // Call post-processing function for constructor:
@@ -131,7 +135,7 @@ class ConfigurationUtility
             $list = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extName][$type] as $alias => $className) {
                 $classInterface = class_implements($className);
-                if (in_array($checkClass, $classInterface)) {
+                if (in_array($checkClassName, $classInterface)) {
                     $classObject = GeneralUtility::makeInstance($className);
                     if (is_numeric($alias)) {
                         $list[$classObject->selfName()] = $classObject;
@@ -145,7 +149,7 @@ class ConfigurationUtility
             ) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extName][$excludeType] as $alias => $className) {
                     $classInterface = class_implements($className);
-                    if (in_array($checkClass, $classInterface)) {
+                    if (in_array($checkClassName, $classInterface)) {
                         $classObject = GeneralUtility::makeInstance($className);
                         if (isset($list[$classObject::selfName()])) {
                             unset($list[$classObject::selfName()]);
@@ -156,6 +160,7 @@ class ConfigurationUtility
                     }
                 }
             }
+            return $list;
         }
     }
 

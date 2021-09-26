@@ -7,7 +7,7 @@ use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Porthd\Mysearch\Config\SelfConst;
 
 
-class BasicInsert implements IndexerInterface
+class BasicData implements IndexerInterface
 {
     public $es;
 
