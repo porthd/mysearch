@@ -1,13 +1,13 @@
 <?php
 
-namespace Porthd\Mysearch\Elasticsearch\Resulter;
+namespace Porthd\Mysearch\Elasticsearch\Merger;
 
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Porthd\Mysearch\Config\SelfConst;
 
 
-class BasicMerger implements ResulterInterface
+class BasicMerger implements MergerInterface
 {
 
 
