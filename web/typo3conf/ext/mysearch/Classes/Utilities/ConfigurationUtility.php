@@ -129,10 +129,10 @@ class ConfigurationUtility
     {
         // Call post-processing function for constructor:
 //            $extName, $type
+        $list = [];
         if ((is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extName][$type])) &&
             (count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extName][$type]) > 0)
         ) {
-            $list = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extName][$type] as $alias => $className) {
                 $classInterface = class_implements($className);
                 if (in_array($checkClassName, $classInterface)) {
@@ -160,8 +160,8 @@ class ConfigurationUtility
                     }
                 }
             }
-            return $list;
         }
+        return $list;
     }
 
 }

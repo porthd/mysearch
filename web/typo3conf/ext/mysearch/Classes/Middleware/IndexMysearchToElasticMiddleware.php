@@ -63,7 +63,7 @@ class IndexMysearchToElasticMiddleware implements MiddlewareInterface
             $indexerList = ConfigurationUtility::extractCustomClassesForExtension(
                 SelfConst::SELF_NAME,
                 SelfConst::GLOBALS_SUBKEY_CUSTOMINDEXER,
-                SelfConst::GLOBALS_SUBKEY_CUSTOMRESULTER,
+                SelfConst::GLOBALS_SUBKEY_EXCLUDEINDEXER,
                 IndexerInterface::class
             );
             if (!empty($indexerList)) {

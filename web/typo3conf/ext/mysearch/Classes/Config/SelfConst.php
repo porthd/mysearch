@@ -25,12 +25,15 @@ class SelfConst
 {
 
     public const SELF_NAME = 'mysearch'; // nome of the general basic index
+    public const SELF_MAX_RESULT = 50; // nome of the general basic index
 
     public const ELASTIC_INDEX_ROUTE_NAME = 'search';
     public const GLOBALS_SUBKEY_CUSTOMINDEXER = 'customIndexer';
     public const GLOBALS_SUBKEY_EXCLUDEINDEXER = 'excludeIndexer';
     public const GLOBALS_SUBKEY_CUSTOMRESULTER = 'customResulter';
     public const GLOBALS_SUBKEY_EXCLUDERESULTER = 'excludeResulter';
+    public const GLOBALS_SUBKEY_CUSTOMMERGER = 'customMerger';
+    public const GLOBALS_SUBKEY_EXCLUDEMERGER = 'excludeMerger';
 
     public const SELF_DOMAIN_NAME = 'http://mysearch.ddev.site';
     public const SELF_DOMAIN_ELASTIC_ADDPORT = ':9200';

@@ -2,9 +2,6 @@ document.body.style.border = "5px solid red";
 
 const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/';
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    // console.log("Send Dat to ".windows.location.href); //output messages to the console
-});
 
 function postAjax(url, data) {
     return fetch(url, {
@@ -31,19 +28,7 @@ function getLinkList() {
 }
 
 function getIndexListFromStorage() {
-    let list = '';
-    ['science', 'private', 'docs', 'arts'].forEach((elem) => {
-        browser.storage.local.get(elem)
-            .then(
-                (item) => {
-                    list = list + item + ','
-                },
-                (error) => {
-                    // console.log('error: ' + elem);
-                    // console.log(error);
-                });
-    });
-    return list;
+    return 'general';
 }
 
 function getHeadlineList() {
@@ -59,20 +44,28 @@ function getHeadlineList() {
     return result;
 }
 
+function dataForIndex() {
 // parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
-let uri = document.location,
-    content = {
-        index: uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'],
-        type: getIndexListFromStorage(),
-        body: document.body.innerHTML,
-        bodyText: document.body.innerText,
-        links: getLinkList(),
-        headlines: getHeadlineList(),
-    };
+    let uri = document.location,
+        content = {
+            index: uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'],
+            type: getIndexListFromStorage(),
+            body: document.body.innerHTML,
+            bodyText: document.body.innerText,
+            links: getLinkList(),
+            headlines: getHeadlineList(),
+        };
 // console.log('aktive stuff start');
 // console.log(content);
 // console.log(ELASTIC_LOCAL_URL);
 //POST example
-postAjax(ELASTIC_LOCAL_URL,content);
+    postAjax(ELASTIC_LOCAL_URL, content);
 // console.log("Send single Dat to "+window.location.href); //output messages to the console
+
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    dataForIndex();
+});
+// dataForIndex();  // needed?
 
