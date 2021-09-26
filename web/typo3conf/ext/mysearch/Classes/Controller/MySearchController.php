@@ -4,7 +4,7 @@ namespace Porthd\Mysearch\Controller;
 
 /***
  *
- * This file is part of the "MySearch" Extension for TYPO3 CMS.
+ * This file is part of the "Mysearch" Extension for TYPO3 CMS.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
@@ -15,7 +15,7 @@ namespace Porthd\Mysearch\Controller;
 /**
  * MyIndexController
  */
-class MySearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class MysearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     // https://www.glohbe.de/de/elasticsearch-mit-php/
     /**
@@ -23,13 +23,13 @@ class MySearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      *
      * @return void
      */
-    public function mySearchPageAction($filterMySearch)
+    public function mysearchPageAction($filterMysearch)
     {
 //        Parameter indexName, typeName,
-        $paramList = $filterMySearch->toArray();
+        $paramList = $filterMysearch->toArray();
         $customParam = $this->addCustomParams();
         $paramList = array_merge($paramList,$customParam);
-        $rawList = $this->findQuery($filterMySearch);
+        $rawList = $this->findQuery($filterMysearch);
         $uniqueList = $this->uniqueById($rawList);
         $resultList = $this->reduceToResult($rawList);
         $indexTypes = $this->getAllowedIndexesTypes();

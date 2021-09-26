@@ -16,11 +16,11 @@ call_user_func(
             'Porthd.Mysearch',
             'Mysearch',
             [
-                'MyIndex' => 'mySearch, error',
+                'MyIndex' => 'mysearch, error',
             ],
             // non-cacheable actions
             [
-                'MyIndex' => 'mySearch, error',
+                'MyIndex' => 'mysearch, error',
             ]
         );
 

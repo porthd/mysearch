@@ -11,7 +11,7 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'MySearch',
+    'title' => 'Mysearch',
     'description' => 'Plattform to build an index with elasticsearch based an own list of bookmarked links',
     'category' => 'plugin',
     'author' => 'Dr. Dieter Porth',

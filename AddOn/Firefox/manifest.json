@@ -15,7 +15,7 @@
 
   "browser_action": {
     "default_icon": "icons/mysearch.svg",
-    "default_title": "MySearch-Index",
+    "default_title": "Mysearch-Index",
     "default_popup": "popup/choose_index.html"
   },
   "web_accessible_resources": [

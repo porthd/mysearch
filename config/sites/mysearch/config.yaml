@@ -16,7 +16,7 @@ languages:
     hreflang: en-DE
     direction: ''
     flag: de
-    websiteTitle: 'MySearch - Dene Seite zu deiner persönlichen Suchmaschine'
+    websiteTitle: 'Mysearch - Dene Seite zu deiner persönlichen Suchmaschine'
   -
     title: English
     enabled: true

@@ -39,7 +39,7 @@ use TYPO3\CMS\Frontend\Controller\ErrorController;
  * Class ResourcesForFrontendEditing
  * This extension add some needed styles and javascript-codes to the rendered page
  */
-class IndexMySearchToElasticMiddleware implements MiddlewareInterface
+class IndexMysearchToElasticMiddleware implements MiddlewareInterface
 {
 
 // mainly develeped by  https://www.glohbe.de/de/elasticsearch-mit-php/ (german explainatiuon about elasticSearch with PHP)
