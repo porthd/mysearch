@@ -8,6 +8,8 @@ use Porthd\Mysearch\Domain\Model\InsertInterface;
 interface IndexerInterface
 {
 
+    public function selfName():string;
+
     /**
      * @param $dataParam
      * @param int $flagGeneral if false, the
@@ -15,7 +17,7 @@ interface IndexerInterface
      */
     public function insert($dataParam);
 
-    public function flagRequestToIndex(array $request):boolean;
+    public function flagRequestToIndex(array $request):bool;
 
     public function normalizeRequest(array $request):array;
     public function extendRequest(array $request):array;

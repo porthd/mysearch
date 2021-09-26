@@ -2,8 +2,7 @@
 defined('TYPO3_MODE') || die('Access denied.');
 
 call_user_func(
-    function()
-    {
+    function () {
 
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 
@@ -45,5 +44,20 @@ call_user_func(
            }'
         );
 
+        //Define the Indexer and Resulter of this class
+        $list = [
+            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_CUSTOMINDEXER => [],
+            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_EXCLUDEINDEXER => [],
+            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_CUSTOMRESULTER => [],
+            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_EXCLUDERESULTER => [],
+        ];
+        foreach ($list as $classTypes => $classList) {
+
+            \Porthd\Mysearch\Utilities\ConfigurationUtility::mergeCustomClassesForExtension(
+                $classList,
+                \Porthd\Mysearch\Config\SelfConst::SELF_NAME,
+                $classTypes
+            );
+        }
     }
 );

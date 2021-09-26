@@ -23,9 +23,21 @@ class MySearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      *
      * @return void
      */
-    public function mySearchPageAction()
+    public function mySearchPageAction($filterMySearch)
     {
+//        Parameter indexName, typeName,
+        $paramList = $filterMySearch->toArray();
+        $customParam = $this->addCustomParams();
+        $paramList = array_merge($paramList,$customParam);
+        $rawList = $this->findQuery($filterMySearch);
+        $uniqueList = $this->uniqueById($rawList);
+        $resultList = $this->reduceToResult($rawList);
+        $indexTypes = $this->getAllowedIndexesTypes();
+        $this->view->assignMultiple([
+           'resultList' => $resultList,
+            'indexTypes' => $indexTypes,
 
+        ]);
     }
 
     /**

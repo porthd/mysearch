@@ -93,7 +93,7 @@ class IndexMySearchToElasticMiddleware implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    protected function containExpectedParam($floatLog): boolean
+    protected function containExpectedParam($floatLog): bool
     {
         $flag = true;
         foreach (SelfConst::BASIC_REQUEST_KEY_LIST as $requestKey) {
