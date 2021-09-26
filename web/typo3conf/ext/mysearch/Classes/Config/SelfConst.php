@@ -40,7 +40,7 @@ class SelfConst
     public const METHOD_REVIEW =  'reviewRequest';
     public const METHOD_REDUCE =  'reduceRequest';
     public const METHOD_BUILD =  'buildAndInsert';
-    public const METHOD_ERRORMESSAGE =  'ERROR_MESSAGE';
+    public const METHOD_ERRORMESSAGE =  'errorMessage';
 
     public const BASIC_REQUEST_KEY_LIST = [
         'index',

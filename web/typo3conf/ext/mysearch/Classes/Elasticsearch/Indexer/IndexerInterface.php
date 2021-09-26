@@ -12,27 +12,20 @@ interface IndexerInterface
 
     public function makeDataModelExtend():?DataDocumentInterface;
 
-    public function containExpectedParam(array &$fromHttpRequest): bool;
-
+    public function getNeededRawData():array;
 
     public function normalizeRequest(array &$request):bool;
     public function extendRequest(array &$request):bool;
     public function reviewRequest(array &$request):bool;
     public function reduceRequest(array &$request):bool;
-    public function buildAndInsert(array &$request):bool;
 
-    /**
-     * @param $dataParam
-     * @param int $flagGeneral if false, the
-     * @return mixed
-     */
-    public function insert($dataParam);
+    public function getErrorMessages():array;
+    public function addErrorMessage(string $message):void;
 
-    public function flagRequestToIndex(array $request):bool;
+    public function indexName(array &$dataForIndex):?string;
+    public function typeName(array &$dataForIndex):?string;
+    public function idName(array &$dataForIndex):?string;
+    public function bodyList(array &$dataForIndex):array;
 
-
-    public function indexName(array &$request):?string;
-    public function typeName(array &$request):?string;
-    public function idName(array &$request):?string;
-    public function contentList(array &$request):array;
+    public function insert(array $indexParam);
 }

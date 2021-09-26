@@ -46,9 +46,13 @@ call_user_func(
 
         //Define the Indexer and Resulter of this class
         $list = [
-            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_CUSTOMINDEXER => [],
+            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_CUSTOMINDEXER => [
+                'porthdMysearchBasic' => \Porthd\Mysearch\Elasticsearch\Indexer\BasicIndexer::class
+            ],
             \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_EXCLUDEINDEXER => [],
-            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_CUSTOMRESULTER => [],
+            \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_CUSTOMRESULTER => [
+                'porthdMysearchBasic' => \Porthd\Mysearch\Elasticsearch\Resulter\BasicResulter::class
+            ],
             \Porthd\Mysearch\Config\SelfConst::GLOBALS_SUBKEY_EXCLUDERESULTER => [],
         ];
         foreach ($list as $classTypes => $classList) {

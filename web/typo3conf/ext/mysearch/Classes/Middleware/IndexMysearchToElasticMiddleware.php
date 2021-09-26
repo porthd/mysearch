@@ -25,7 +25,6 @@ namespace Porthd\Mysearch\Middleware;
 use Porthd\Mysearch\Config\SelfConst;
 
 use Porthd\Mysearch\Domain\Model\DataDocumentInterface;
-use Porthd\Mysearch\Domain\Model\IndexerFlowLog;
 use Porthd\Mysearch\Domain\Model\MysearchData;
 use Porthd\Mysearch\Elasticsearch\Indexer\IndexerInterface;
 use Porthd\Mysearch\Utilities\ConfigurationUtility;
@@ -84,25 +83,26 @@ class IndexMysearchToElasticMiddleware implements MiddlewareInterface
                     $insertDataList = $insertData->toArray();
                     // the indexerlist contains only the
                     $flagFlow = true;
+                    // parameter $insertDataList by referenz, bcause the method will chang the appearancce of the datats
                     $flagFlow = $flagFlow && $this->normalizeData($indexerList, $insertDataList);
                     $flagFlow = $flagFlow && $this->extendData($indexerList, $insertDataList);
                     $flagFlow = $flagFlow && $this->reviewData($indexerList, $insertDataList);
                     $flagFlow = $flagFlow && $this->reduceData($indexerList, $insertDataList);
-                    $flagIndex = $this->buildData($indexerList, $insertDataList);
+                    $flagIndex = $this->buildAndInsertData($indexerList, $insertDataList);
 
                 }
                 if ((!$flagBasicContained) ||
                     (empty($flagFlow)) ||
-                    (!$flagIndex)
+                    (!(empty($flagIndex)))
                 ) {
-                    $listMessage = $this->errorMessage($indexerList, $insertDataList);
+                    $errorMessages = $this->errorMessages($indexerList, $insertDataList);
                     return GeneralUtility::makeInstance(ErrorController::class)
                         ->unavailableAction(
                             $request,
                             'The request could not be solved. The workflow has the following infos.' .
                             print_r($insertDataList,
                                 true)."\n".
-                            (empty($listMessage)?'':implode("\n",$listMessage))
+                            (empty($errorMessages)?'':'errorMessages'."\n".implode("\n",$errorMessages)."\n")
                         );
                 }
                 $response = $this->responseFactory->createResponse()
@@ -182,64 +182,40 @@ class IndexMysearchToElasticMiddleware implements MiddlewareInterface
         return $flag;
     }
 
-    protected function errorMessage($indexerList, &$insertDataList)
+    protected function errorMessages($indexerList)
     {
         $methodName = SelfConst::METHOD_ERRORMESSAGE;
         $list = [];
         foreach ($indexerList as $indexer) {
-            $list[] = $indexer->$methodName($insertDataList);
+            $list[] = $indexer->$methodName();
         }
         return array_filter($list);
     }
 
-    protected function buildData($indexerList, &$insertDataList)
+    protected function buildAndInsertData($indexerList, &$insertDataList):bool
     {
-        $method = SelfConst::METHOD_BUILD;
-
-        $result = [];
-        /** @var IndexerInterface $indexer */
-        $indexed = [];
+        $flagIndex = true;
         foreach ($indexerList as $indexer) {
-            $myIndex = $indexer->indexName($insertDataList) ?? SelfConst::SELF_NAME;
-            if (SelfConst::SELF_NAME !== strtolower($myIndex)) {
-                $buildBody = $indexer->$method($floatLog->$fromName);
-                $params = [
-                    'index' => $myIndex,
-                    'type' => $indexer->typeName($buildBody) ?? SelfConst::SELF_NAME,
-                    'id' => $indexer->idName($buildBody) ?? hash('sha512', json_encode($buildBody)),
-                    'body' => $buildBody,
-                ];
-                try {
-                    // Alles hat geklappt
-                    $indexed[] = $indexer->insert($params);
-                } catch (\Exception $e) {
-                    // Speichern fehlgeschlagen
-                    $floatLog->$toName = array_merge(...$indexed);
-                    return false;
-                }
+            // each indexer will store the error itself in the object. the errors mus be requested later
+            $params = [
+                'index' => $indexer->indexName($insertDataList) ?? SelfConst::SELF_NAME,
+                'type' => $indexer->typeName($insertDataList)??SelfConst::SELF_NAME,
+                'id' => $indexer->idName($insertDataList) ?? hash(
+                        'sha512',
+                        SelfConst::SELF_NAME . json_encode($insertDataList) . SelfConst::SELF_NAME
+                    ),
+                'body' => $indexer->bodyList($insertDataList)??$insertDataList,
+            ];
+            try {
+                // Alles hat geklappt
+                $flagIndex = $flagIndex && $indexer->insert($params);
+            } catch (\Exception $e) {
+                // Speichern fehlgeschlagen
+                $indexer->addErrorMessage('Exception:'.$e->getMessage());
+                $flagIndex = $flagIndex && (false);
             }
-            $result[] = $indexed;
         }
-        $buildBody = array_merge($result[]);
-        $params = [
-            'index' => SelfConst::SELF_NAME,
-            'type' => SelfConst::SELF_NAME,
-            'id' => $indexer->idName($buildBody) ?? hash(
-                    'sha512',
-                    SelfConst::SELF_NAME . json_encode($buildBody) . SelfConst::SELF_NAME
-                ),
-            'body' => $buildBody,
-        ];
-        try {
-            // Alles hat geklappt
-            $indexed[] = $indexer->insert($params);
-        } catch (\Exception $e) {
-            // Speichern fehlgeschlagen
-            $floatLog->$toName = array_merge(...$indexed);
-            return false;
-        }
-        $floatLog->$toName = array_merge(...$indexed);
-        return (!empty($floatLog->$toName));
+        return $flagIndex;
     }
 
 }
