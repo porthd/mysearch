@@ -28,7 +28,7 @@ class MysearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     /**
      * action searchPage
      *
-     * @param array $filterMysearch
+     * @param array $currentFilter
      */
     public function mysearchPageAction($currentFilter = [])
     {
@@ -39,74 +39,37 @@ class MysearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             SelfConst::GLOBALS_SUBKEY_EXCLUDERESULTER,
             ResulterInterface::class
         );
-        $mergerList = ConfigurationUtility::extractCustomClassesForExtension(
-            SelfConst::SELF_NAME,
-            SelfConst::GLOBALS_SUBKEY_CUSTOMMERGER,
-            SelfConst::GLOBALS_SUBKEY_EXCLUDEMERGER,
-            MergerInterface::class
-        );
-        $normResult = [];
-        $domainBasedResult = [];
-        $domainPlusBasedResult = [];
+        $allResults =[];
+        $allBlocks = [];
         foreach ($resulterList as $resulter) {
-            $indexerResult = $resulter->search($filterMysearch, $max);
-
-            foreach ($indexerResult ?? [] as $item) {
-                $normWeigth = $resulter->extraxctWeight($item);
-                $url = $resulter->extractLink($item);
-                [$domain, $domainPlus] = $this->extractDomainPlus($url);
-                $normItem = [
-                    'weight' => $normWeigth,
-                    'url' => $url,
-                    'domain' => $domain,
-                    'domainPlus' => $domainPlus,
-                    'header' => $resulter->extractHeader($item),
-                    'quote' => $resulter->extractQuotes($item, $filterMysearch),
-                    'links' => $resulter->extractLinks($item),
-                    'fullrawtext' => $resulter->extractRawText($item),
-                    'flagShow' => 0,
-                ];
-                foreach ($mergerList ?? [] as $merger) {
-                    $normItem['flagShow'] -= $merger->checkForBlacklink($normItem, $filterMysearch) ?? 0;
-                    $normItem['flagShow'] += $merger->checkForWhitelink($normItem, $filterMysearch) ?? 0;
-                    $normItem['wordCloud'] .= ',' . $merger->findKeyWords($normItem);
-                    $calcWeigth = $merger->recalcWeigth($normItem);
-                    $normItem['maxWeigth'] = max($normItem['maxWeigth'], $calcWeigth);
-                    $normItem['minWeigth'] = min($normItem['maxWeigth'], $calcWeigth);
-                    $normItem['domain'] = min($normItem['maxWeigth'], $calcWeigth);
-                }
-                if ($normItem['flagShow'] >= 0) {
-                    $weight = $normItem['weigth'];
-                    if (empty($normResult[$weight])) {
-                        $normResult[$weight] = [];
-                    }
-                    if (empty($domainBasedResult[$domain][$weight])) {
-                        $domainBasedResult[$domain][$weight] = [];
-                    }
-                    if (empty($domainPlusBasedResult[$domainPlus][$weight])) {
-                        $domainPlusBasedResult[$domainPlus][$weight] = [];
-                    }
-
-                    $normResult[$weight][] = $normItem;
-                    $domainBasedResult[$domain][$weight][]= $normItem;
-                    $domainPlusBasedResult[$domainPlus][$weight][]= $normItem;
-                }
+            if (method_exists($resulter,'search')){
+                $allBlocks[] = $resulter->search($currentFilter, $max);
             }
         }
-        $myFilter = [];
-        foreach($resulterList ??[] as $resulter){
+        $allResults = array_merge([], ...$allBlocks);
+        foreach ($allResults as $item) {
+                $item['weight'] = 1;
+                $item['url'] = $item['url']??'http://localhost:80';
+                $item['domain'] = $item['domain']??'localhost';
+                $item['domainPlus'] = $item['domainPlus']??'';
+                $item['header'] = $item['header']??'XXX';
+                $item['quote'] = $item['quote']??'no quote avaiable';
+                $item['links'] = $item['links']??[];
+                $item['fullrawtext'] = $item['fullrawtext']??'';
+                $item['flagShow'] = 1;
 
         }
-        $mySearchResultTabs = [
-            'easy' => $normResult,
-            'domain' => $domainBasedResult,
-            'domainPlus' => $domainPlusBasedResult,
-        ];
+        foreach ($resulterList as $resulter) {
+            if (method_exists($resulter,'blackList')){
+                $resulter->blackList($allResults);
+            }
+            if (method_exists($resulter,'weightChange')){
+                $resulter->weightChange($allResults);
+            }
+        }
         $this->view->assignMultiple([
-            'flag' => empty($normResult),
-            'result' => $mySearchResultTabs,
-            'filter' => $myFilter,
-            'currentFilter' => $currentFilter,
+            'result' => $allResults,
+            'filter' => $currentFilter,
         ]);
     }
 

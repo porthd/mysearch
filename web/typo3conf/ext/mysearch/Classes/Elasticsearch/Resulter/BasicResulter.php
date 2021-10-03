@@ -18,16 +18,5 @@ class BasicResulter implements ResulterInterface
         return self::SELF_NAME;
     }
 
-//    public $elasticsearch;
-//
-//    function __construct()
-//    {
-//        $domain = getenv('DOMAIN_NAME') ?? SelfConst::SELF_DOMAIN_NAME;
-//        $addPort = getenv('DOMAIN_ELASTIC_ADDPORT') ?? SelfConst::SELF_DOMAIN_ELASTIC_ADDPORT;
-//        $this->elasticsearch = \Elasticsearch\ClientBuilder::create()
-//            ->setHosts([$domain . $addPort])
-//            ->build();
-//    }
-
 
 }

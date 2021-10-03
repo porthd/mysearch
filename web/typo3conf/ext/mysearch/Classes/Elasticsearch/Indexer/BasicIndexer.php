@@ -15,6 +15,8 @@ class BasicIndexer implements IndexerInterface
 
     protected $errormessages = [];
 
+    protected $urls = [];
+
     protected $elasticSearch = [];
 
     function __construct()
@@ -39,6 +41,11 @@ class BasicIndexer implements IndexerInterface
         return new \Porthd\Mysearch\Domain\Model\BasicData();
     }
 
+    public function getUrls(array &$requestData):array
+    {
+        return $this->urls;
+    }
+
     public function getNeededRawData():array
     {
         return SelfConst::BASIC_REQUEST_KEY_LIST;
@@ -48,16 +55,11 @@ class BasicIndexer implements IndexerInterface
     {
         return true;
     }
-    public function extendRequest(array &$requestData):bool
+    public function rebuildRequest(array &$requestData):bool
     {
-        return true;
-    }
-    public function reviewRequest(array &$requestData):bool
-    {
-        return true;
-    }
-    public function reduceRequest(array &$requestData):bool
-    {
+        if (!empty($requestData['links'])) {
+            $this->urls = $requestData['links'];
+        }
         return true;
     }
 

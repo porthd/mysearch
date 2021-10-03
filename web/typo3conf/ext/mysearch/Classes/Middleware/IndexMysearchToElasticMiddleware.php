@@ -34,6 +34,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 
@@ -46,79 +47,149 @@ class IndexMysearchToElasticMiddleware implements MiddlewareInterface
 
 // mainly develeped by  https://www.glohbe.de/de/elasticsearch-mit-php/ (german explainatiuon about elasticSearch with PHP)
 
-    /** @var ResponseFactoryInterface */
-    private $responseFactory;
-
-    public function __construct(ResponseFactoryInterface $responseFactory)
-    {
-        $this->responseFactory = $responseFactory;
-    }
-
+    /**
+     * @var array
+     */
+    protected $indexerList = [];
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
 
         $testSubRoute = getenv(SelfConst::ELASTIC_INDEX_ROUTE_NAME) ?? SelfConst::ELASTIC_INDEX_ROUTE_NAME;
         if (trim($request->getAttribute('normalizedParams')->getRequestUri(), DIRECTORY_SEPARATOR) === $testSubRoute) {
-            $indexerList = ConfigurationUtility::extractCustomClassesForExtension(
+            $this->indexerList = ConfigurationUtility::extractCustomClassesForExtension(
                 SelfConst::SELF_NAME,
                 SelfConst::GLOBALS_SUBKEY_CUSTOMINDEXER,
                 SelfConst::GLOBALS_SUBKEY_EXCLUDEINDEXER,
                 IndexerInterface::class
             );
-            if (!empty($indexerList)) {
+            if (!empty($this->indexerList)) {
+                $flagSeparatedIndexing = false;
                 /** @var MysearchData $insertData */
                 $insertData = GeneralUtility::makeInstance(MysearchData::class);
                 $insertData->orig = $_REQUEST;
-                $shiftingPointer = $insertData;
-                foreach ($indexerList as $indexerObject) {
-                    if (($dummy = $indexerObject->makeDataModelExtend()) !== null) {
-                        $shiftingPointer->more = $dummy;
-                        $shiftingPointer = $shiftingPointer->more;
+                if ($flagSeparatedIndexing) {
+                    $errorList = [];
+                    $rawUrls = [];
+                    /** @var IndexerInterface $indexerObject */
+                    foreach ($this->indexerList as $indexerObject) {
+                        $insertDummy = clone $insertData;
+                        if (($dummy = $indexerObject->makeDataModelExtend()) !== null) {
+                            $insertDummy->more = $dummy;
+                        }
+                        $flagIndex = true;
+                        $flagFlow = false;
+                        $flagBasicContained = true;
+                        foreach ($indexerObject->getNeededRawData() as $requestKey) {
+                            $flagBasicContained = $flagBasicContained && (isset($insertData->orig[$requestKey]));
+                        }
+                        if ($flagBasicContained) {
+
+                            $insertDataList = $insertData->toArray();
+                            // the indexerlist contains only the
+                            $flagFlow = true;
+                            // parameter $insertDataList by referenz, because the method can change the appearance of the data
+                            $flagFlow = $flagFlow && $indexerObject->normalizeRequest($insertDataList);
+                            $flagFlow = $flagFlow && $indexerObject->rebuildRequest($insertDataList);
+
+                            if ($flagFlow) {
+                                // each indexer will store the error itself in the object. the errors mus be requested later
+                                $params = [
+                                    'index' => $indexerObject->indexName($insertDataList) ?: SelfConst::SELF_NAME,
+                                    'type' => $indexerObject->typeName($insertDataList) ?: SelfConst::SELF_DEFAULT_INDEX,
+                                    'id' => $indexerObject->idName($insertDataList) ?: hash(
+                                        'sha512',
+                                        SelfConst::SELF_NAME . json_encode($insertDataList) . SelfConst::SELF_NAME . SelfConst::SELF_DEFAULT_INDEX
+                                    ),
+                                    'body' => $indexerObject->bodyList($insertDataList) ?: $insertDataList,
+                                ];
+                                try {
+                                    // Alles hat geklappt
+                                    $flagIndex = $flagIndex && $indexerObject->insert($params);
+                                    $rawUrls[] = $indexerObject->getUrls($insertDataList) ?? [];
+                                } catch (\Exception $e) {
+                                    // Speichern fehlgeschlagen
+                                    $errorList[] = $indexerObject->selfName() . ' Exception:' . $e->getMessage();
+                                }
+                            } else {
+                                $list = $indexerObject->getErrorMessages() ?? [];
+                                $errorList[] = $indexerObject->selfName() . ' error in normalitze or rebuild:' . "\n" .
+                                    implode('\n ', $list) . "\n" . "\n";
+                            }
+                        } else {
+                            $errorList[] = $indexerObject->selfName() . ' Missing Parameters:' . print_r($insertDataList,
+                                    true);
+                        }
                     }
-                }
-                $flagIndex = true;
-                $flagFlow = false;
-                if ($flagBasicContained = $this->containExpectedParam($indexerList, $insertData)) {
-                    $insertDataList = $insertData->toArray();
-                    // the indexerlist contains only the
-                    $flagFlow = true;
-                    // parameter $insertDataList by referenz, bcause the method will chang the appearancce of the datats
-                    $flagFlow = $flagFlow && $this->normalizeData($indexerList, $insertDataList);
-                    $flagFlow = $flagFlow && $this->extendData($indexerList, $insertDataList);
-                    $flagFlow = $flagFlow && $this->reviewData($indexerList, $insertDataList);
-                    $flagFlow = $flagFlow && $this->reduceData($indexerList, $insertDataList);
-                    $flagIndex = $this->buildAndInsertData($indexerList, $insertDataList);
+
+                    if (!empty($errorList)) {
+                        return GeneralUtility::makeInstance(ErrorController::class)
+                            ->unavailableAction(
+                                $request,
+                                'The request could not fully be solved. The workflow has the following infos.' .
+                                print_r($insertDataList,
+                                    true) . "\n" .
+                                (empty($errorList) ? '' : 'errorMessages' . "\n" . implode("\n",
+                                        $errorList) . "\n")
+                            );
+                    }
+                    $urls = [];
+                    foreach ($rawUrls as $urlsList) {
+                        foreach ($urlsList as $item) {
+                            if (!empty($item)) {
+                                $urls[] = $item;
+                            }
+                        }
+                    }
+
+                } else { // $flagSeparatedIndexing
+                    $shiftingPointer = $insertData;
+                    foreach ($this->indexerList as $indexerObject) {
+                        if (($dummy = $indexerObject->makeDataModelExtend()) !== null) {
+                            $shiftingPointer->more = $dummy;
+                            $shiftingPointer = $shiftingPointer->more;
+                        }
+                    }
+                    $flagIndex = true;
+                    $flagFlow = false;
+
+                    if ($flagBasicContained = $this->containExpectedParam($insertData)) {
+
+                        $insertDataList = $insertData->toArray();
+                        // the indexerlist contains only the
+                        $flagFlow = true;
+                        // parameter $insertDataList by referenz, because the method can change the appearance of the data
+                        $flagFlow = $flagFlow && $this->normalizeData($insertDataList);
+                        $flagFlow = $flagFlow && $this->rebuildData($insertDataList);
+                        $flagFlow = $flagFlow && $this->buildAndInsertData($insertDataList);
+                    }
+                    if (($flagBasicContained === false) ||
+                        ($flagFlow === false) ||
+                        ($flagIndex === false)
+                    ) {
+                        $errorMessages = $this->errorMessages($insertDataList);
+                        return GeneralUtility::makeInstance(ErrorController::class)
+                            ->unavailableAction(
+                                $request,
+                                'The request could not be solved. The workflow has the following infos.' .
+                                print_r($insertDataList,
+                                    true) . "\n" .
+                                (empty($errorMessages) ? '' : 'errorMessages' . "\n" . implode("\n",
+                                        $errorMessages) . "\n")
+                            );
+                    }
+                    $urls = $this->urlsData();
 
                 }
-                if ((!$flagBasicContained) ||
-                    (empty($flagFlow)) ||
-                    (!(empty($flagIndex)))
-                ) {
-                    $errorMessages = $this->errorMessages($indexerList, $insertDataList);
-                    return GeneralUtility::makeInstance(ErrorController::class)
-                        ->unavailableAction(
-                            $request,
-                            'The request could not be solved. The workflow has the following infos.' .
-                            print_r($insertDataList,
-                                true)."\n".
-                            (empty($errorMessages)?'':'errorMessages'."\n".implode("\n",$errorMessages)."\n")
-                        );
-                }
-                $response = $this->responseFactory->createResponse()
-                    ->withHeader('Content-Type', 'application/json; charset=utf-8');
-                // Hook for respons-Informations
-                foreach (
-                    ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][ 'mysearch' ][ 'messageAfterSuccessElasticInsert' ] ??[])
-                    as $classRef
-                ) {
-                    $hookObj = GeneralUtility::makeInstance($classRef);
-                    if (method_exists($hookObj, 'messageAfterSuccessElasticInsert')) {
-                        $hookObj->messageAfterSuccessElasticInsert($response, $insertDataList);
-                    }
-                }
+                /** @var JsonResponse $jsonResponse */
+                $jsonResponse = new JsonResponse(
+                    $urls
+                );
 
-                return $response;
+                // Hook after insert informations
+                $this->hookAfterSuccessElasticInserts($jsonResponse, $insertDataList);
+
+                return $jsonResponse;
             }
         }
         return $handler->handle($request);
@@ -132,7 +203,7 @@ class IndexMysearchToElasticMiddleware implements MiddlewareInterface
     protected function containExpectedParam(array $indexerList, DataDocumentInterface $insertData): bool
     {
         $flag = true;
-        foreach ($indexerList ?? [] as $indexerObj) {
+        foreach ($this->indexerList ?? [] as $indexerObj) {
             foreach ($indexerObj->getNeededRawData() as $requestKey) {
                 $flag = $flag && (isset($insertData->orig[$requestKey]));
             }
@@ -140,82 +211,97 @@ class IndexMysearchToElasticMiddleware implements MiddlewareInterface
         return $flag;
     }
 
-    protected function normalizeData($indexerList, &$insertDataList)
+    protected function normalizeData(&$insertDataList)
     {
         return $this->generalFlowData(
             $insertDataList,
-            SelfConst::METHOD_NORMALIZE,
-            $indexerList);
+            SelfConst::METHOD_NORMALIZE);
     }
 
-    protected function extendData($indexerList, &$insertDataList)
+    protected function rebuildData(&$insertDataList)
     {
         return $this->generalFlowData(
             $insertDataList,
-            SelfConst::METHOD_EXTEND,
-            $indexerList);
+            SelfConst::METHOD_REBUILD);
     }
 
-    protected function reviewData($indexerList, &$insertDataList)
-    {
-        return $this->generalFlowData(
-            $insertDataList,
-            SelfConst::METHOD_REVIEW,
-            $indexerList);
-    }
 
-    protected function reduceData($indexerList, &$insertDataList)
-    {
-        return $this->generalFlowData(
-            $insertDataList,
-            SelfConst::METHOD_REDUCE,
-            $indexerList);
-    }
-
-    protected function generalFlowData($indexerList, $methodName, &$insertDataList)
+    protected function generalFlowData($insertDataList, $methodName)
     {
         $flag = true;
-        foreach ($indexerList as $indexer) {
+        foreach ($this->indexerList as $indexer) {
             $flag = $flag && $indexer->$methodName($insertDataList);
         }
 
         return $flag;
     }
 
-    protected function errorMessages($indexerList)
+    protected function errorMessages()
     {
-        $methodName = SelfConst::METHOD_ERRORMESSAGE;
+        $methodName = SelfConst::METHOD_GET_ERRORMESSAGES;
         $list = [];
-        foreach ($indexerList as $indexer) {
-            $list[] = $indexer->$methodName();
+        foreach ($this->indexerList as $indexer) {
+            foreach ($indexer->$methodName() ?? [] as $item) {
+                $list[] = $item;
+            }
         }
         return array_filter($list);
     }
 
-    protected function buildAndInsertData($indexerList, &$insertDataList):bool
+    protected function urlsData()
+    {
+        $methodName = SelfConst::METHOD_GET_URLS;
+        $list = [];
+        foreach ($this->indexerList as $indexer) {
+            foreach ($indexer->$methodName() ?? [] as $item) {
+                $list[] = $item;
+            }
+        }
+        return array_filter($list);
+    }
+
+    protected function buildAndInsertData($indexerList, &$insertDataList): bool
     {
         $flagIndex = true;
         foreach ($indexerList as $indexer) {
             // each indexer will store the error itself in the object. the errors mus be requested later
             $params = [
-                'index' => $indexer->indexName($insertDataList) ?? SelfConst::SELF_NAME,
-                'type' => $indexer->typeName($insertDataList)??SelfConst::SELF_NAME,
-                'id' => $indexer->idName($insertDataList) ?? hash(
-                        'sha512',
-                        SelfConst::SELF_NAME . json_encode($insertDataList) . SelfConst::SELF_NAME
-                    ),
-                'body' => $indexer->bodyList($insertDataList)??$insertDataList,
+                'index' => $indexer->indexName($insertDataList) ?: SelfConst::SELF_NAME,
+                'type' => $indexer->typeName($insertDataList) ?: SelfConst::SELF_DEFAULT_INDEX,
+                'id' => $indexer->idName($insertDataList) ?: hash(
+                    'sha512',
+                    SelfConst::SELF_NAME . json_encode($insertDataList) . SelfConst::SELF_NAME . SelfConst::SELF_DEFAULT_INDEX
+                ),
+                'body' => $indexer->bodyList($insertDataList) ?: $insertDataList,
             ];
             try {
                 // Alles hat geklappt
                 $flagIndex = $flagIndex && $indexer->insert($params);
             } catch (\Exception $e) {
                 // Speichern fehlgeschlagen
-                $indexer->addErrorMessage('Exception:'.$e->getMessage());
+                $indexer->addErrorMessage('Exception:' . $e->getMessage());
                 $flagIndex = $flagIndex && (false);
             }
         }
         return $flagIndex;
+    }
+
+    /**
+     * @param JsonResponse $jsonResponse
+     * @param array $insertDataList
+     * @return mixed
+     */
+    protected function hookAfterSuccessElasticInserts($jsonResponse, &$insertDataList)
+    {
+        foreach (
+        ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mysearch']['messageAfterSuccessElasticInsert'] ?? [])
+            as $classRef
+        ) {
+            $hookObj = GeneralUtility::makeInstance($classRef);
+            if (method_exists($hookObj, 'messageAfterSuccessElasticInsert')) {
+                $insertDataList = $hookObj->messageAfterSuccessElasticInsert($jsonResponse, $insertDataList);
+            }
+        }
     }
 
 }

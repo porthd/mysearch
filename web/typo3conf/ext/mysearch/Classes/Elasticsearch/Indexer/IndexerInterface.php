@@ -14,17 +14,51 @@ interface IndexerInterface
 
     public function getNeededRawData():array;
 
+    public function getUrls(array &$requestData):array;
+
+    /**
+     * return false,if the data contains som mistake. this would cause an error
+     *
+     * @param array $request
+     * @return bool
+     */
     public function normalizeRequest(array &$request):bool;
-    public function extendRequest(array &$request):bool;
-    public function reviewRequest(array &$request):bool;
-    public function reduceRequest(array &$request):bool;
+    public function rebuildRequest(array &$request):bool;
 
     public function getErrorMessages():array;
     public function addErrorMessage(string $message):void;
 
+    /**
+     * return null,if the default should be used
+     *
+     * @param array $dataForIndex
+     * @return string|null
+     *
+     */
     public function indexName(array &$dataForIndex):?string;
+    /**
+     * return null,if the default should be used
+     *
+     * @param array $dataForIndex
+     * @return string|null
+     *
+     */
     public function typeName(array &$dataForIndex):?string;
+    /**
+     * return null,if the default should be used
+     *
+     * @param array $dataForIndex
+     * @return string|null
+     *
+     */
     public function idName(array &$dataForIndex):?string;
+    /**
+     * return null,if the default should be used
+     *
+     * @param array $dataForIndex
+     * @return string|null
+     *
+     */
     public function bodyList(array &$dataForIndex):array;
 
     public function insert(array $indexParam);

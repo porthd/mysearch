@@ -7,14 +7,21 @@ function postAjax(url, data) {
     return fetch(url, {
         method: "POST",
         body: JSON.stringify(data)
+    }).then(response => {
+        let result = response.json();
+        urls =  result.urls;
+        console.log('postAjax MySearch-AddOn: response-Urls perhaps for next requests');
+    }).catch(function(error) {
+        console.log('postAjax MySearch-AddOn with following object of error');
+        console.log(error);
     });
+
 }
 
 function getLinkList() {
     let list = Array.from(document.links),
         result = [];
     list.forEach( (elem) => {
-        // console.log('elem set'+elem);
         if (['http','https'].includes(elem.protocol)) {
             result[result.length] = {
                 name: elem.innerText,
@@ -45,7 +52,7 @@ function getHeadlineList() {
 }
 
 function dataForIndex() {
-// parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
+    // parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
     let uri = document.location,
         content = {
             index: uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'],
@@ -55,17 +62,11 @@ function dataForIndex() {
             links: getLinkList(),
             headlines: getHeadlineList(),
         };
-// console.log('aktive stuff start');
-// console.log(content);
-// console.log(ELASTIC_LOCAL_URL);
-//POST example
     postAjax(ELASTIC_LOCAL_URL, content);
-// console.log("Send single Dat to "+window.location.href); //output messages to the console
 
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
     dataForIndex();
 });
-// dataForIndex();  // needed?
 
