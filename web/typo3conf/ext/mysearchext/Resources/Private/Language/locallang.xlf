@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:mysearchext/Resources/Private/Language/locallang" date="2020-08-27T11:27:40Z" product-name="mysearchext">
+		<header/>
+		<body>
+			<trans-unit id="tx_mysearchext_mysearchext.description" resname="tx_mysearchext_mysearchext.description">
+				<source>A simple expandable extension to connect TYPO3 with elasticsearch</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

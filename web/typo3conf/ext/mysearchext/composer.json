@@ -1,0 +1,28 @@
+{
+    "name": "porthd/mysearchext",
+    "type": "typo3-cms-extension",
+    "description": "",
+    "authors": [
+        {
+            "name": "Dr. Dieter Porth",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "typo3/cms-core": "^10.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Porthd\\Mysearchext\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Porthd\\Mysearchext\\Tests\\": "Tests"
+        }
+    },
+    "replace": {
+        "porthd/mysearchext": "self.version",
+        "typo3-ter/mysearchext": "self.version"
+    }
+}

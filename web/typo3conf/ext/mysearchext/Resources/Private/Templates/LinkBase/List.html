@@ -1,0 +1,66 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+
+This Template is responsible for creating a table of domain objects.
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+  Resources:
+    Private:
+      Templates:
+        List.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="content">
+    <h1>Listing for LinkBase</h1>
+
+    <f:flashMessages />
+
+    <table  class="tx_mysearchext" >
+        <tr>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.link" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.link_hash" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.link_score_factor" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.index_ident" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.index_score_factor" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.type" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.grade" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.title" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.description" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.crawl_deep" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.crawl_start_link" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.crawl_connections" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.login_param" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.htaccess_param" /></th>
+            <th><f:translate key="tx_mysearchext_domain_model_linkbase.payment_param" /></th>
+            <th> </th>
+            <th> </th>
+        </tr>
+
+        <f:for each="{linkBases}" as="linkBase">
+            <tr>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.link}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.linkHash}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.linkScoreFactor}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.indexIdent}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.indexScoreFactor}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.type}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.grade}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.title}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.description}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.crawlDeep}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.crawlStartLink}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.crawlConnections}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.loginParam}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.htaccessParam}</f:link.action></td>
+                <td><f:link.action action="show" arguments="{linkBase : linkBase}">{linkBase.paymentParam}</f:link.action></td>
+                <td><f:link.action action="edit" arguments="{linkBase : linkBase}">Edit</f:link.action></td>
+                <td><f:link.action action="delete" arguments="{linkBase : linkBase}">Delete</f:link.action></td>
+            </tr>
+        </f:for>
+    </table>
+
+    <f:link.action action="new">New LinkBase</f:link.action>
+</f:section>
+</html>
