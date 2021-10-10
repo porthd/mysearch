@@ -59,7 +59,6 @@
         "typo3/cms-viewpage": "^10.4.6",
         "typo3/cms-workspaces": "^10.4.6",
         "typo3/cms-introduction": "^4.2.0",
-        "porthd/mysearchext": "^10.1.0",
         "elasticsearch/elasticsearch": "^7.0"
     },
     "require-dev": {
@@ -67,7 +66,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Porthd\\Mysearch\\": "web/typo3conf/ext/mysearch/Classes"
+            "Porthd\\Mysearchext\\": "web/typo3conf/ext/mysearchext/Classes"
         }
     },
     "extra": {

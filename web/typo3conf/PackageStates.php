@@ -101,8 +101,8 @@ return [
         'introduction' => [
             'packagePath' => 'typo3conf/ext/introduction/',
         ],
-        'mysearch' => [
-            'packagePath' => 'typo3conf/ext/mysearch/',
+        'mysearchext' => [
+            'packagePath' => 'typo3conf/ext/mysearchext/',
         ],
     ],
     'version' => 5,
