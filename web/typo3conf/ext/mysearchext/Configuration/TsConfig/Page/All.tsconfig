@@ -1,4 +1,0 @@
-#
-# PageTS for mysearchext
-#
-@import 'EXT:mysearchext/Configuration/TsConfig/Page/*.tsconfig'
