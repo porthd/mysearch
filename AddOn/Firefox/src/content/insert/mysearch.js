@@ -1,8 +1,17 @@
-console.log('first hallo Welt');
-
-document.body.style.border = "5px solid blue";
-
 const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/';
+
+document.body.style.border = "5px solid orange";
+
+    let uri = document.location;
+    if (domainNotInBlacklist(uri['hostname'])){
+
+        dataForIndex();
+        document.body.style.border = "5px solid green";
+    } else {
+        document.body.style.border = "5px solid red";
+
+    }
+// document.body.style.border = "5px solid blue";
 
 function postAjax(url, data) {
 
@@ -10,9 +19,8 @@ function postAjax(url, data) {
         method: "POST",
         body: JSON.stringify(data)
     }).then(response => {
-        // let result = response.json(),
-        //     urls = result.urls;
         console.log('postAjax MySearch-AddOn: response-Urls perhaps for next requests');
+        console.log(response);
     }).catch(function (error) {
         console.log('postAjax MySearch-AddOn with following object of error');
         console.log(error);
@@ -57,9 +65,7 @@ function getHeadlineList() {
 
 function domainNotInBlacklist(testUri) {
     let flag = true;
-    console.log(testUri);
     flag = flag && (testUri !== 'mysearch.ddev.site');
-    flag = flag && false;
     return flag;
 }
 
@@ -74,20 +80,7 @@ function dataForIndex() {
             links: getLinkList(),
             headlines: getHeadlineList(),
         };
-    // document.location.href="https://mysearch.ddev.site/";
-    if (domainNotInBlacklist(uri['hostname'])) {
-        postAjax(ELASTIC_LOCAL_URL, content);
-    }
     postAjax(ELASTIC_LOCAL_URL, content);
 
 }
 
-console.log('last hallo Welt');
-document.addEventListener('DOMContentLoaded', (event) => {
-    console.log('hallo Welt');
-    dataForIndex();
-});
-dataForIndex();
-console.log('ever last hallo Welt');
-
-// dataForIndex();
