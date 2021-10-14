@@ -2,25 +2,39 @@ const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/';
 
 document.body.style.border = "5px solid orange";
 
-    let uri = document.location;
-    if (domainNotInBlacklist(uri['hostname'])){
-
-        dataForIndex();
-        document.body.style.border = "5px solid green";
-    } else {
-        document.body.style.border = "5px solid red";
-
-    }
-// document.body.style.border = "5px solid blue";
+let uri = document.location;
+if (domainInBlacklist(uri)) {
+    console.log('failed');
+    document.body.style.border = "5px solid red";
+} else {
+    dataForIndex();
+    document.body.style.border = "5px solid green";
+}
 
 function postAjax(url, data) {
+    var jsonData = new FormData();
+    jsonData.append("json", JSON.stringify(data));
+    console.log(url);
 
     return fetch(url, {
         method: "POST",
-        body: JSON.stringify(data)
-    }).then(response => {
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+    }).then((response) => {
         console.log('postAjax MySearch-AddOn: response-Urls perhaps for next requests');
         console.log(response);
+        return response.json();
+    }).then((data) => {
+        if ((data['flagResurf']) && (data['uriResurf'])) {
+            console.log('postAjax MySearch-AddOn: resurf to url:' + data['uriResurf']);
+            document.location.href = data['uriResurf'];
+        }
+        console.log('postAjax MySearch-AddOn: response-Urls perhaps for next requests');
+        console.log(data);
+        //return data.json();
     }).catch(function (error) {
         console.log('postAjax MySearch-AddOn with following object of error');
         console.log(error);
@@ -30,13 +44,54 @@ function postAjax(url, data) {
 
 function getLinkList() {
     let list = Array.from(document.links),
-        result = [];
-    list.forEach((elem) => {
-        if (['http', 'https'].includes(elem.protocol)) {
-            result[result.length] = {
-                name: elem.innerText,
-                uri: elem.protocol + "//" + elem.hostname + (!elem.port ? ':' + elem.port : '') + elem.pathname + elem.search + elem.hash,
-                path: elem.pathname
+        result = {
+            'own': [],
+            'menu': [],
+            'foreign': [],
+        }
+        baseHref = document.href;
+    list.forEach(elem => {
+        let protocol = elem.protocol.toLowerCase();
+        if (['http:', 'https:', 'file:'].includes(protocol)) {
+            let hash = elem.hash ? '#' + elem.hash : '',
+                search = elem.search ? elem.search : '',
+                href = elem.protocol + "//" + elem.host + elem.pathname + search + hash;
+            if ((href !== elem.baseURI)
+            ) {
+                let name = (elem.innerText ?
+                            elem.innerText :
+                            '???'
+                    ),
+                    id = (elem.id ? elem.id : ''),
+                    className = (elem.className ? elem.className : ''),
+                    flagMenu = false;
+                ['nav', 'menu', 'head', 'foot'].forEach(part => {
+                    flagMenu = flagMenu || id.includes('part') ||
+                        className.includes('part');
+                });
+
+                if (elem.href === baseHref) {
+                    if (flagMenu) {
+                        result.menu[result.menu.length] = {
+                            name: name,
+                            uri: href,
+                            path: elem.pathname
+                        };
+                    } else {
+                        result.own[result.own.length] = {
+                            name: name,
+                            uri: href,
+                            path: elem.pathname
+                        };
+
+                    }
+                } else {
+                    result.foreign[result.foreign.length] = {
+                        name: name,
+                        uri: href,
+                        path: elem.pathname
+                    };
+                }
             }
         }
 
@@ -63,9 +118,11 @@ function getHeadlineList() {
 
 }
 
-function domainNotInBlacklist(testUri) {
-    let flag = true;
-    flag = flag && (testUri !== 'mysearch.ddev.site');
+function domainInBlacklist(testUriRaw) {
+    let testUri = testUriRaw.hostname.toLowerCase(),
+        flag = false;
+    flag = flag || (testUri === 'mysearch.ddev.site');
+    flag = flag || (['www.bing.com','www.bing.de','www.google.com','www.google.de',].includes(testUri));
     return flag;
 }
 
