@@ -24,6 +24,7 @@
         "ext-pdo": "*",
         "ext-dom": "*",
         "ext-xml": "*",
+        "ext-mbstring": "*",
         "helhum/dotenv-connector": "~3.0.0",
         "typo3/cms-about": "^10.4.6",
         "typo3/cms-adminpanel": "^10.4.6",
