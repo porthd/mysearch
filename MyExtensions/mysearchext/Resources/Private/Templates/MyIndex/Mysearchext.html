@@ -1,0 +1,58 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<head>
+    <title>Pluig-template for mysearch-request toelastic-search</title>
+</head>
+<body>
+<f:layout name="Default"/>
+
+
+<f:section name="content">
+    <f:flashMessages/>
+    <div class="container">
+        <div class="row">
+            <f:render partial="MyIndex/MyForm"
+                      section="Main"
+                      arguments="{_all}"
+            />
+        </div>
+        <div class="row">
+            <f:render partial="MyIndex/MyResult"
+                      section="Main"
+                      arguments="{results: results}"
+            />
+        </div>
+    </div>
+
+
+</f:section>
+
+<f:section name="HeaderAssets">
+    <link rel="stylesheet"
+          type="text/css"
+          href="{f:uri.resource(path:'Css/webcomponents.css', extensionName: 'mysearchext')}"
+    />
+    <link rel="stylesheet"
+          type="text/css"
+          href="./typo3conf/ext/mysearchext/Resources/Public/Css/webcomponents.css"
+    />
+</f:section>
+
+<f:section name="FooterAssets">
+    <script type="application/javascript"
+            src="{f:uri.resource(path:'JavaScript/Src/Webcomponents/TeaserBlock.js', extensionName: 'mysearchext')}"
+    >
+
+    </script>
+    <script type="application/javascript"
+            src="{f:uri.resource(path:'JavaScript/Src/Webcomponents/TeaserLi.js', extensionName: 'mysearchext')}"
+    >
+
+    </script>
+    <script type="application/javascript"
+            src="{f:uri.resource(path:'JavaScript/Src/Webcomponents/TeaserLink.js', extensionName: 'mysearchext')}"
+    >
+
+    </script>
+</f:section>
+</body>
+</html>

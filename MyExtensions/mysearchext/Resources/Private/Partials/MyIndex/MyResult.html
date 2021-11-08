@@ -1,0 +1,53 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<head>
+    <title>Plugin-partial for mysearch-results request toelastic-search</title>
+</head>
+<body>
+<f:layout name="Default"/>
+
+<f:section name="Main">
+    <f:if condition="{results}">
+        <f:then>
+            <f:for each="{results}" as="result">
+                <f:if condition="{result.flagShow}">
+                    <div class="col-12">
+                        <a href="{result.url}"><h3> {result.header}</h3></a>
+                        <teaser-block length="{settings.teaser.length}" ellipse="{settings.teaser.ellipse}"
+                                      class="infotext"
+                        >
+                            {result.text}
+                        </teaser-block>
+                        <f:if condition="{result.searchQuotes}">
+                            <ul class="shortline">
+                                <f:for each="{result.searchQuotes}" as="quote" key="word">
+                                    <teaser-li strongword="{word}">{quote}</teaser-li>
+                                </f:for>
+                            </ul>
+                        </f:if>
+                        <f:comment><!--
+                        --></f:comment>
+                        <f:if condition="{result.links}">
+                            <f:for each="{result.links}" key="groupName" as="linkgroup">
+                                <f:if condition="{linkgroup}">
+                                    <div class="teaser-link-{groupName}">
+                                        <f:for each="{linkGroup}" as="link">
+                                            <teaser-link>{link}</teaser-link>
+                                        </f:for>
+                                    </div>
+                                </f:if>
+                            </f:for>
+
+                        </f:if>
+                    </div>
+                </f:if>
+            </f:for>
+        </f:then>
+        <f:else>
+            <f:translate key="plugin.mysearchext.results.nothingFound"
+            />
+        </f:else>
+    </f:if>
+</f:section>
+
+</body>
+</html>

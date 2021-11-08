@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start:firefox": "web-ext run --source-dir ./web-ext-artifacts",
+    "build:firefox": "web-ext build --source-dir ./Firefox/MySearch",
+    "sign:firefox": "web-ext sign --source-dir ./Firefox/MySearch --api-key --api-secret"
+  },
+  "dependencies": {
+    "sign-addon": "^3.9.0"
+  }
+}

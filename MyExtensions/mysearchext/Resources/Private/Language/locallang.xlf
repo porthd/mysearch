@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-langugáge="de" datatype="plaintext" original="EXT:mysearchext/Resources/Private/Language/locallang" date="2020-08-27T11:27:40Z" product-name="mysearchext">
+		<header/>
+		<body>
+			<trans-unit id="tx_mysearchext_mysearchext.description" resname="tx_mysearchext_mysearchext.description">
+				<source>A simple expandable extension to show search-results from elasticsearchwith TYPO3</source>
+				<target>Eine einfache Extension, um mit TYPO3 Suchergebnisse aus elasticsearch anzuzeigen</target>
+			</trans-unit>
+			<trans-unit id="plugin.mysearchext.results.nothingFound" resname="plugin.mysearchext.results.nothingFound">
+				<source>No results for searchrequest</source>
+				<target>Keine Suchergebnisse gefunden</target>
+			</trans-unit>
+			<trans-unit id="plugin.myIndex.resulter.searchWithoutHeadliune.outputTitle" resname="plugin.myIndex.resulter.searchWithoutHeadliune.outputTitle">
+				<source>Without A Title</source>
+				<target>Ohne Titel</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

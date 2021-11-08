@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "Mysearch",
+  "version": "1.0",
+  "description": "Send the data from your opened tabs to the API of your lokal search-engine and open additionally your searchengine with the token from your adressbar in a second tab.",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+
+  "icons": {
+    "16": "icons/mysearch.svg",
+    "19": "icons/mysearch.svg",
+    "24": "icons/mysearch.svg",
+    "32": "icons/mysearch.svg",
+    "38": "icons/mysearch.svg",
+    "48": "icons/mysearch.svg",
+    "64": "icons/mysearch.svg",
+    "96": "icons/mysearch.svg",
+    "128": "icons/mysearch.svg"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "run_at": "document_idle",
+      "js": [
+        "src/content/insert/mysearch.js"
+      ]
+    }
+  ]
+}
