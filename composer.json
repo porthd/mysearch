@@ -11,6 +11,10 @@
         {
             "type": "git",
             "url": "https://github.com/TYPO3-Console/TYPO3-Console"
+        },
+        {
+            "type": "path",
+            "url": "./MyExtensions/mysearchext/"
         }
     ],
     "config": {
@@ -61,16 +65,13 @@
         "typo3/cms-viewpage": "^11.5.2",
         "typo3/cms-workspaces": "^11.5.2",
         "typo3/cms-introduction": "^4.2.0",
-        "elasticsearch/elasticsearch": "^7.0"
+        "elasticsearch/elasticsearch": "^7.0",
+        "porthd/mysearchext": "^11.1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~8.5.1"
     },
-    "autoload": {
-        "psr-4": {
-            "Porthd\\Mysearchext\\": "public/typo3conf/ext/mysearchext/Classes"
-        }
-    },
+
     "extra": {
         "helhum/typo3-console": {
             "install-binary": false,
