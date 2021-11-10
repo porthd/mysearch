@@ -4,10 +4,12 @@ namespace Porthd\Mysearchext\Controller;
 
 
 use Porthd\Mysearchext\Config\SelfConst;
+use Porthd\Mysearchext\Domain\Model\SearchFilter;
 use Porthd\Mysearchext\Elasticsearch\Resulter\FallBackResulter;
 use Porthd\Mysearchext\Elasticsearch\Resulter\ResulterInterface;
 
 use Porthd\Mysearchext\Utilities\ConfigurationUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***
  *
@@ -43,11 +45,25 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     }
 
     /**
+     * vier felder:  A-,B-,C-Worte, Buh-Worte, Indexliste und Parameter (Als Objekt)
+     *  Ablauf
+     * Erstelle Rohabfrage (Resulter)
+     * Mappe Daten für Output (Resulter)
+     * Normalisiere und füge Daten in SPL-Liste ein
+     * mache Output
+     */
+    /**
      * @param string $searchwords
      * @param array $param
      */
-    public function mysearchextAction ($searchwords = '', $param = [])
+    /**
+     * @param null $searchFilter
+     */
+    public function mysearchextAction ($searchFilter = null)
     {
+        if (empty($searchFilter)) {
+            $searchFilter = GeneralUtility::makeInstance(SearchFilter::class);
+        }
         $max = getenv('INDEX_MAX_RESULT') ?? SelfConst::SELF_MAX_RESULT;
 
         $resulterList = ConfigurationUtility::extractCustomClassesForExtension(
@@ -113,7 +129,7 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 //        $allResults = $this->mockAllResults();
         $this->view->assignMultiple([
             'results' => $allResults,
-            'searchwords' => $searchwords,
+            'searchFilter' => $searchFilter,
         ]);
     }
 

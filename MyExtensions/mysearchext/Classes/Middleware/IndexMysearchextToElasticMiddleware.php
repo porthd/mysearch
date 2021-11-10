@@ -24,7 +24,6 @@ namespace Porthd\Mysearchext\Middleware;
 
 use Porthd\Mysearchext\Config\SelfConst;
 
-use Porthd\Mysearchext\Domain\Model\MysearchextData;
 use Porthd\Mysearchext\Elasticsearch\Indexer\IndexerInterface;
 use Porthd\Mysearchext\Utilities\ConfigurationUtility;
 use Psr\Http\Message\ResponseInterface;
