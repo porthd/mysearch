@@ -1,0 +1,4 @@
+#
+# BACKENDLAYOUTS
+#
+@import 'EXT:mysearchsite/Configuration/TsConfig/Page/Mod/WebLayout/BackendLayouts/*.tsconfig'
