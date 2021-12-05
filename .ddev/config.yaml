@@ -1,4 +1,4 @@
-APIVersion: v1.17.1
+APIVersion: v1.18.1
 name: mysearch
 type: typo3
 docroot: public/
@@ -7,10 +7,9 @@ webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
 xdebug_enabled: true
-additional_hostnames: [
-  typo3intro
-]
-additional_fqdns: []
+additional_hostnames: []
+additional_fqdns:
+  - willy.ddev.site
 mariadb_version: "10.2"
 nfs_mount_enabled: false
 provider: default

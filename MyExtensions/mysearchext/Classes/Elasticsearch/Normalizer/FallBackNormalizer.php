@@ -1,17 +1,18 @@
 <?php
 
-namespace Porthd\Mysearchext\Elasticsearch\Resulter;
+namespace Porthd\Mysearchext\Elasticsearch\Normalizer;
 
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Porthd\Mysearchext\Config\SelfConst;
+use Porthd\Mysearchext\Domain\Model\SearchFilter;
 use Porthd\Mysearchext\Utilities\ResulterUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 
-class FallBackResulter implements ResulterInterface
+class FallBackNormalizer
 {
 
     protected const SELF_NAME = 'Porthd_Mysearchext_BasicResulter';
@@ -26,18 +27,17 @@ class FallBackResulter implements ResulterInterface
     protected $type = '';
 
     /**
-     * @notForUse
      *
+     * @param SearchFilter $searchFilter
      * @param array $param
      * @return string
      */
-    public function extractIndex(array $param = []): string
+    public function extractIndex(SearchFilter $searchFilter,array $param = []): string
     {
         return '';
     }
 
     /**
-     * @notForUse
      *
      * @return array
      */
@@ -47,16 +47,16 @@ class FallBackResulter implements ResulterInterface
     }
 
     /**
-     * @notForUse
+     * @param SearchFilter $searchFilter
      * @param array $param
+     * @return string
      */
-    public function extractType(array $param = []): string
+    public function extractType(SearchFilter $searchFilter, array $param = []): string
     {
         return '';
     }
 
     /**
-     * @notForUse
      *
      * @return array
      */
@@ -67,7 +67,6 @@ class FallBackResulter implements ResulterInterface
 
 
     /**
-     * @notForUse
      *
      * @return string
      */
@@ -77,15 +76,14 @@ class FallBackResulter implements ResulterInterface
     }
 
     /**
-     * @notForUse
      *
      * @param string $index
      * @param string $type
-     * @param string $searchwords
+     * @param SearchFilter $searchFilter
      * @param int $max
      * @return array|false
      */
-    public function search(string $index, string $type, string $searchwords, int $max)
+    public function search(string $index, string $type, SearchFilter $searchFilter, int $max)
     {
         return false;
     }
@@ -110,13 +108,14 @@ class FallBackResulter implements ResulterInterface
      */
     public function extractHits(array &$rawHits, array $myBlocks, ResulterInterface $currentResulter):bool
     {
-
+        if (empty($myBlocks)) {
+            return false;
+        }
         foreach($myBlocks as $item) {
             $myScore = ($currentResulter->getScore($item))?:$item['_score'];
             $rawHits[$myScore] = [
                 'score' => $myScore,
-                're
-                sulter' => $currentResulter->selfName(),
+                'resulter' => $currentResulter->selfName(),
                 'data' => $currentResulter->getData($item)
             ];
         }

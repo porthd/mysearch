@@ -3,7 +3,7 @@
 namespace Porthd\Mysearchext\Elasticsearch\Resulter;
 
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
-use Porthd\Mysearchext\Domain\Model\DataDocumentInterface;
+use Porthd\Mysearchext\Domain\Model\SearchFilter;
 
 interface ResulterInterface
 {
@@ -19,32 +19,37 @@ interface ResulterInterface
     /**
      * if the definition is empty, the default-index will be used
      * extract the index from the parameter
+     *
+     * @param SearchFilter $searchFilter
      * @param array $param
      * @return string
      */
-    public function extractIndex(array $param = []): string;
+    public function extractIndex(SearchFilter $searchFilter, array $param = []): string;
 
     /**
      * return the list of allowed names for types
      * @return array
      */
     public function getTypes(): array;
+
     /**
      * if the definition is empty, the default-type will be used
      * extract the index from the parameter
+     *
+     * @param SearchFilter $searchFilter
      * @param array $param
      * @return string
      */
-    public function extractType(array $param = []): string;
+    public function extractType(SearchFilter $searchFilter,array $param = []): string;
 
     /**
      * @param string $index
      * @param string $type
-     * @param string $searchwords
+     * @param SearchFilter $searchwords
      * @param int $max
      * @return array|false
      */
-    public function search(string $index, string $type, string $searchwords, int $max);
+    public function search(string $index, string $type, SearchFilter $searchfilter, int $max);
 
     /**
      * If the method return false, the fallbackfunction will take the falus of elasticsearch.

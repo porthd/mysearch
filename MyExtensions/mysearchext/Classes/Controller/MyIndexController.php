@@ -5,11 +5,10 @@ namespace Porthd\Mysearchext\Controller;
 
 use Porthd\Mysearchext\Config\SelfConst;
 use Porthd\Mysearchext\Domain\Model\SearchFilter;
-use Porthd\Mysearchext\Elasticsearch\Resulter\FallBackResulter;
+use Porthd\Mysearchext\Elasticsearch\Normalizer\FallBackNormalizer;
 use Porthd\Mysearchext\Elasticsearch\Resulter\ResulterInterface;
-
 use Porthd\Mysearchext\Utilities\ConfigurationUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /***
  *
@@ -25,24 +24,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * MyIndexController
  */
-class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class MyIndexController extends ActionController
 {
     // https://www.glohbe.de/de/elasticsearch-mit-php/
 
     /**
-     * @var FallBackResulter
+     * @var FallBackNormalizer
      */
-    protected $fallBackResulter;
+    protected $fallBackNormalizer;
 
     /**
-     * Inject the offer repository
-     *
-     * @param FallBackResulter $fallBackResulter
+     * @var SearchFilter
      */
-    public function injectFallBackResulter(FallBackResulter $fallBackResulter)
+    protected $searchFilter;
+
+    public function __construct(?FallBackNormalizer $fallBackNormalizer = null, ?SearchFilter $searchFilter = null)
     {
-        $this->fallBackResulter = $fallBackResulter;
+        $this->fallBackNormalizer = $fallBackNormalizer ?? new FallBackNormalizer();
+        $this->searchFilter = $searchFilter ?? new SearchFilter();
     }
+
 
     /**
      * vier felder:  A-,B-,C-Worte, Buh-Worte, Indexliste und Parameter (Als Objekt)
@@ -51,21 +52,15 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * Mappe Daten für Output (Resulter)
      * Normalisiere und füge Daten in SPL-Liste ein
      * mache Output
+     *
+     * @param SearchFilter|null $searchFilter
      */
-    /**
-     * @param string $searchwords
-     * @param array $param
-     */
-    /**
-     * @param null $searchFilter
-     */
-    public function mysearchextAction ($searchFilter = null)
+    public function mysearchextAction(?SearchFilter $searchFilter = null)
     {
-        if (empty($searchFilter)) {
-            $searchFilter = GeneralUtility::makeInstance(SearchFilter::class);
+        if ($searchFilter !== null) {
+            $this->searchFilter = $searchFilter;
         }
         $max = getenv('INDEX_MAX_RESULT') ?? SelfConst::SELF_MAX_RESULT;
-
         $resulterList = ConfigurationUtility::extractCustomClassesForExtension(
             SelfConst::SELF_NAME,
             SelfConst::GLOBALS_SUBKEY_CUSTOMRESULTER,
@@ -73,20 +68,20 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             ResulterInterface::class
         );
         $allBlocks = [];
-        $searchWordList = array_filter(
-            array_map('trim',
-                (preg_split("/[\s,]+/", $searchwords)?:[]),
-                [' \n\r\t\v\0']
-            )
-        );
 
-        $rawHits=[];
+        /** @var ResulterInterface $resulter */
         foreach ($resulterList as $resulter) {
-            $index = $resulter->extractIndex($param);
-            $type = $resulter->extractType($param);
-            if (($myBlocks = $resulter->search($index, $type, $searchwords, $max)) !== false) {
+            $index = $resulter->extractIndex($this->searchFilter,
+                $this->searchFilter->getIndexList()
+            );
+            $type = $resulter->extractType(
+                $this->searchFilter,
+                $this->searchFilter->getTypeList()
+            );
+            if (($myBlocks = $resulter->search($index, $type, $this->searchFilter, $max)) !== false) {
                 // each resulter rebuild its own hits in the rwa resultlist
-                $this->fallBackResulter->extractHits($rawHits, $myBlocks, $resulter);
+                $this->fallBackNormalizer->extractHits($rawHits, $myBlocks, $resulter);
+                $allBlocks[] = $rawHits;
             }
         }
         $allResults = array_filter(
@@ -133,18 +128,21 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         ]);
     }
 
-    protected function mockAllSearchWords(){
+    protected function mockAllSearchWords()
+    {
         return 'wald, wiesen trolle';
     }
-    protected function mockAllResults(){
-        $results=[];
+
+    protected function mockAllResults()
+    {
+        $results = [];
         $itemOne = [
             'weight' => 1,
-'url' => 'https://test.de/example',
-'domain' => 'test.de',
-'domainPlus' => 'test.de/meyer/',
-'header' => 'Walter ist willig',
-'quote' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+            'url' => 'https://test.de/example',
+            'domain' => 'test.de',
+            'domainPlus' => 'test.de/meyer/',
+            'header' => 'Walter ist willig',
+            'quote' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
                     eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
                     ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
                     mascsa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
@@ -159,18 +157,18 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet
                     nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus
                     nunc,',
-'links' => [
-    'test.de/walgter/klau?#doof',
-    'example.de/Klaustro/Bummel?#doof',
-    'www.testexample.com/Klaustro/Bummel?#doof',
-    ],
+            'links' => [
+                'test.de/walgter/klau?#doof',
+                'example.de/Klaustro/Bummel?#doof',
+                'www.testexample.com/Klaustro/Bummel?#doof',
+            ],
             'searchQuotes' => [
-               'Wald'=> 'Maecenas nec odio et ante tincidunt tempus. Wald vitae sapien ut libero venenatis faucibus. Nullam ',
-                'Trolle'=>'quis, feugiat a, tellus. Phasellus viverra nulla trolle ut metus varius laoreet. Quisque rutrum. Aenean ',
-                'Wiesen'=>'ridiculus mus. Donec quam felis, ultricies nec, Wiesen pellentesque eu, pretium quis, sem. Nulla consequat',
+                'Wald' => 'Maecenas nec odio et ante tincidunt tempus. Wald vitae sapien ut libero venenatis faucibus. Nullam ',
+                'Trolle' => 'quis, feugiat a, tellus. Phasellus viverra nulla trolle ut metus varius laoreet. Quisque rutrum. Aenean ',
+                'Wiesen' => 'ridiculus mus. Donec quam felis, ultricies nec, Wiesen pellentesque eu, pretium quis, sem. Nulla consequat',
             ],
 
-'fullrawtext' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+            'fullrawtext' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
                     eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
                     ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
                     massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
@@ -185,15 +183,15 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                     quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet
                     nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus
                     nunc,',
-'flagShow'  => 1,
+            'flagShow' => 1,
         ];
         $results[] = $itemOne;
-        $itemOne = array_merge($itemOne,[
+        $itemOne = array_merge($itemOne, [
             'url' => 'https://example.de/test',
             'domain' => 'example.de',
             'domainPlus' => 'example.de/schulze/',
             'header' => 'Lilith ist ungnädig',
-            'links' =>[
+            'links' => [
                 'exampletest.de/walgter/KlausiMausi?#doof',
                 'wulle.de/Klaustro/Heater?#doof',
                 'www.harry.com/Klaustro/Klmpner?#doof',
@@ -203,25 +201,25 @@ class MyIndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $results[] = $itemOne;
         return $results;
     }
-    protected function findTextNear($searchWord='',  $fullrawtext='', $pufferLength=40, $ellipse='&hellip;' )
 
+    protected function findTextNear($searchWord = '', $fullrawtext = '', $pufferLength = 40, $ellipse = '&hellip;')
     {
         $result = '';
         $searchLen = mb_strlen($searchWord);
         $fullLen = mb_strlen($fullrawtext);
-        $find = mb_strpos($fullrawtext,$searchWord);
+        $find = mb_strpos($fullrawtext, $searchWord);
         if ($find !== false) {
             if ($find < $pufferLength) {
                 $start = 0;
             } else {
                 $start = $find - $pufferLength;
             }
-            $end = $find + $pufferLength+ $searchLen;
-            if ($end>= $fullLen) {
+            $end = $find + $pufferLength + $searchLen;
+            if ($end >= $fullLen) {
                 $end = $fullLen;
             }
 
-            $result=mb_strcut($fullrawtext,$start,$end-$start );
+            $result = mb_strcut($fullrawtext, $start, $end - $start);
         }
         return $result;
     }

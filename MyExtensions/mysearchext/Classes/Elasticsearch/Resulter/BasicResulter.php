@@ -7,6 +7,7 @@ use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Porthd\Mysearchext\Config\SelfConst;
+use Porthd\Mysearchext\Domain\Model\SearchFilter;
 use Porthd\Mysearchext\Utilities\ResulterUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -26,15 +27,19 @@ class BasicResulter implements ResulterInterface
     protected $type = SelfConst::ADDON_BASIC_TYPE_NAME;
 
     /**
+     * There is only one index defined for this resulter.
+     *
+     * @param SearchFilter $searchFilter
      * @param array $param
      * @return string
      */
-    public function extractIndex(array $param = []): string
+    public function extractIndex(SearchFilter $searchFilter, array $param = []): string
     {
         return SelfConst::ADDON_BASIC_INDEXNAME;
     }
 
     /**
+     *
      * @return array
      */
     public function getIndexes(): array
@@ -43,9 +48,13 @@ class BasicResulter implements ResulterInterface
     }
 
     /**
+     * There is only one type defined for this resulter.
+     *
+     * @param SearchFilter $searchFilter
      * @param array $param
+     * @return string
      */
-    public function extractType(array $param = []): string
+    public function extractType(SearchFilter $searchFilter, array $param = []): string
     {
         return SelfConst::ADDON_BASIC_TYPE_NAME;
     }
@@ -75,34 +84,58 @@ class BasicResulter implements ResulterInterface
     /**
      * @param string $index
      * @param string $type
-     * @param string $searchwords
+     * @param SearchFilter $searchFilter
      * @param int $max
      * @return array|false
      */
-    public function search(string $index, string $type, string $searchwords, int $max)
+    public function search(string $index, string $type, SearchFilter $searchFilter, int $max)
     {
-
-        $queryString = implode(
-            ' OR ',
-            array_unique(
-                array_filter(
-                    preg_split('/[\s]+/u', $searchwords)
-                )
+        $searchWords = $searchFilter->getWordsMain() . ',' .
+            $searchFilter->getWordsSecond() . ',' .
+            $searchFilter->getWordsOptional();
+        $searchList = array_unique(
+            array_filter(
+                preg_split('/[\s]+/u', $searchWords)
             )
         );
-        $queryString = empty($queryString) ? '*' : $queryString;
-        $params = [
-            'index' => $index,
-            'type' => $type,
-            'body' => [
-                "query" => [
-                    "query_string" => [
-                        "query" => $queryString,
-                        "fields" => SelfConst::TRANS_INDEXER_LIST_TEXTFIELDS,
+        $removeWords = $searchFilter->getWordsForbidden() . ',' .
+            $searchFilter->getWordsStop();
+        $removeList = array_unique(
+            array_filter(
+                preg_split('/[\s]+/u', $removeWords)
+            )
+        );
+        $resultList = array_diff($searchList, $removeList);
+        if (!empty($resultList)) {
+            $queryString = implode(
+                ' OR ',
+                $resultList
+            );
+            $queryString = empty($queryString) ? '*' : $queryString;
+            $params = [
+                'from' => 0,
+                'type' => $type,
+                'body' => [
+                    'size' => $max,
+                    'index' => $index,
+                    "query" => [
+                        "query_string" => [
+                            "query" => $queryString,
+                            "fields" => SelfConst::TRANS_INDEXER_LIST_TEXTFIELDS,
+                        ],
                     ],
                 ],
-            ],
-        ];
+            ];
+        } else {
+            $params = [
+                'index' => $index,
+                'type' => $type,
+                'body' => [
+                    'from' => 0,
+                    'size' => $max,
+                ],
+            ];
+        }
         try {
             $indexed = $this->elasticSearch->search($params);
             if (is_array($indexed)) {
@@ -114,13 +147,13 @@ class BasicResulter implements ResulterInterface
         }
     }
 
-    public function getScore($hit):bool
+    public function getScore($hit): bool
     {
         return false;
     }
 
 
-    public function getData($item):bool
+    public function getData($item): bool
     {
         return $item;
     }
@@ -133,7 +166,7 @@ class BasicResulter implements ResulterInterface
      * @param ResulterInterface $currentResulter
      * @return bool
      */
-    public function extractHits(array &$rawHits, array $myBlocks, ResulterInterface $currentResulter):bool
+    public function extractHits(array &$rawHits, array $myBlocks, ResulterInterface $currentResulter): bool
     {
         return false;
     }

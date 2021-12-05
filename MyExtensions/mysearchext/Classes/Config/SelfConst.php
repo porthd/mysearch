@@ -55,7 +55,6 @@ class SelfConst
         'headlines',
         ];
 
-    public const INDEX_NAME_FALL_BACK_RESULTER = 'Porthd_Mysearchext_FallBackResulter';
     public const INDEX_NAME_BASIC_RESULTER = 'Porthd_Mysearchext_BasicResulter';
     public const INDEX_NAME_BASIC_INDEXER = 'Porthd_Mysearchext_BasicIndexer';
 

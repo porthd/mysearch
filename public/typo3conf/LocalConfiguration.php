@@ -3,12 +3,7 @@ return [
     'BE' => [
         'debug' => true,
         'explicitADmode' => 'explicitAllow',
-        'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$Z00xZHJ5Y3NNT0U1YzRmVA$gRij6VdSjkBORr5j0aADXH95rkmONCmfgsi/f4eAblo',
-        'loginSecurityLevel' => 'normal',
-        'passwordHashing' => [
-            'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
-            'options' => [],
-        ],
+        'installToolPassword' => '$argon2id$v=19$m=65536,t=16,p=1$NWU2Z05KTlJsZmI4MmdKMQ$AYSyuhesT5byyUmpSFYrcbmwEt61pDIsh3IQbKcspns',
     ],
     'DB' => [
         'Connections' => [
@@ -20,17 +15,16 @@ return [
     ],
     'EXTENSIONS' => [
         'backend' => [
-            'backendFavicon' => '',
-            'backendLogo' => 'EXT:mysearch/Resources/Public/Icons/BackendIcon.svg',
-            'loginBackgroundImage' => 'EXT:mysearch/Resources/Public/Icons/BackendIcon.svg',
+            'backendFavicon' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
+            'backendLogo' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
+            'loginBackgroundImage' => 'EXT:mysearch/Resources/Public/Icons/WennDieFlutKommt.JPG',
+            'loginHighlightColor' => '#0000cc',
             'loginFootnote' => '',
-            'loginHighlightColor' => '',
             'loginLogo' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
-            'loginLogoAlt' => '',
+            'loginLogoAlt' => 'MySearch',
         ],
         'bootstrap_package' => [
             'disableCssProcessing' => '0',
-            'disableFontLoader' => '0',
             'disableGoogleFontCaching' => '0',
             'disablePageTsBackendLayouts' => '0',
             'disablePageTsContentElements' => '0',
@@ -72,6 +66,7 @@ return [
     ],
     'FE' => [
         'debug' => true,
+        'disableNoCacheParameter' => true,
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
             'options' => [],
@@ -103,7 +98,7 @@ return [
     ],
     'MAIL' => [
         'transport' => 'sendmail',
-        'transport_sendmail_command' => '/usr/local/bin/mailhog sendmail test@example.org --smtp-addr 127.0.0.1:1025',
+        'transport_sendmail_command' => 'usr/sbin/sendmail -t -i',
         'transport_smtp_encrypt' => '',
         'transport_smtp_password' => '',
         'transport_smtp_server' => '',
@@ -118,43 +113,40 @@ return [
                 'imagesizes' => [
                     'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
                     'options' => [
-                        'compression' => 1,
+                        'compression' => true,
                     ],
                 ],
                 'pages' => [
                     'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
                     'options' => [
-                        'compression' => 1,
+                        'compression' => true,
                     ],
                 ],
                 'pagesection' => [
                     'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
                     'options' => [
-                        'compression' => 1,
+                        'compression' => true,
                     ],
                 ],
                 'rootline' => [
                     'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
                     'options' => [
-                        'compression' => 1,
+                        'compression' => true,
                     ],
                 ],
             ],
         ],
         'devIPmask' => '*',
         'displayErrors' => 1,
-        'encryptionKey' => '5b91075a15e97dd0ec743a9a29905acfac07dbe9efecf875bcef341fc4ba91f8323aa62ef37e476bf762af7720533203',
+        'encryptionKey' => 'b66734c55915015901051bdc19dd6340c5d6a8554d3a8471b80af241bb53430e3e297c805eee5d0d29c116db37e28fb7',
         'exceptionalErrors' => 12290,
         'features' => [
-            'felogin.extbase' => true,
-            'fluidBasedPageModule' => true,
-            'rearrangedRedirectMiddlewares' => true,
             'unifiedPageTranslationHandling' => true,
+            'yamlImportsFollowDeclarationOrder' => true,
         ],
-        'sitename' => 'mksearch',
+        'sitename' => 'TYPO3-Site',
         'systemMaintainers' => [
-            1,
-            1,
+            3,
         ],
     ],
 ];

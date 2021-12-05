@@ -9,88 +9,41 @@ class SearchFilter
 {
 
 
-    /** @var string $mainSearchWords */
-    protected $mainSearchWords = '';
-
-    /** @var string $secondSearchWords */
-    protected $secondSearchWords = '';
-
-    /** @var string $optionalSearchWords */
-    protected $optionalSearchWords = '';
-
-    /** @var string $forbiddenSearchWords */
-    protected $forbiddenSearchWords = '';
-
     /** @var array $indexList */
-    protected $indexList = [];
+    protected $indexList = [
+        SelfConst::ADDON_BASIC_INDEXNAME,
+    ];
 
+    /** @var array $typeList */
+    protected $typeList = [
+        SelfConst::ADDON_BASIC_TYPE_NAME,
+    ];
+
+    /** @var string $wordsForbidden */
+    protected $wordsForbidden = '';
+
+    /** @var string $wordsMain */
+    protected $wordsMain = '';
+
+    /** @var string $wordsOptional */
+    protected $wordsOptional = '';
+
+    /** @var string $wordsSecond */
+    protected $wordsSecond = '';
+
+    /** @var string $wordsStop */
+    protected $wordsStop = '';
 
     /**
-     * @return string
+     * @param mixed $index
      */
-    public function getMainSearchWords(): string
+    public function addIndexList( $index): void
     {
-        return $this->mainSearchWords;
+        $this->indexList[] = $index;
     }
 
     /**
-     * @param string $mainSearchWords
-     */
-    public function setMainSearchWords(string $mainSearchWords): void
-    {
-        $this->mainSearchWords = $mainSearchWords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecondSearchWords(): string
-    {
-        return $this->secondSearchWords;
-    }
-
-    /**
-     * @param string $secondSearchWords
-     */
-    public function setSecondSearchWords(string $secondSearchWords): void
-    {
-        $this->secondSearchWords = $secondSearchWords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOptionalSearchWords(): string
-    {
-        return $this->optionalSearchWords;
-    }
-
-    /**
-     * @param string $optionalSearchWords
-     */
-    public function setOptionalSearchWords(string $optionalSearchWords): void
-    {
-        $this->optionalSearchWords = $optionalSearchWords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getForbiddenSearchWords(): string
-    {
-        return $this->forbiddenSearchWords;
-    }
-
-    /**
-     * @param string $forbiddenSearchWords
-     */
-    public function setForbiddenSearchWords(string $forbiddenSearchWords): void
-    {
-        $this->forbiddenSearchWords = $forbiddenSearchWords;
-    }
-
-    /**
-     * @return array
+     * @param mixed $index
      */
     public function getIndexList(): array
     {
@@ -106,11 +59,106 @@ class SearchFilter
     }
 
     /**
-     * @param mixed $index
+     * @param string $type
      */
-    public function addIndexList( $index): void
+    public function addTypeList(string $type): void
     {
-        $this->indexList[] = $index;
+        $this->typeList[] = $type;
+    }
+    /**
+     * @return array
+     */
+    public function getTypeList(): array
+    {
+        return $this->typeList;
+    }
+
+    /**
+     * @param array $typeList
+     */
+    public function setTypeList(array $typeList): void
+    {
+        $this->typeList = $typeList;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWordsForbidden(): string
+    {
+        return $this->wordsForbidden;
+    }
+
+    /**
+     * @param string $wordsForbidden
+     */
+    public function setWordsForbidden(string $wordsForbidden): void
+    {
+        $this->wordsForbidden = $wordsForbidden;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWordsMain(): string
+    {
+        return $this->wordsMain;
+    }
+
+    /**
+     * @param string $wordsMain
+     */
+    public function setWordsMain(string $wordsMain): void
+    {
+        $this->wordsMain = $wordsMain;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWordsOptional(): string
+    {
+        return $this->wordsOptional;
+    }
+
+    /**
+     * @param string $wordsOptional
+     */
+    public function setWordsOptional(string $wordsOptional): void
+    {
+        $this->wordsOptional = $wordsOptional;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWordsSecond(): string
+    {
+        return $this->wordsSecond;
+    }
+
+    /**
+     * @param string $wordsSecond
+     */
+    public function setWordsSecond(string $wordsSecond): void
+    {
+        $this->wordsSecond = $wordsSecond;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWordsStop(): string
+    {
+        return $this->wordsStop;
+    }
+
+    /**
+     * @param string $wordsStop
+     */
+    public function setWordsStop(string $wordsStop): void
+    {
+        $this->wordsStop = $wordsStop;
     }
 
 

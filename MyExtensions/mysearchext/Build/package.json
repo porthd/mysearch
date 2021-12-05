@@ -1,13 +1,13 @@
 {
-  "name": "private-mysearchext",
-  "description": "Skeleton for my page",
+  "name": "porthd-mysearchext",
+  "description": "extension to manage search-indexing and search-requests ",
   "repository": {
     "type": "git",
     "url": "https://github.com/porthd/mysearchext/"
   },
-  "homepage": "http://www.düddelei.de/",
+  "homepage": "http://www.mobger.de/",
   "author": "Dr. Dieter Porth",
-  "version": "1.0.0",
+  "version": "11.1.0",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "grunt": "^1.0.4",

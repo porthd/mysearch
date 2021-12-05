@@ -1,6 +1,7 @@
 <?php
 defined('TYPO3_MODE') || die('Access denied.');
 
+use Porthd\Mysearchext\Controller\MyIndexController;
 call_user_func(
     function () {
 
@@ -16,11 +17,11 @@ call_user_func(
             'Porthd.Mysearchext',
             'Mysearchext',
             [
-                'MyIndex' => 'mysearchext',
+                MyIndexController::class => 'mysearchext',
             ],
             // non-cacheable actions
             [
-                'MyIndex' => 'mysearchext',
+                MyIndexController::class => 'mysearchext',
             ]
         );
 

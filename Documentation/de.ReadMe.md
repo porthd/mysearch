@@ -72,3 +72,20 @@ Diese zusätzlichen Seiten können dann wieder von persönlichen Suchmaschine er
 Die persönliche Suchmaschine wird das aktuelle Geschäftsmodell von Google untergraben, weil die Menschen autonom werden und verschiedene Informationsquellen zusammenführen.
 Chats werden in der allgemeinen Wahrnehmung nicht länger als flüchtig angesehen, weil die Daten in vielen persönlichen Suchmaschinen persistiert sein können.
 
+## Einloggen
+
+| Art                 | Wert |
+| ------------------- | ------ |
+| InstallToolPasswort | Test123!|
+| Login               | mysearch-admin|
+| Passwort            | Test123!|
+
+# Wie testet man, dass der Elastic-Search-Server Daten einlist, speichert und indexiert.
+Ganz einfach: indem man test, ob er Daten hat. 
+Voraussetzung: Es muss der Kommandozeilen-Browser (URL-Aufrufer) CURL installiert sein.
+Terminal-Ebene: (PowerShell, bash, termial()mac), ...)
+- Lasse die alle Datensätze anzeigen
+  - `curl -X GET "mysearch.ddev.site:9200/general?pretty"`
+- Lasse 10 Datensätze anzeigen
+  - `curl -X GET "mysearch.ddev.site:9200/general/_search?pretty=true&size=10"`
+
