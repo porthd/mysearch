@@ -15,13 +15,13 @@ return [
     ],
     'EXTENSIONS' => [
         'backend' => [
-            'backendFavicon' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
-            'backendLogo' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
-            'loginBackgroundImage' => 'EXT:mysearch/Resources/Public/Icons/WennDieFlutKommt.JPG',
-            'loginHighlightColor' => '#0000cc',
-            'loginFootnote' => '',
-            'loginLogo' => 'EXT:mysearch/Resources/Public/Icons/Backend.svg',
-            'loginLogoAlt' => 'MySearch',
+            'backendFavicon' => 'EXT:mysearchsite/Resources/Public/Favicons/TYPO3Backend_favicon-32x32.png',
+            'backendLogo' => 'EXT:mysearchsite/Resources/Public/Favicons/BackendLogin_TYPO3.png',
+            'loginBackgroundImage' => 'EXT:mysearchsite/Resources/Public/Icons/WennDieFlutKommt.JPG',
+            'loginFootnote' => 'MySearch - your personal search-engine',
+            'loginHighlightColor' => '#97f1ae',
+            'loginLogo' => 'EXT:mysearchsite/Resources/Public/Favicons/BackendLogin_TYPO3.png',
+            'loginLogoAlt' => 'MySearch - your personal search-engine',
         ],
         'bootstrap_package' => [
             'disableCssProcessing' => '0',

@@ -1,29 +1,36 @@
 {
-    "name": "porthd/mysearchsite",
-    "type": "typo3-cms-extension",
-    "description": "",
-    "homepage": "https://www.mobger.de/",
-    "keywords": ["typo3", "extension", "composer.json"],
-    "license": "GPL-2.0-or-later",
-    "version": "11.1.0",
-    "authors": [
-        {
-            "name": "Dr. Dieter Porth",
-            "role": "Developer",
-            "email": "info@mobger.de"
-        }
-    ],
-    "require": {
-        "bk2k/bootstrap-package": "^12.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Porthd\\Mysearchsite\\": "Classes/"
-        }
-    },
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "mysearch"
-        }
+  "name": "porthd/mysearchsite",
+  "type": "typo3-cms-extension",
+  "description": "",
+  "homepage": "https://www.mobger.de/",
+  "keywords": [
+    "typo3",
+    "extension",
+    "composer.json"
+  ],
+  "license": "GPL-2.0-or-later",
+  "version": "11.1.0",
+  "authors": [
+    {
+      "name": "Dr. Dieter Porth",
+      "role": "Developer",
+      "email": "info@mobger.de"
     }
+  ],
+  "require": {
+    "typo3/cms-frontend": "^11.5",
+    "typo3/cms-scheduler": "^11.5",
+    "typo3/cms-core": "^11.0",
+    "bk2k/bootstrap-package": "^12.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Porthd\\Mysearchsite\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "mysearchsite"
+    }
+  }
 }

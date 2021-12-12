@@ -95,17 +95,17 @@ class BasicResulter implements ResulterInterface
             $searchFilter->getWordsOptional();
         $searchList = array_unique(
             array_filter(
-                preg_split('/[\s]+/u', $searchWords)
+                preg_split('/[\s,]+/u', $searchWords)
             )
         );
         $removeWords = $searchFilter->getWordsForbidden() . ',' .
             $searchFilter->getWordsStop();
         $removeList = array_unique(
             array_filter(
-                preg_split('/[\s]+/u', $removeWords)
+                preg_split('/[\s,]+/u', $removeWords)
             )
         );
-        $resultList = array_diff($searchList, $removeList);
+        $resultList = array_filter(array_diff($searchList, $removeList));
         if (!empty($resultList)) {
             $queryString = implode(
                 ' OR ',
@@ -133,6 +133,10 @@ class BasicResulter implements ResulterInterface
                 'body' => [
                     'from' => 0,
                     'size' => $max,
+                    'query' => [
+
+                        'match_all' => [],
+                    ],
                 ],
             ];
         }

@@ -11,8 +11,10 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Mysearchext',
-    'description' => 'Plattform to build an index with elasticsearch based an own list of bookmarked links',
+    'title' => 'Mysearchext - Extension for the TYPO3-Elasticsearch-Communication',
+    'description' => 'The Extension controlls the middleware, which receive some datas from your browser-plugin and '.
+        'send the data after refactoring to your elastic-search-server. The Extension controlls the plugin, which receive '.
+    'search-request data from you local search-page and show you the result of your requests.',
     'category' => 'plugin',
     'author' => 'Dr. Dieter Porth',
     'author_email' => 'info@mobger.de',
@@ -23,7 +25,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '10.1.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.6-10.4.99',
+            'typo3' => '11.5.0-11.5.99',
         ],
         'conflicts' => [],
         'suggests' => [],
