@@ -8,6 +8,7 @@ use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Porthd\Mysearchext\Config\SelfConst;
 use Porthd\Mysearchext\Domain\Model\SearchFilter;
+use Porthd\Mysearchext\Elasticsearch\Resulter\ResulterInterface;
 use Porthd\Mysearchext\Utilities\ResulterUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -108,15 +109,20 @@ class FallBackNormalizer
      */
     public function extractHits(array &$rawHits, array $myBlocks, ResulterInterface $currentResulter):bool
     {
-        if (empty($myBlocks)) {
+        if ((empty($myBlocks)) ||
+            (empty($myBlocks['hits']))||
+            (empty($myBlocks['hits']['hits']))
+        ) {
             return false;
         }
-        foreach($myBlocks as $item) {
+        foreach($myBlocks['hits']['hits'] as $item) {
             $myScore = ($currentResulter->getScore($item))?:$item['_score'];
-            $rawHits[$myScore] = [
+            $myId = $item['_id'];
+            $rawHits[$myId] = [
                 'score' => $myScore,
                 'resulter' => $currentResulter->selfName(),
-                'data' => $currentResulter->getData($item)
+                'id' => $item['_id'],
+                'data' => $currentResulter->getData($item)?:$item['_source'],
             ];
         }
         return true;
@@ -142,30 +148,30 @@ class FallBackNormalizer
                     $ellipse
                 );
             }
-            $results[$key][SelfConst::OUPTUTNAME_BASIC_QUOTES] = array_filter($searchQuotes);
+            $results[$key][SelfConst::OUTPUTNAME_BASIC_QUOTES] = array_filter($searchQuotes);
             // Title
-            if (empty($item[SelfConst::OUPTUTNAME_BASIC_TITLE])) {
+            if (empty($item[SelfConst::OUTPUTNAME_BASIC_TITLE])) {
                 if (is_string($item['headlines'])) {
-                    $results[$key][SelfConst::OUPTUTNAME_BASIC_TITLE] = $item['headlines'];
+                    $results[$key][SelfConst::OUTPUTNAME_BASIC_TITLE] = $item['headlines'];
                 } elseif (is_array($item['headlines'])) {
                     $firstKey = array_key_first($item['headlines']);
-                    $results[$key][SelfConst::OUPTUTNAME_BASIC_TITLE] = $item['headlines'][$firstKey];
+                    $results[$key][SelfConst::OUTPUTNAME_BASIC_TITLE] = $item['headlines'][$firstKey];
                 } else {
-                    $results[$key][SelfConst::OUPTUTNAME_BASIC_TITLE] = LocalizationUtility::translate(
+                    $results[$key][SelfConst::OUTPUTNAME_BASIC_TITLE] = LocalizationUtility::translate(
                         'plugin.myIndex.resulter.searchWithoutHeadliune.outputTitle',
                         SelfConst::SELF_NAME
                     );
                 }
             }
             // Starttext as a teaser-text
-            if (empty($item[SelfConst::OUPTUTNAME_BASIC_TEXT])) {
-                $results[$key][SelfConst::OUPTUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(
+            if (empty($item[SelfConst::OUTPUTNAME_BASIC_TEXT])) {
+                $results[$key][SelfConst::OUTPUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(
                     $item['bodyText'],
                     $searchWordList
                 );
             }
             // links as a teaser-text
-            if (empty($item[SelfConst::OUPTUTNAME_BASIC_LINKS])) {
+            if (empty($item[SelfConst::OUTPUTNAME_BASIC_LINKS])) {
 
             }
         }

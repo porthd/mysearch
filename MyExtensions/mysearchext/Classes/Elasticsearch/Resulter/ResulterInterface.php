@@ -64,7 +64,7 @@ interface ResulterInterface
      * You can define your own method to calculate an individual score
      *
      */
-    public function getData($item):bool;
+    public function getData($item);
 
     /**
      * It adds to rawHits the json-documents, which is iteralable and contain output-information in the first layer of subarray.
@@ -76,11 +76,12 @@ interface ResulterInterface
      * @return bool
      */
     public function extractHits(array &$rawHits, array $myBlocks,  ResulterInterface $currentResulter):bool;
+
     /**
-     * @param array $modifyableResultBlocks allow change on the array
-     * @param array $searchWordList
+     * @param array $modifyableResultBlocks
+     * @param SearchFilter|null $searchfilter
      * @param array $settings
      */
-    public function mapForOutput(array &$modifyableResultBlocks, array &$searchWordList, array &$settings):void;
+    public function mapForOutput(array &$modifyableResultBlocks, ?SearchFilter $searchfilter, array &$settings):void;
 
 }

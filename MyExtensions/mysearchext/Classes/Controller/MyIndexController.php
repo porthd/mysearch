@@ -71,6 +71,7 @@ class MyIndexController extends ActionController
 
         /** @var ResulterInterface $resulter */
         foreach ($resulterList as $resulter) {
+            $rawHits = [];
             $index = $resulter->extractIndex($this->searchFilter,
                 $this->searchFilter->getIndexList()
             );
@@ -80,8 +81,9 @@ class MyIndexController extends ActionController
             );
             if (($myBlocks = $resulter->search($index, $type, $this->searchFilter, $max)) !== false) {
                 // each resulter rebuild its own hits in the rwa resultlist
-                $this->fallBackNormalizer->extractHits($rawHits, $myBlocks, $resulter);
-                $allBlocks[] = $rawHits;
+                if ($this->fallBackNormalizer->extractHits($rawHits, $myBlocks, $resulter)) {
+                    $allBlocks[] = $rawHits;
+                }
             }
         }
         $allResults = array_filter(
@@ -90,38 +92,9 @@ class MyIndexController extends ActionController
 
         $settings = $this->settings;
         foreach ($resulterList as $resulter) {
-            $resulter->mapForOutput($allResults, $searchWordList, $settings);
+            $resulter->mapForOutput($allResults, $searchFilter, $settings);
         }
 
-//        $pufferLength = $this->settings['teaser']['nearLength'];
-//        $ellipse = $this->settings['teaser']['ellipse'];
-//        foreach ($allResults as $item) {
-//
-//                $item['weight'] = 1;
-//                $item['url'] = $item['url']??'http://localhost:80';
-//                $item['domain'] = $item['domain']??'localhost';
-//                $item['domainPlus'] = $item['domainPlus']??'';
-//                $item['header'] = $item['header']??'XXX';
-//                $item['text'] = $item['quote']??'no quote avaiable';
-//                $item['links'] = $item['links']??[];
-//                $item['fullrawtext'] = $item['fullrawtext']??'';
-//                $item['flagShow'] = 1;
-//                $searchQuotes = [];
-//                foreach($searchWordList as $searchWord){
-//                    $searchQuotes[$searchWord] = $this->findTextNear($searchWord,  $item['fullrawtext'], $pufferLength,$ellipse);
-//                }
-//                $item['searchQuotes']= array_filter($searchQuotes);
-//        }
-//        foreach ($resulterList as $resulter) {
-//            if (method_exists($resulter,'blackList')){
-//                $resulter->blackList($allResults);
-//            }
-//            if (method_exists($resulter,'weightChange')){
-//                $resulter->weightChange($allResults);
-//            }
-//        }
-//        $searchwords = $this->mockAllSearchWords();
-//        $allResults = $this->mockAllResults();
         $this->view->assignMultiple([
             'results' => $allResults,
             'searchFilter' => $searchFilter,

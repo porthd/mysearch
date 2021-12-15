@@ -118,7 +118,7 @@ class BasicResulter implements ResulterInterface
                 'body' => [
                     'size' => $max,
                     'index' => $index,
-                    "query" => [
+                    'query' => [
                         "query_string" => [
                             "query" => $queryString,
                             "fields" => SelfConst::TRANS_INDEXER_LIST_TEXTFIELDS,
@@ -130,14 +130,9 @@ class BasicResulter implements ResulterInterface
             $params = [
                 'index' => $index,
                 'type' => $type,
-                'body' => [
-                    'from' => 0,
-                    'size' => $max,
-                    'query' => [
+                // https://stackoverflow.com/questions/67652344/elasticsearch-php-7-return-all-documents-of-a-given-mapping remove Body
+//                    https://stackoverflow.com/questions/67652344/elasticsearch-php-7-return-all-documents-of-a-given-mapping
 
-                        'match_all' => [],
-                    ],
-                ],
             ];
         }
         try {
@@ -157,9 +152,13 @@ class BasicResulter implements ResulterInterface
     }
 
 
-    public function getData($item): bool
+    /**
+     * the return-value === false mean, the you will use the default-answer
+     *
+     */
+    public function getData($item)
     {
-        return $item;
+        return false;
     }
 
     /**
@@ -176,50 +175,91 @@ class BasicResulter implements ResulterInterface
     }
 
     /**
-     * @param array $resultBlocks allow change on the array
+     * @param array $results
+     * @param SearchFilter|null $searchfilter
      * @param array $settings
-     * @param array $searchWordList
      */
-    public function mapForOutput(array &$results, array &$searchWordList, array &$settings): void
+    public function mapForOutput(array &$results, ?SearchFilter $searchfilter, array &$settings): void
     {
+        $searchWordList = [];
+        if ($searchfilter !== null) {
+            $searchWordList = array_unique(array_filter(
+                    array_map('trim',
+                        explode(
+                            ',',
+                            $searchfilter->getWordsMain() . ',' . $searchfilter->getWordsSecond() . ',' . $searchfilter->getWordsOptional()
+                        )
+                    )
+                )
+            );
+        }
         foreach ($results as $key => $item) {
-            // Quotes
-            $pufferLength = $settings['teaser']['nearLength'];
-            $ellipse = $settings['teaser']['ellipse'];
-            $searchQuotes = [];
-            foreach ($searchWordList as $searchWord) {
-                $searchQuotes[$searchWord] = ResulterUtility::findTextNear(
-                    $searchWord,
-                    $item['fullrawtext'],
-                    $pufferLength,
-                    $ellipse
-                );
-            }
-            $results[$key][SelfConst::OUPTUTNAME_BASIC_QUOTES] = array_filter($searchQuotes);
-            // Title
-            if (empty($item[SelfConst::OUPTUTNAME_BASIC_TITLE])) {
-                if (is_string($item['headlines'])) {
-                    $results[$key][SelfConst::OUPTUTNAME_BASIC_TITLE] = $item['headlines'];
-                } elseif (is_array($item['headlines'])) {
-                    $firstKey = array_key_first($item['headlines']);
-                    $results[$key][SelfConst::OUPTUTNAME_BASIC_TITLE] = $item['headlines'][$firstKey];
+            if (!empty($item['data'])) {
+                $itemData = $item['data'];
+                // Quotes
+                $pufferLength = $settings['teaser']['nearLength'] ?? ResulterUtility::TEXT_DEFAULT_SEARCHWORD;
+                $ellipse = $settings['teaser']['ellipse'] ?? ResulterUtility::TEXT_SPACED_ELLIPSE;
+                $searchQuotes = [];
+                if (empty($searchWordList)) {
                 } else {
-                    $results[$key][SelfConst::OUPTUTNAME_BASIC_TITLE] = LocalizationUtility::translate(
-                        'plugin.myIndex.resulter.searchWithoutHeadliune.outputTitle',
-                        SelfConst::SELF_NAME
-                    );
+                    foreach ($searchWordList as $searchWord) {
+                        $searchQuotes[$searchWord] = ResulterUtility::findTextNear(
+                            $searchWord,
+                            $itemData['text'],
+                            $pufferLength,
+                            $ellipse
+                        );
+                    }
                 }
-            }
-            // Starttext as a teaser-text
-            if (empty($item[SelfConst::OUPTUTNAME_BASIC_TEXT])) {
-                $results[$key][SelfConst::OUPTUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(
-                    $item['bodyText'],
-                    $searchWordList
-                );
-            }
-            // links as a teaser-text
-            if (empty($item[SelfConst::OUPTUTNAME_BASIC_LINKS])) {
+                $results[$key][SelfConst::OUTPUTNAME_BASIC_QUOTES] = array_filter($searchQuotes);
+                // Title
+                if (!empty($itemData[SelfConst::INCOME_NAME_BASIC_HEADER])) {
+                    if (is_string($itemData[SelfConst::INCOME_NAME_BASIC_HEADER])) {
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_TITLE] = $itemData[SelfConst::INCOME_NAME_BASIC_HEADER];
+                    } elseif (is_array($itemData[SelfConst::INCOME_NAME_BASIC_HEADER])) {
+                        $firstKey = array_key_first($itemData[SelfConst::INCOME_NAME_BASIC_HEADER]);
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_TITLE] = $itemData[SelfConst::INCOME_NAME_BASIC_HEADER][$firstKey];
+                    } else {
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_TITLE] = LocalizationUtility::translate(
+                            'plugin.myIndex.resulter.searchWithoutHeadliune.outputTitle',
+                            SelfConst::SELF_NAME
+                        );
+                    }
+                }
+                // Starttext as a teaser-text
+                if (empty($itemData[SelfConst::INCOME_NAME_BASIC_TEXT])) {
+                    if (!empty($searchWordList)) {
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(
+                            $itemData[SelfConst::INCOME_NAME_BASIC_TEXT],
+                            $searchWordList
+                        );
+                    } else {
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_TEXT] = ResulterUtility::findTextFromStart(
+                            $itemData[SelfConst::INCOME_NAME_BASIC_TEXT]
+                        );
+                    }
+                }
+                // links as a teaser-text
+                if (empty($itemData[SelfConst::OUTPUTNAME_BASIC_LINKS])) {
+                    if (is_string($itemData[SelfConst::INCOME_NAME_BASIC_LINKS])) {
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_LINKS] = [$itemData[SelfConst::INCOME_NAME_BASIC_LINKS]];
+                    } elseif (is_array($itemData[SelfConst::INCOME_NAME_BASIC_LINKS])) {
+                        if (count($itemData[SelfConst::INCOME_NAME_BASIC_LINKS]) > ResulterUtility::LINKS_MAX_SHOW_COUNT) {
 
+                            $results[$key][SelfConst::OUTPUTNAME_BASIC_LINKS] = array_slice(
+                                $itemData[SelfConst::INCOME_NAME_BASIC_LINKS],
+                                0,
+                                ResulterUtility::LINKS_MAX_SHOW_COUNT
+                            );
+                        } else {
+
+                            $results[$key][SelfConst::OUTPUTNAME_BASIC_LINKS] = $itemData[SelfConst::INCOME_NAME_BASIC_LINKS];
+                        }
+                    } else {
+                        $results[$key][SelfConst::OUTPUTNAME_BASIC_LINKS] = [];
+                    }
+
+                }
             }
         }
     }

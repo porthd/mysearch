@@ -20,13 +20,15 @@ namespace Porthd\Mysearchext\Utilities;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class ResulterUtility
 {
 
-    protected const TEXT_BEFORE_MAX = 60;
-    protected const TEXT_AFTER_MAX = 500;
-    protected const TEXT_ELLIPSE = '&hellip;';
+    public const TEXT_DEFAULT_SEARCHWORD = 60;
+    public const TEXT_DEFAULT_SHOW = 271; // = 350-80+1
+    public const TEXT_BEFORE_MAX = 80;
+    public const TEXT_AFTER_MAX = 350;
+    public const TEXT_SPACED_ELLIPSE = ' &hellip; ';
+    public const LINKS_MAX_SHOW_COUNT = 5;
 
 
     /**
@@ -61,12 +63,11 @@ class ResulterUtility
     public static function findTextAroundFirstFound(
         string $rawText,
         array &$searchWordList,
-        $ellipse = ' &hellip; ',
-        $before = 80,
-        $after = 350
+        $ellipse = self::TEXT_SPACED_ELLIPSE,
+        $before = self::TEXT_BEFORE_MAX,
+        $after = self::TEXT_AFTER_MAX
 
-    )
-    {
+    ) {
 
         $start = mb_strlen($rawText);
         $textLen = $start;
@@ -88,7 +89,22 @@ class ResulterUtility
             $end = $textLen;
             $postfix = '';
         }
-        return trim($prefix.mb_substr($rawText, $begin, ($end - $begin)).$postfix);
+        return trim($prefix . mb_substr($rawText, $begin, ($end - $begin)) . $postfix);
+
+    }
+
+    public static function findTextFromStart(
+        string $rawText,
+        $length = self::TEXT_DEFAULT_SHOW,
+        $ellipse = self::TEXT_SPACED_ELLIPSE
+    ) {
+
+        $rawLength = mb_strlen($rawText);
+        if ($length <= $rawLength) {
+            return trim($rawText);
+        }
+        return trim(mb_substr($rawText, 0, $length).$ellipse);
+
 
     }
 }

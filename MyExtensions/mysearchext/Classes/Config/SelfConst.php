@@ -136,12 +136,16 @@ class SelfConst
     public const INDEXER_BASIC_TYPE_KEY = 'type';
 
     // objekt-key-names for results used in the fluid-template
-    public const OUPTUTNAME_BASIC_TITLE = 'title'; //
-    public const OUPTUTNAME_BASIC_TEXT = 'text';
-    public const OUPTUTNAME_BASIC_LINKS = self::ADDON_BASIC_LINKS;
-    public const OUPTUTNAME_BASIC_LINKGROUP_OWN = self::ADDON_BASIC_LINKGROUP_OWN;
-    public const OUPTUTNAME_BASIC_LINKGROUP_MENU = self::ADDON_BASIC_LINKGROUP_MENU;
-    public const OUPTUTNAME_BASIC_LINKGROUP_FOREIGN = self::ADDON_BASIC_LINKGROUP_FOREIGN;
-    public const OUPTUTNAME_BASIC_QUOTES = 'searchQuotes';
+    public const INCOME_NAME_BASIC_HEADER = 'header'; //
+    public const INCOME_NAME_BASIC_TEXT = 'text'; //
+    public const INCOME_NAME_BASIC_HTML = 'html'; //
+    public const INCOME_NAME_BASIC_LINKS = 'links'; //
+    public const OUTPUTNAME_BASIC_TITLE = 'title'; //
+    public const OUTPUTNAME_BASIC_TEXT = 'text';
+    public const OUTPUTNAME_BASIC_LINKS = self::ADDON_BASIC_LINKS;
+    public const OUTPUTNAME_BASIC_LINKGROUP_OWN = self::ADDON_BASIC_LINKGROUP_OWN;
+    public const OUTPUTNAME_BASIC_LINKGROUP_MENU = self::ADDON_BASIC_LINKGROUP_MENU;
+    public const OUTPUTNAME_BASIC_LINKGROUP_FOREIGN = self::ADDON_BASIC_LINKGROUP_FOREIGN;
+    public const OUTPUTNAME_BASIC_QUOTES = 'searchQuotes';
 
 }
