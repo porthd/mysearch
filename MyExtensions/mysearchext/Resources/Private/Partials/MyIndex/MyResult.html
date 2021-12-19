@@ -6,45 +6,52 @@
 <f:layout name="Default"/>
 
 <f:section name="Main">
+    <h3>
+        <f:translate key="plugin.mysearchext.results.title" extensionName="mysearchext"/>
+    </h3>
     <f:if condition="{results}">
         <f:then>
             <f:for each="{results}" as="result">
-                <f:if condition="{result.flagShow}">
-                    <div class="col-12">
-                        <a href="{result.url}"><h3> {result.header}</h3></a>
-                        <teaser-block length="{settings.teaser.length}" ellipse="{settings.teaser.ellipse}"
-                                      class="infotext"
-                        >
-                            {result.text}
-                        </teaser-block>
-                        <f:if condition="{result.searchQuotes}">
-                            <ul class="shortline">
-                                <f:for each="{result.searchQuotes}" as="quote" key="word">
-                                    <teaser-li strongword="{word}">{quote}</teaser-li>
-                                </f:for>
-                            </ul>
-                        </f:if>
-                        <f:comment><!--
-                        --></f:comment>
-                        <f:if condition="{result.links}">
-                            <f:for each="{result.links}" key="groupName" as="linkgroup">
-                                <f:if condition="{linkgroup}">
-                                    <div class="teaser-link-{groupName}">
-                                        <f:for each="{linkGroup}" as="link">
-                                            <teaser-link>{link}</teaser-link>
-                                        </f:for>
-                                    </div>
-                                </f:if>
-                            </f:for>
+                <div class="col-12">
+                    <f:if condition="{result.self}">
+                        <f:then>
+                            <a href="{result.self}"><h3> {result.title}</h3></a>
+                        </f:then>
+                        <f:else>
+                            <h3><em>{result.title}</em></h3>
+                        </f:else>
+                    </f:if>
 
-                        </f:if>
-                    </div>
-                </f:if>
+                    <teaser-block length="{settings.teaser.length}" ellipse="{settings.teaser.ellipse}"
+                                  class="infotext"
+                    >
+                        {result.data.text}
+                    </teaser-block>
+                    <f:if condition="{result.searchQuotes}">
+                        <ul class="shortline">
+                            <f:for each="{result.searchQuotes}" as="quote" key="word">
+                                <teaser-li strongword="{word}">{quote}</teaser-li>
+                            </f:for>
+                        </ul>
+                    </f:if>
+                    <f:if condition="{result.data.links}">
+                        <f:for each="{result.data.links}" key="groupName" as="linkgroup">
+                            <f:if condition="{linkgroup}">
+                                <div class="teaser-link-{groupName}">
+                                    <f:for each="{linkGroup}" as="link">
+                                        <teaser-link>{link.uri}</teaser-link>
+                                        <br/>
+                                        <a href="{link.uri}">{link.name}</a>
+                                    </f:for>
+                                </div>
+                            </f:if>
+                        </f:for>
+                    </f:if>
+                </div>
             </f:for>
         </f:then>
         <f:else>
-            <f:translate key="plugin.mysearchext.results.nothingFound"
-            />
+            <f:translate key="plugin.mysearchext.results.nothingFound" extensionName="mysearchext"/>
         </f:else>
     </f:if>
 </f:section>

@@ -5,45 +5,47 @@
 <body>
 <f:layout name="Default"/>
 
-
 <f:section name="Main">
-    <h2>Hallo Formular</h2>
-    <f:form object="{searchfilter}">
-<table>
+    <h2><f:translate key="plugin.myform.searchfilter.form.title"
+                     extensionName="mysearchext"
+    /></h2>
+    <f:form id="searchfilter" object="{searchfilter}"  objectName="searchfilter" method="post">
+        <f:form.hidden property="wordsStop" />
+        <table>
 
-
         <tr> <th scope="row">
-            <label for="mainSearchWords">
-                <f:translate key="plugin.myform.searchfilter.form.mainSearchWords"
+            <label for="wordsMain">
+                <f:translate key="plugin.myform.searchfilter.form.wordsMain"
                              extensionName="mysearchext"
                 />
             </label></th>
-<td>            <f:form.textfield property="mainSearchWords" id="mainSearchWords"/></td>
+<td>            <f:form.textfield property="wordsMain" id="wordsMain"/></td>
         </tr>
         <tr> <th scope="row">
-            <label for="secondSearchWords">
-                <f:translate key="plugin.myform.searchfilter.form.secondSearchWords"
+            <label for="wordsSecond">
+                <f:translate key="plugin.myform.searchfilter.form.wordsSecond"
                              extensionName="mysearchext"
                 />
             </label></th>
-<td>            <f:form.textfield property="secondSearchWords" id="secondSearchWords"/></td>
+<td>            <f:form.textfield property="wordsSecond" id="wordsSecond"/></td>
         </tr>
         <tr> <th scope="row">
-            <label for="optionalSearchWords">
-                <f:translate key="plugin.myform.searchfilter.form.optionalSearchWords"
+            <label for="wordsOptional">
+                <f:translate key="plugin.myform.searchfilter.form.wordsOptional"
                              extensionName="mysearchext"
                 />
             </label></th>
-<td>            <f:form.textfield property="optionalSearchWords" id="optionalSearchWords"/></td>
+<td>            <f:form.textfield property="wordsOptional" id="wordsOptional"/></td>
         </tr>
-        <tr> <th scope="row">
-            <label for="forbiddenSearchWords">
-                <f:translate key="plugin.myform.searchfilter.form.forbiddenSearchWords"
-                             extensionName="mysearchext"
-                />
-            </label></th>
-<td>            <f:form.textfield property="forbiddenSearchWords" id="forbiddenSearchWords"/></td>
-        </tr>
+    <tr> <th scope="row">
+        <label for="wordsForbidden">
+            <f:translate key="plugin.myform.searchfilter.form.wordsForbidden"
+                         extensionName="mysearchext"
+            />
+        </label></th>
+        <td>            <f:form.textfield property="wordsForbidden" id="wordsForbidden"/></td>
+    </tr>
+            <f:comment><!--
         <tr> <th scope="row">
 
             <label for="indexList">
@@ -51,8 +53,9 @@
                              extensionName="mysearchext"
                 />
             </label></th>
-            <td>            <f:form.textfield property="indexList" id="indexList" value="general"/></td>
+            <td><f:form.select property="indexList" options="{dataGeneral.indexList}" /></td>
         </tr>
+        --></f:comment>
         <tr> <th scope="row">
         <button type="submit">
             <f:translate key="plugin.myform.searchfilter.form.startSearch"

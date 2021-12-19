@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:mysearchext/Resources/Private/Language/locallang_db" date="2020-08-27T11:27:40Z" product-name="mysearchext">
+		<header/>
+		<body>
+			<trans-unit id="tx_mysearchext_mysearchext.name" resname="tx_mysearchext_mysearchext.name">
+				<source>mysearchext</source>
+				<target>mysearchext</target>
+			</trans-unit>
+			<trans-unit id="tx_mysearchext_mysearchext.description" resname="tx_mysearchext_mysearchext.description">
+				<source>A simple expandable extension to make elasticsearch-request with TYPO3</source>
+				<target>Eine leicht erweiterbare Extension zur Abfrage von elasticsearch mit TYPO3</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

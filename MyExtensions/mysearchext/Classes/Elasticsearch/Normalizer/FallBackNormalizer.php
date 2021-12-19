@@ -163,6 +163,11 @@ class FallBackNormalizer
                     );
                 }
             }
+
+            // Starttext as a teaser-text
+            if (empty($item[SelfConst::OUTPUTNAME_BASIC_SELF])) {
+                $results[$key][SelfConst::OUTPUTNAME_BASIC_SELF] = '#';
+            }
             // Starttext as a teaser-text
             if (empty($item[SelfConst::OUTPUTNAME_BASIC_TEXT])) {
                 $results[$key][SelfConst::OUTPUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(

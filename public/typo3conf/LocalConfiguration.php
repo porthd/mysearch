@@ -63,6 +63,12 @@ return [
             'maxLifetime' => '1440',
             'showSampleTasks' => '1',
         ],
+        'webhelp' => [
+            'flagAllowAlways' => '1',
+            'useFooterLibJs' => 'EXT:webhelp/Resources/Public/JavaScript/EasyTextLogoWebhelp.min.js,EXT:webhelp/Resources/Public/JavaScript/EasyICalendarWebhelp.min.js,EXT:webhelp/Resources/Public/JavaScript/EasyVCardWebhelp.min.js,',
+            'useLibJs' => '',
+            'useStyle' => 'EXT:webhelp/Resources/Public/Stylesheets/WebcomponentWebhelp.css',
+        ],
     ],
     'FE' => [
         'debug' => true,

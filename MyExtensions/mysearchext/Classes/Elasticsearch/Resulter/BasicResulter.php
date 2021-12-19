@@ -3,6 +3,7 @@
 namespace Porthd\Mysearchext\Elasticsearch\Resulter;
 
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
+use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
@@ -71,7 +72,7 @@ class BasicResulter implements ResulterInterface
     {
         $domain = getenv('DOMAIN_NAME') ?? SelfConst::SELF_DOMAIN_NAME;
         $addPort = getenv('DOMAIN_ELASTIC_ADDPORT') ?? SelfConst::SELF_DOMAIN_ELASTIC_ADDPORT;
-        $this->elasticSearch = \Elasticsearch\ClientBuilder::create()
+        $this->elasticSearch = ClientBuilder::create()
             ->setHosts([$domain . $addPort])
             ->build();
     }
@@ -115,13 +116,13 @@ class BasicResulter implements ResulterInterface
             $params = [
                 'from' => 0,
                 'type' => $type,
+                'index' => $index,
+                'size' => $max,
                 'body' => [
-                    'size' => $max,
-                    'index' => $index,
                     'query' => [
                         "query_string" => [
                             "query" => $queryString,
-                            "fields" => SelfConst::TRANS_INDEXER_LIST_TEXTFIELDS,
+                            "fields" => SelfConst::TRANS_INDEXRESULTER_LIST_TEXTFIELDS,
                         ],
                     ],
                 ],
@@ -200,8 +201,7 @@ class BasicResulter implements ResulterInterface
                 $pufferLength = $settings['teaser']['nearLength'] ?? ResulterUtility::TEXT_DEFAULT_SEARCHWORD;
                 $ellipse = $settings['teaser']['ellipse'] ?? ResulterUtility::TEXT_SPACED_ELLIPSE;
                 $searchQuotes = [];
-                if (empty($searchWordList)) {
-                } else {
+                if (!empty($searchWordList)) {
                     foreach ($searchWordList as $searchWord) {
                         $searchQuotes[$searchWord] = ResulterUtility::findTextNear(
                             $searchWord,
@@ -227,6 +227,7 @@ class BasicResulter implements ResulterInterface
                     }
                 }
                 // Starttext as a teaser-text
+                $results[$key][SelfConst::OUTPUTNAME_BASIC_SELF] =$itemData[SelfConst::INCOME_NAME_BASIC_SELF]??'#';
                 if (empty($itemData[SelfConst::INCOME_NAME_BASIC_TEXT])) {
                     if (!empty($searchWordList)) {
                         $results[$key][SelfConst::OUTPUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(

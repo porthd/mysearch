@@ -9,7 +9,7 @@
 ############
 page {
     logo {
-        file = EXT:mysearchsite/Resources/Public/Images/logo.svg
+        file = EXT:mysearchsite/Resources/Public/Icons/logo.svg
         fileInverted = EXT:mysearchsite/Resources/Public/Images/logo-inverted.svg
         height = 52
         width = 192

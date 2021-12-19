@@ -1,0 +1,8 @@
+page.config  {
+
+    #allow comment with typo3-hint in html-header
+    disableAllHeaderCode = 0
+}
+
+
+

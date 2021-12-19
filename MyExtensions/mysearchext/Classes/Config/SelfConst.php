@@ -120,10 +120,11 @@ class SelfConst
     ];
 
     public const TRANS_INDEXER_LIST = 'list';
-    public const TRANS_INDEXER_LIST_TEXTFIELDS = [
+    public const TRANS_INDEXRESULTER_LIST_TEXTFIELDS = [
         self::TRANS_INDEXER_HEADER ,
         self::TRANS_INDEXER_TEXT ,
     ];
+    public const TRANS_INDEXER_SELF = 'self';
     public const TRANS_INDEXER_HEADER = 'header';
     public const TRANS_INDEXER_TEXT = 'text';
     public const TRANS_INDEXER_HTML = 'html';
@@ -137,11 +138,13 @@ class SelfConst
 
     // objekt-key-names for results used in the fluid-template
     public const INCOME_NAME_BASIC_HEADER = 'header'; //
+    public const INCOME_NAME_BASIC_SELF = 'self'; //
     public const INCOME_NAME_BASIC_TEXT = 'text'; //
     public const INCOME_NAME_BASIC_HTML = 'html'; //
     public const INCOME_NAME_BASIC_LINKS = 'links'; //
     public const OUTPUTNAME_BASIC_TITLE = 'title'; //
     public const OUTPUTNAME_BASIC_TEXT = 'text';
+    public const OUTPUTNAME_BASIC_SELF = 'self';
     public const OUTPUTNAME_BASIC_LINKS = self::ADDON_BASIC_LINKS;
     public const OUTPUTNAME_BASIC_LINKGROUP_OWN = self::ADDON_BASIC_LINKGROUP_OWN;
     public const OUTPUTNAME_BASIC_LINKGROUP_MENU = self::ADDON_BASIC_LINKGROUP_MENU;

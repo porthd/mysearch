@@ -156,6 +156,7 @@ class BasicIndexer implements IndexerInterface
         $dataList = $data[SelfConst::TRANS_INDEXER_LIST];
         $dataLinksList = $data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_LINKS];
         return [
+            SelfConst::TRANS_INDEXER_SELF => $dataList[SelfConst::ADDON_BASIC_DOC_KEY],
             SelfConst::TRANS_INDEXER_HEADER => $dataList[SelfConst::ADDON_BASIC_HEADLINES],
             SelfConst::TRANS_INDEXER_TEXT => $dataList[SelfConst::ADDON_BASIC_BODY_TEXT],
             SelfConst::TRANS_INDEXER_HTML => $dataList[SelfConst::ADDON_BASIC_BODY_HTML],

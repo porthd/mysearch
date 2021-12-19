@@ -1,0 +1,11 @@
+page.headerData {
+    20 = FLUIDTEMPLATE
+    20 {
+        file = EXT:mysearchsite/Resources/Private/Templates/Header/FavIcons.html
+    }
+}
+
+# override bootstrap definition
+page.shortcutIcon = EXT:mysearchsite/Resources/Public/Favicons/favicon.ico
+
+

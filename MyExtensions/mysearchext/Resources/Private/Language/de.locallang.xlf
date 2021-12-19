@@ -47,7 +47,7 @@
 			<!-- plugin - partila: result -->
 			<trans-unit id="plugin.mysearchext.results.title" resname="plugin.mysearchext.results.title">
 				<source>results</source>
-				<target>Erghebnisse</target>
+				<target>Ergebnisse</target>
 			</trans-unit>
 			<trans-unit id="plugin.mysearchext.results.nothingFound" resname="plugin.mysearchext.results.nothingFound">
 				<source>Sorry. There was nothing found.</source>

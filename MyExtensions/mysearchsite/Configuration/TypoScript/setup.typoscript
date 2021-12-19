@@ -1,8 +1,14 @@
 ######################
 #### DEPENDENCIES ####
 ######################
-@import 'EXT:bootstrap_package/Configuration/TypoScript/setup.typoscript'
 
+
+
+
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/'
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/Styling/'
+@import 'EXT:form/Configuration/TypoScript/'
+@import 'EXT:bootstrap_package/Configuration/TypoScript/setup.typoscript'
 
 ##############
 #### PAGE ####
@@ -28,3 +34,5 @@ page {
         mysearch_scripts = EXT:mysearchsite/Resources/Public/JavaScript/Dist/scripts.js
     }
 }
+
+@import 'EXT:mysearchsite/Configuration/TypoScript/Page/*.typoscript'

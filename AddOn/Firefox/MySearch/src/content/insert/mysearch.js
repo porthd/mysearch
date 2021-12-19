@@ -157,7 +157,6 @@ function dataForIndex(uri, index) {
     content[BODY_TEXT] = document.body.innerText;
     content[LINKS] = getLinkList();
     content[HEADLINES] = getHeadlineList();
-console.log('dataForIndex'+"\n"+JSON.stringify( content));
     postAjax(ELASTIC_LOCAL_URL, content);
 
 }
