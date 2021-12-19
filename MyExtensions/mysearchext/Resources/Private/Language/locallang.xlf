@@ -15,6 +15,30 @@
 				<source>Without A Title</source>
 				<target>Ohne Titel</target>
 			</trans-unit>
+			<trans-unit id="plugin.myform.searchfilter.form.mainSearchWords" resname="plugin.myform.searchfilter.form.mainSearchWords">
+				<source>mainSearchWords</source>
+				<target>Haupt Suchbegriffe</target>
+			</trans-unit>
+			<trans-unit id="plugin.myform.searchfilter.form.secondSearchWords" resname="plugin.myform.searchfilter.form.secondSearchWords">
+				<source>secondSearchWords</source>
+				<target>Neben Suchbegriffe</target>
+			</trans-unit>
+			<trans-unit id="plugin.myform.searchfilter.form.optionalSearchWords" resname="plugin.myform.searchfilter.form.optionalSearchWords">
+				<source>optionalSearchWords</source>
+				<target>Mögliche Suchbegriffe</target>
+			</trans-unit>
+			<trans-unit id="plugin.myform.searchfilter.form.forbiddenSearchWords" resname="plugin.myform.searchfilter.form.forbiddenSearchWords">
+				<source>forbiddenSearchWords</source>
+				<target>Verbotene Suchbegriffe</target>
+			</trans-unit>
+			<trans-unit id="plugin.myform.searchfilter.form.indexList" resname="plugin.myform.searchfilter.form.indexList">
+				<source>indexList</source>
+				<target>Auswahl möglicher Suchindices</target>
+			</trans-unit>
+			<trans-unit id="plugin.myform.searchfilter.form.startSearch" resname="plugin.myform.searchfilter.form.startSearch">
+				<source>startSearch</source>
+				<target>Zeige Suchergebnisse</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
