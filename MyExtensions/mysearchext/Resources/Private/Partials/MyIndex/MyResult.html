@@ -22,11 +22,11 @@
                         </f:else>
                     </f:if>
 
-                    <teaser-block length="{settings.teaser.length}" ellipse="{settings.teaser.ellipse}"
+                    <teaser-div length="{settings.teaser.length}" ellipse="{settings.teaser.ellipse}"
                                   class="infotext"
                     >
                         {result.data.text}
-                    </teaser-block>
+                    </teaser-div>
                     <f:if condition="{result.searchQuotes}">
                         <ul class="shortline">
                             <f:for each="{result.searchQuotes}" as="quote" key="word">

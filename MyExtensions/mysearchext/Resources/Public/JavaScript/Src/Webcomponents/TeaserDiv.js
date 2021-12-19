@@ -1,4 +1,4 @@
-class TeaserBlock extends HTMLDivElement {
+class TeaserDiv extends HTMLDivElement {
   constructor() {
     // Always call super first in constructor
     super();
@@ -23,4 +23,4 @@ class TeaserBlock extends HTMLDivElement {
 }
 
 // Define the new element
-customElements.define('teaser-block', TeaserDiv, {extends: 'div'});
+customElements.define('teaser-div', TeaserDiv, {extends: 'div'});
