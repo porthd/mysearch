@@ -9,16 +9,16 @@
     "storage",
     "activeTab",
     "webRequest",
-    "webRequestBlocking",
+    "blob",
     "<all_urls>"
   ],
   "browser_action": {
     "default_icon": {
-      "16": "icons/mysearchon.svg",
-      "32": "icons/mysearchon.svg"
+      "16": "/icons/mysearchon.svg",
+      "32": "/icons/mysearchon.svg"
     },
     "default_title": "MySearch",
-    "default_popup": "popup/mysearch.html"
+    "default_popup": "/popup/mysearch.html"
   },
   "browser_specific_settings": {
     "gecko": {
@@ -27,11 +27,11 @@
     }
   },
   "background": {
-    "scripts": ["src/background/mysearch.js"]
+    "scripts": ["/src/background/mysearch.js"]
   },
   "icons": {
-    "16": "icons/mysearchon.svg",
-    "32": "icons/mysearchon.svg"
+    "16": "/icons/mysearchon.svg",
+    "32": "/icons/mysearchon.svg"
   },
   "content_scripts": [
     {
@@ -40,7 +40,7 @@
       ],
       "run_at": "document_idle",
       "js": [
-        "src/content/insert/mysearch.js"
+        "/src/content/insert/mysearch.js"
       ]
     }
   ]

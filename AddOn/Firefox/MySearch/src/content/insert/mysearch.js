@@ -14,13 +14,17 @@ const INDEXNAME = 'general',
     ALL_ALLOWED = '*',
     TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
         'google.' + ALL_ALLOWED + ',' + "\n" +
-        'yahoo.com,' + "\n";
+        'yahoo.com,' + "\n",
+    ICON_PATH_ON = "/icons/mysearchon.svg",
+    ICON_PATH_OFF = "/icons/mysearchoff.svg";
 
 /**
  * needed for src/content/insert/mysearch.js
  */
-const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
-    ELASTIC_DOMAIN = 'mysearch.ddev.site',
+const ELASTIC_DOMAIN = 'mysearch.ddev.site',
+    // ELASTIC_PORT = ':9200',
+    ELASTIC_PORT = '',
+    ELASTIC_PROTOKOL = 'https://',
     LINKS = 'links',
     LINKGROUP_OWN = 'own',
     LINKGROUP_MENU = 'menu',
@@ -56,8 +60,8 @@ const STORAGE_KEY_SETTINGS = 'mySettings',
 
 
 function convertTextToList(listText) {
-    let rawList = listText.split(/[\n,]/),
-        list = [];
+    let rawList = listText.split(/[\n,]/) ?? [],
+        resultList = [];
     rawList.forEach(item => {
         let test = item.trim().toLowerCase();
         if (item !== '') {
@@ -78,16 +82,11 @@ function convertTextToList(listText) {
             } else if (secondLevel.indexOf('|') !== -1) {
                 check[ID_BLACKTEST_SECOND] = secondLevel.replace(/\s/g, '').split('|');
             }
-            list.push(check);
+            resultList.push(check);
         }
     });
 
-    return list;
-}
-
-// @todo allow the user, to send his datas to an other elastic-server
-function getAlternativeElasticServer(defaultServer) {
-    return defaultServer;
+    return resultList;
 }
 
 /**
@@ -102,7 +101,53 @@ defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
+function browserIconOn() {
+    browserIconSet(ICON_PATH_ON);
+
+}
+
+function browserIconOff() {
+    browserIconSet(ICON_PATH_OFF);
+}
+
+/**
+ * Single -Call for page API to local storage in browser
+ */
+function switchIcon(elasticDomain, settings) {
+    var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+    settingsStored.then((item) => {
+        if (!item) {
+            if ((settings[ID_ON_OFF]) && (settings[ID_PING])) {
+                browserIconOn();
+            } else {
+                browserIconOff();
+            }
+        } else {
+            if ((!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) &&
+                (!!item[STORAGE_KEY_SETTINGS][ID_PING])
+            ) {
+                browserIconOn();
+            } else {
+                browserIconOff();
+            }
+        }
+    }).catch((err) => {
+        if (!err) {
+            console.log('Ends without error.');
+        } else {
+            browserIconOff();
+            console.log('Stop, there was an error:' + "\n" + err);
+        }
+    });
+}
+
 // <<< end-Block --- How cann i Import the following code like a module?
+
+// @todo allow the user, to send his datas to an other elastic-server
+function getAlternativeElasticServerSearch(defaultServer) {
+    // return 'https://' + defaultServer + '/search/';
+    return ELASTIC_PROTOKOL + ELASTIC_DOMAIN + ELASTIC_PORT + '/search/';
+}
 
 
 function markDocumentWorkupBorderStatus(color) {
@@ -114,6 +159,8 @@ function postAjax(url, data) {
     jsonData.append("json", JSON.stringify(data));
     return fetch(url, {
         method: "POST",
+        mode: 'no-cors',
+        url: ELASTIC_PROTOKOL + ELASTIC_DOMAIN + ELASTIC_PORT,
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
@@ -147,15 +194,15 @@ function postAjax(url, data) {
 }
 
 function getLinkList() {
-    let list = Array.from(document.links),
-        result = {},
+    let linksRawList = Array.from(document.links) ?? [],
+        linkList = {},
         baseHref = document.location.href;
 
-    result[LINKGROUP_OWN] = [];
-    result[LINKGROUP_MENU] = [];
-    result[LINKGROUP_FOREIGN] = [];
+    linkList[LINKGROUP_OWN] = [];
+    linkList[LINKGROUP_MENU] = [];
+    linkList[LINKGROUP_FOREIGN] = [];
 
-    list.forEach(elem => {
+    linksRawList.forEach(elem => {
         let protocol = elem.protocol.toLowerCase();
         if (['http:', 'https:', 'file:'].includes(protocol)) {
             let hash = elem.hash ? '#' + elem.hash : '',
@@ -177,31 +224,31 @@ function getLinkList() {
 
                 if (elem.host === document.location.host) {
                     if (flagMenu) {
-                        result[LINKGROUP_MENU][result[LINKGROUP_MENU].length] = {
+                        linkList[LINKGROUP_MENU].push({
                             name: name,
                             uri: href,
                             path: elem.pathname
-                        };
+                        });
                     } else {
-                        result[LINKGROUP_OWN][result[LINKGROUP_OWN].length] = {
+                        linkList[LINKGROUP_OWN].push({
                             name: name,
                             uri: href,
                             path: elem.pathname
-                        };
+                        });
 
                     }
                 } else {
-                    result[LINKGROUP_FOREIGN][result[LINKGROUP_FOREIGN].length] = {
+                    linkList[LINKGROUP_FOREIGN].push({
                         name: name,
                         uri: href,
                         path: elem.pathname
-                    };
+                    });
                 }
             }
         }
     });
 
-    return result;
+    return linkList;
 }
 
 function getIndexListFromStorage(indexName) {
@@ -215,14 +262,14 @@ function getTypeListFromStorage(typeName) {
 function getHeadlineList() {
     let list = document.body.querySelectorAll('h1,h2,h3,h4'),
         result = [];
-
-    Array.from(list).forEach((elem) => {
-        let dummy = elem.innerText.trim();
-        if (dummy !== '') {
-            result[result.length] = dummy;
-        }
-    });
-
+    if (list.length > 0) {
+        Array.from(list).forEach((elem) => {
+            let dummy = elem.innerText.trim();
+            if (dummy !== '') {
+                result[result.length] = dummy;
+            }
+        });
+    }
     return result;
 
 }
@@ -230,13 +277,17 @@ function getHeadlineList() {
 // @todo: This function should contain a individual blacklist, It should be part of a file with domainnames
 function domainInBlacklist(testUriRaw, mySettings) {
     let parts = testUriRaw.hostname.toLowerCase().split('.'),
-        // list = globalThis.mySettings[ID_BLACKLIST],
         list = mySettings[ID_BLACKLIST],
         firstTest = (parts[(parts.length - 1)] ?? ''),
         secondTest = (parts[(parts.length - 2)] ?? ''),
         flag = false,
         flagFirst, flagSecond, checkFirst, checkSecond;
-
+    console.log(list);
+    if (!Array.isArray(list)) {
+        list = convertTextToList(defaultSettings[ID_BLACKTEXT]);
+        console.log('list');
+        console.log(list);
+    }
     list.forEach((item) => {
         if (!flag) {
             flagFirst = false;
@@ -287,11 +338,12 @@ function initPage(mySettings) {
     if (!!mySettings[ID_ON_OFF]) {
         markDocumentWorkupBorderStatus(BORDER_DOC_NOT_WORKED_YET);
         let uri = document.location,
-            myElasticServer = getAlternativeElasticServer(ELASTIC_LOCAL_URL);
+            myElasticServer = getAlternativeElasticServerSearch(ELASTIC_DOMAIN);
 
         if (domainInBlacklist(uri, mySettings)) {
             markDocumentWorkupBorderStatus(BORDER_DOC_BLACKLISTED); // sign failure of blacklist
         } else {
+            console.log('register');
             let index = getIndexListFromStorage(mySettings[ID_INDEX]),
                 type = getTypeListFromStorage(mySettings[ID_TYPE]);
             if (index) {

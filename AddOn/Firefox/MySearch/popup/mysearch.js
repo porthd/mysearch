@@ -14,13 +14,17 @@ const INDEXNAME = 'general',
     ALL_ALLOWED = '*',
     TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
         'google.' + ALL_ALLOWED + ',' + "\n" +
-        'yahoo.com,' + "\n";
+        'yahoo.com,' + "\n",
+    ICON_PATH_ON = "/icons/mysearchon.svg",
+    ICON_PATH_OFF = "/icons/mysearchoff.svg";
 
 /**
  * needed for src/content/insert/mysearch.js
  */
-const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
-    ELASTIC_DOMAIN = 'mysearch.ddev.site',
+const ELASTIC_DOMAIN = 'mysearch.ddev.site',
+    // ELASTIC_PORT = ':9200',
+    ELASTIC_PORT = '',
+    ELASTIC_PROTOKOL = 'https://',
     LINKS = 'links',
     LINKGROUP_OWN = 'own',
     LINKGROUP_MENU = 'menu',
@@ -45,6 +49,7 @@ const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
  * needed for popup/mysearch.js
  */
 const STORAGE_KEY_SETTINGS = 'mySettings',
+    ID_PING = 'mysearch-ping',
     ID_ON_OFF = 'mysearch-on-off',
     ID_INDEX = 'mysearch-index',
     ID_TYPE = 'mysearch-type',
@@ -84,11 +89,6 @@ function convertTextToList(listText) {
     return list;
 }
 
-// @todo allow the user, to send his datas to an other elastic-server
-function getAlternativeElasticServer(defaultServer) {
-    return defaultServer;
-}
-
 /**
  *
  * Default storage-parameter
@@ -101,13 +101,74 @@ defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
+function browserIconSet(svgPath) {
+    browser.browserAction.setIcon({
+        path: {
+            "16": svgPath,
+            "19": svgPath,
+            "32": svgPath,
+            "48": svgPath,
+            "128": svgPath,
+        }
+    });
+}
+
+function browserIconOn() {
+    browserIconSet(ICON_PATH_ON);
+
+}
+
+function browserIconOff() {
+    browserIconSet(ICON_PATH_OFF);
+}
+
+/**
+ * Single -Call for page API to local storage in browser
+ */
+function switchIcon(elasticDomain, settings) {
+    var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+    settingsStored.then((item) => {
+        if (!item) {
+            if ((settings[ID_ON_OFF]) && (settings[ID_PING])){
+                browserIconOn();
+            } else {
+                browserIconOff();
+            }
+        } else {
+            if ((!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) &&
+                (!!item[STORAGE_KEY_SETTINGS][ID_PING])
+            ) {
+                browserIconOn();
+            } else {
+                browserIconOff();
+            }
+        }
+    }).catch((err) => {
+        if (!err) {
+            console.log('Ends without error.');
+        } else {
+            browserIconOff();
+            console.log('Stop, there was an error:' + "\n" + err);
+        }
+    });
+}
+
 // <<< end-Block --- How cann i Import the following code like a module?
+
+
+// @todo allow the user, to send his datas to an other elastic-server
+function getAlternativeElasticServerIndices(defaultDomain) {
+    // return 'https://'+defaultDomain+'/_cat/indices/';
+    return     ELASTIC_PROTOKOL +defaultDomain+    ELASTIC_PORT +'/_cat/indices/';
+}
 
 /**
  *
  * Default storage-parameter
  */
 var mySettings = {...defaultSettings};
+
+
 
 /**
  *
@@ -166,7 +227,6 @@ function setSettings( key, value) {
 
 
 function changeSwitchSettings(settings,location) {
-    console.log('ChangeSwitch');
     let onSearch = (!!document.getElementById(ID_ON_OFF).checked);
     console.log('Check ' + (onSearch ? 'true' : 'false'));
     setSettings(ID_ON_OFF, onSearch);
@@ -174,14 +234,12 @@ function changeSwitchSettings(settings,location) {
 }
 
 function changeTypeSettings() {
-    console.log('change changeTypeSettings');
     let typeName = document.getElementById(ID_TYPE).value ?? TYPENAME;
     setSettings( ID_TYPE, typeName);
     updateView();
 }
 
 function changeIndexSettings(settings,location) {
-    console.log('change changeIndexSettings');
     let indexName = document.getElementById(ID_INDEX).value ?? INDEXNAME;
     setSettings( ID_INDEX, indexName);
     updateView();
@@ -215,4 +273,18 @@ function initValues() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initValues()
+});
+
+
+window.addEventListener('blur', function (event) {
+    let uri = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
+    fetch(uri, {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(response) {
+        setSettings(ID_PING, (response.status === 200));
+    });
 });

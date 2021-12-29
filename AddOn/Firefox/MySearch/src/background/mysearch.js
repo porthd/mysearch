@@ -14,13 +14,17 @@ const INDEXNAME = 'general',
     ALL_ALLOWED = '*',
     TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
         'google.' + ALL_ALLOWED + ',' + "\n" +
-        'yahoo.com,' + "\n";
+        'yahoo.com,' + "\n",
+    ICON_PATH_ON = "/icons/mysearchon.svg",
+    ICON_PATH_OFF = "/icons/mysearchoff.svg";
 
 /**
  * needed for src/content/insert/mysearch.js
  */
-const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
-    ELASTIC_DOMAIN = 'mysearch.ddev.site',
+const ELASTIC_DOMAIN = 'mysearch.ddev.site',
+    // ELASTIC_PORT = ':9200',
+    ELASTIC_PORT = '',
+    ELASTIC_PROTOKOL = 'https://',
     LINKS = 'links',
     LINKGROUP_OWN = 'own',
     LINKGROUP_MENU = 'menu',
@@ -45,6 +49,7 @@ const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
  * needed for popup/mysearch.js
  */
 const STORAGE_KEY_SETTINGS = 'mySettings',
+    ID_PING = 'mysearch-ping',
     ID_ON_OFF = 'mysearch-on-off',
     ID_INDEX = 'mysearch-index',
     ID_TYPE = 'mysearch-type',
@@ -84,11 +89,6 @@ function convertTextToList(listText) {
     return list;
 }
 
-// @todo allow the user, to send his datas to an other elastic-server
-function getAlternativeElasticServer(defaultServer) {
-    return defaultServer;
-}
-
 /**
 * Default storage-parameter
 */
@@ -100,7 +100,6 @@ defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
-// <<< end-Block --- How cann i Import the following code like a module?
 
 function browserIconSet(svgPath) {
     browser.browserAction.setIcon({
@@ -114,43 +113,75 @@ function browserIconSet(svgPath) {
     });
 }
 function browserIconOn() {
-    browserIconSet("/icons/mysearchon.svg");
+    browserIconSet(ICON_PATH_ON);
 
 }
 
 function browserIconOff() {
-    browserIconSet("/icons/mysearchoff.svg");
+    browserIconSet(ICON_PATH_OFF);
 }
 
 
-browserIconOff();
-let eleasticDomain = getAlternativeElasticServer();
-// switchIconIfOffline(elasticDomain);
+/**
+ * Single -Call for page API to local storage in browser
+ */
+function switchIcon(elasticDomain, settings) {
+    var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+    settingsStored.then((item) => {
+        if (!item) {
+            if ((settings[ID_ON_OFF]) && (settings[ID_PING])){
+                browserIconOn();
+            } else {
+                browserIconOff();
+            }
+        } else {
+            if ((!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) &&
+                (!!item[STORAGE_KEY_SETTINGS][ID_PING])
+            ) {
+                browserIconOn();
+            } else {
+                browserIconOff();
+            }
+        }
+    }).catch((err) => {
+        if (!err) {
+            console.log('Ends without error.');
+        } else {
+            browserIconOff();
+            console.log('Stop, there was an error:' + "\n" + err);
+        }
+    });
+}
 
-// /**
-//  * Single -Call for page API to local storage in browser
-//  */
-// var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-// settingsStored.then((item) => {
-//     if (!item) {
-//         if (defaultSettings[ID_ON_OFF]) {
-//             switchIconIfOffline(elasticDomain);
-//         } else {
-//             browserIconOff();
-//         }
-//     } else {
-//         if (!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) {
-//             switchIconIfOffline(elasticDomain);
-//         } else {
-//             browserIconOff();
-//         }
-//     }
-// }).catch((err) => {
-//     if (!err) {
-//
-//         console.log('Ends without error.');
-//     } else {
-//         browserIconOff();
-//         console.log('Stop, there was an error:' + "\n" + err);
-//     }
-// });
+// <<< end-Block --- How cann i Import the following code like a module?
+
+
+// @todo allow the user, to send his datas to an other elastic-server
+function getAlternativeElasticServerIndices(defaultDomain) {
+    // return 'https://'+defaultDomain+'/_cat/indices/';
+    return ELASTIC_PROTOKOL +defaultDomain+    ELASTIC_PORT +'/_cat/indices/';
+}
+
+/**
+ * Single -Call for page API to local storage in browser
+ */
+var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+settingsStored.then((item) => {
+
+    if (!item) {
+        let eleasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
+        switchIcon(elasticDomain,defaultSettings);
+    } else {
+        let eleasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
+        switchIcon(elasticDomain,item[STORAGE_KEY_SETTINGS]);
+    }
+}).catch((err) => {
+    if (!err) {
+
+        console.log('Ends without error.');
+    } else {
+        console.log('Stop, there was an error:' + "\n" + err);
+    }
+});
+
+
