@@ -108,11 +108,12 @@ class MyIndexController extends ActionController
             $resulter->mapForOutput($allResults, $this->searchfilter, $settings);
         }
 
-        $hallo = $this->helperResulterService->getCurrentIndexes();
+        $listOfIndicesRaw = $this->helperResulterService->getCurrentIndexes();
+        $listOfIndices = $listOfIndicesRaw;
         $this->view->assignMultiple([
             'results' => $allResults,
             'searchfilter' => $this->searchfilter,
-            'searchIndices' => $this->helperResulterService->getCurrentIndexes(),
+            'searchIndices' => $listOfIndices,
         ]);
     }
 

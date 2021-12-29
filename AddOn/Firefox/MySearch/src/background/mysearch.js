@@ -90,9 +90,8 @@ function getAlternativeElasticServer(defaultServer) {
 }
 
 /**
- *
- * Default storage-parameter
- */
+* Default storage-parameter
+*/
 var defaultSettings = {};
 defaultSettings[ID_PING] = true;
 defaultSettings[ID_ON_OFF] = false;
@@ -103,116 +102,55 @@ defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
 // <<< end-Block --- How cann i Import the following code like a module?
 
-/**
- *
- * Default storage-parameter
- */
-var mySettings = {...defaultSettings};
-
-/**
- *
- * Needed DOM-Objects
- */
-var $myLocation = {};
-$myLocation[ID_ON_OFF] = document.getElementById(ID_ON_OFF);
-$myLocation[ID_INDEX] = document.getElementById(ID_INDEX);
-$myLocation[ID_TYPE] = document.getElementById(ID_TYPE);
-$myLocation[ID_BLACKTEXT] = document.getElementById(ID_BLACKTEXT);
-
-function updateView() {
-    $myLocation[ID_ON_OFF].checked = (!!mySettings[ID_ON_OFF]);
-    $myLocation[ID_INDEX].value = (mySettings[ID_INDEX] ?? INDEXNAME);
-    $myLocation[ID_TYPE].value = (mySettings[ID_TYPE] ?? TYPENAME);
-    $myLocation[ID_BLACKTEXT].value = (mySettings[ID_BLACKTEXT] ?? TEXT_BLACKDOMAINS);
-}
-
-/**
- * API to local storage in browser
- */
-var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-settingsStored.then((item) =>{
-    mySettings = {...item[STORAGE_KEY_SETTINGS]};
-    updateView();
-}).catch(() =>{
-    mySettings = {...defaultSettings};
-    updateView();
-});
-
-/**
- * eventhandling for changes in the local storage with the sttings-plugin
- */
-function getSettings() {
-    let localSettings = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-    localSettings.then((item) => {
-        mySettings = {...item[STORAGE_KEY_SETTINGS]};
-        updateView();
-    }).catch(() => {
-        mySettings = {...defaultSettings};
-        updateView();
-    })
-}
-
-function setSettings( key, value) {
-    if (key === ID_BLACKTEXT) {
-        mySettings[ID_BLACKTEXT] = value;
-        mySettings[ID_BLACKLIST] = convertTextToList(value);
-    } else {
-        mySettings[key] = value;
-    }
-    let help = {};
-    help[STORAGE_KEY_SETTINGS] = {...mySettings};
-    browser.storage.local.set(help);
-}
-
-
-function changeSwitchSettings(settings,location) {
-    console.log('ChangeSwitch');
-    let onSearch = (!!document.getElementById(ID_ON_OFF).checked);
-    console.log('Check ' + (onSearch ? 'true' : 'false'));
-    setSettings(ID_ON_OFF, onSearch);
-    updateView();
-}
-
-function changeTypeSettings() {
-    console.log('change changeTypeSettings');
-    let typeName = document.getElementById(ID_TYPE).value ?? TYPENAME;
-    setSettings( ID_TYPE, typeName);
-    updateView();
-}
-
-function changeIndexSettings(settings,location) {
-    console.log('change changeIndexSettings');
-    let indexName = document.getElementById(ID_INDEX).value ?? INDEXNAME;
-    setSettings( ID_INDEX, indexName);
-    updateView();
-}
-
-function changeBlacklistSettings(settings,location) {
-    let rawTextListing = ((document.getElementById(ID_BLACKTEXT).value !== '') ?
-            document.getElementById(ID_BLACKTEXT).value :
-            TEXT_BLACKDOMAINS
-    );
-    console.log('rawTextListing\n' + rawTextListing);
-    setSettings(ID_BLACKTEXT, rawTextListing);
-    updateView();
-}
-
-function initValues() {
-    $myLocation[ID_ON_OFF].addEventListener('change', ()=> {
-        changeSwitchSettings()
+function browserIconSet(svgPath) {
+    browser.browserAction.setIcon({
+        path: {
+            "16": svgPath,
+            "19": svgPath,
+            "32": svgPath,
+            "48": svgPath,
+            "128": svgPath,
+        }
     });
-    $myLocation[ID_TYPE].addEventListener('change', () => {
-        changeTypeSettings();
-    });
-    $myLocation[ID_INDEX].addEventListener('change', () => {
-        changeIndexSettings();
-    });
-    $myLocation[ID_BLACKTEXT].addEventListener('change', () => {
-        changeBlacklistSettings();
-    });
-    getSettings();
+}
+function browserIconOn() {
+    browserIconSet("/icons/mysearchon.svg");
+
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initValues()
-});
+function browserIconOff() {
+    browserIconSet("/icons/mysearchoff.svg");
+}
+
+
+browserIconOff();
+let eleasticDomain = getAlternativeElasticServer();
+// switchIconIfOffline(elasticDomain);
+
+// /**
+//  * Single -Call for page API to local storage in browser
+//  */
+// var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+// settingsStored.then((item) => {
+//     if (!item) {
+//         if (defaultSettings[ID_ON_OFF]) {
+//             switchIconIfOffline(elasticDomain);
+//         } else {
+//             browserIconOff();
+//         }
+//     } else {
+//         if (!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) {
+//             switchIconIfOffline(elasticDomain);
+//         } else {
+//             browserIconOff();
+//         }
+//     }
+// }).catch((err) => {
+//     if (!err) {
+//
+//         console.log('Ends without error.');
+//     } else {
+//         browserIconOff();
+//         console.log('Stop, there was an error:' + "\n" + err);
+//     }
+// });

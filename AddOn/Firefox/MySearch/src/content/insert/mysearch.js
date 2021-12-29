@@ -1,4 +1,11 @@
-// why can't I import the code above as modules?
+/** @todo listings
+ *  - allow the user, to send his datas to an other elastic-server
+ *  - show offline-Icon, if elastic-search is offline
+ *  - show separated Popup, if searchindex is offline
+ *  - How can i Import the following code like a module?
+ */
+
+// @todo- How can I import the following code like a module? >>> Start-Block
 /**
  * needed for BOTH src/content/insert/mysearch.js and popup/mysearch.js
  */
@@ -38,6 +45,7 @@ const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
  * needed for popup/mysearch.js
  */
 const STORAGE_KEY_SETTINGS = 'mySettings',
+    ID_PING = 'mysearch-ping',
     ID_ON_OFF = 'mysearch-on-off',
     ID_INDEX = 'mysearch-index',
     ID_TYPE = 'mysearch-type',
@@ -77,16 +85,25 @@ function convertTextToList(listText) {
     return list;
 }
 
+// @todo allow the user, to send his datas to an other elastic-server
+function getAlternativeElasticServer(defaultServer) {
+    return defaultServer;
+}
+
 /**
  *
  * Default storage-parameter
  */
 var defaultSettings = {};
+defaultSettings[ID_PING] = true;
 defaultSettings[ID_ON_OFF] = false;
 defaultSettings[ID_INDEX] = INDEXNAME;
 defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
+
+// <<< end-Block --- How cann i Import the following code like a module?
+
 
 function markDocumentWorkupBorderStatus(color) {
     document.body.style.border = BORDER_DOC_WORKUP + ' ' + color + ' ';
@@ -107,7 +124,7 @@ function postAjax(url, data) {
         return response.json();
     }).then((data) => {
         if ((data[FLAG_RESURF]) && (data[URI_RESURF])) {
-            console.log(data[URI_RESURF]+' resurf-data');
+            console.log(data[URI_RESURF] + ' resurf-data');
             /**
              * surf one more time. => this is the part for your search-robot, if you want that.
              * remeber: you should respect the robots.txt and the restrictions ind the meta-datas of the
@@ -211,7 +228,7 @@ function getHeadlineList() {
 }
 
 // @todo: This function should contain a individual blacklist, It should be part of a file with domainnames
-function domainInBlacklist(testUriRaw,mySettings) {
+function domainInBlacklist(testUriRaw, mySettings) {
     let parts = testUriRaw.hostname.toLowerCase().split('.'),
         // list = globalThis.mySettings[ID_BLACKLIST],
         list = mySettings[ID_BLACKLIST],
@@ -253,12 +270,9 @@ function domainInBlacklist(testUriRaw,mySettings) {
     return flag || (testUriRaw.hostname.indexOf(ELASTIC_DOMAIN) !== -1);
 }
 
-
-
-function dataForIndex(uri, index, type) {
+function dataForIndex(uri, index, type, elasticServer) {
     // parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
     let content = {};
-
     content[DOC_KEY] = uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'];
     content[INDEX_KEY] = index;
     content[TYPE_KEY] = type;
@@ -266,22 +280,22 @@ function dataForIndex(uri, index, type) {
     content[BODY_TEXT] = document.body.innerText;
     content[LINKS] = getLinkList();
     content[HEADLINES] = getHeadlineList();
-    postAjax(ELASTIC_LOCAL_URL, content);
+    postAjax(elasticServer, content);
 }
 
 function initPage(mySettings) {
-    console.log(mySettings);
     if (!!mySettings[ID_ON_OFF]) {
         markDocumentWorkupBorderStatus(BORDER_DOC_NOT_WORKED_YET);
+        let uri = document.location,
+            myElasticServer = getAlternativeElasticServer(ELASTIC_LOCAL_URL);
 
-        let uri = document.location;
-        if (domainInBlacklist(uri,mySettings)) {
+        if (domainInBlacklist(uri, mySettings)) {
             markDocumentWorkupBorderStatus(BORDER_DOC_BLACKLISTED); // sign failure of blacklist
         } else {
             let index = getIndexListFromStorage(mySettings[ID_INDEX]),
                 type = getTypeListFromStorage(mySettings[ID_TYPE]);
             if (index) {
-                dataForIndex(uri, index, type);
+                dataForIndex(uri, index, type, myElasticServer);
             }
             markDocumentWorkupBorderStatus(BORDER_DOC_IN_PROGRESS); // sign failure of blacklist
         }
@@ -295,14 +309,13 @@ function initPage(mySettings) {
  * Single -Call for page API to local storage in browser
  */
 var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-settingsStored.then((item) =>{
-    console.log('readStore');
+settingsStored.then((item) => {
     if (!item) {
         initPage(defaultSettings);
     } else {
         initPage(item[STORAGE_KEY_SETTINGS]);
     }
-}).catch((err) =>{
+}).catch((err) => {
     if (!err) {
 
         console.log('Ends without error.');

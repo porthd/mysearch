@@ -13,7 +13,10 @@
     "<all_urls>"
   ],
   "browser_action": {
-    "default_icon": "icons/mysearch.svg",
+    "default_icon": {
+      "16": "icons/mysearchon.svg",
+      "32": "icons/mysearchon.svg"
+    },
     "default_title": "MySearch",
     "default_popup": "popup/mysearch.html"
   },
@@ -23,17 +26,12 @@
       "strict_min_version": "95.0"
     }
   },
-
+  "background": {
+    "scripts": ["src/background/mysearch.js"]
+  },
   "icons": {
-    "16": "icons/mysearch.svg",
-    "19": "icons/mysearch.svg",
-    "24": "icons/mysearch.svg",
-    "32": "icons/mysearch.svg",
-    "38": "icons/mysearch.svg",
-    "48": "icons/mysearch.svg",
-    "64": "icons/mysearch.svg",
-    "96": "icons/mysearch.svg",
-    "128": "icons/mysearch.svg"
+    "16": "icons/mysearchon.svg",
+    "32": "icons/mysearchon.svg"
   },
   "content_scripts": [
     {
