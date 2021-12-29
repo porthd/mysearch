@@ -4,9 +4,7 @@ namespace Porthd\Mysearchext\Elasticsearch\Resulter;
 
 // https://dev.to/dendihandian/elasticsearch-in-laradock-nm4 URI for elastic depends to the port 9200 (default)
 use Elasticsearch\ClientBuilder;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Porthd\Mysearchext\Config\SelfConst;
 use Porthd\Mysearchext\Domain\Model\SearchFilter;
 use Porthd\Mysearchext\Utilities\ResulterUtility;
@@ -21,7 +19,7 @@ class BasicResulter implements ResulterInterface
     /**
      * @var string
      */
-    protected $indexes = SelfConst::ADDON_BASIC_INDEXNAME;
+    protected $indexes = SelfConst::ADDON_BASIC_INDEX_NAME;
     /**
      * @var string
      */
@@ -36,7 +34,7 @@ class BasicResulter implements ResulterInterface
      */
     public function extractIndex(SearchFilter $searchFilter, array $param = []): string
     {
-        return SelfConst::ADDON_BASIC_INDEXNAME;
+        return SelfConst::ADDON_BASIC_INDEX_NAME;
     }
 
     /**
@@ -45,7 +43,7 @@ class BasicResulter implements ResulterInterface
      */
     public function getIndexes(): array
     {
-        return [SelfConst::ADDON_BASIC_INDEXNAME];
+        return [SelfConst::ADDON_BASIC_INDEX_NAME];
     }
 
     /**

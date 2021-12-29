@@ -6,11 +6,23 @@
   "permissions": [
     "contextMenus",
     "tabs",
+    "storage",
     "activeTab",
     "webRequest",
     "webRequestBlocking",
     "<all_urls>"
   ],
+  "browser_action": {
+    "default_icon": "icons/mysearch.svg",
+    "default_title": "MySearch",
+    "default_popup": "popup/mysearch.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{245ce236-6e7b-4342-a488-42c185b1a1b8}",
+      "strict_min_version": "95.0"
+    }
+  },
 
   "icons": {
     "16": "icons/mysearch.svg",

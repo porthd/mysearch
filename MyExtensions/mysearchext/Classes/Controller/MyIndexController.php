@@ -6,6 +6,7 @@ namespace Porthd\Mysearchext\Controller;
 use Porthd\Mysearchext\Config\SelfConst;
 use Porthd\Mysearchext\Domain\Model\SearchFilter;
 use Porthd\Mysearchext\Elasticsearch\Normalizer\FallBackNormalizer;
+use Porthd\Mysearchext\Elasticsearch\Resulter\HelperResulterService;
 use Porthd\Mysearchext\Elasticsearch\Resulter\ResulterInterface;
 use Porthd\Mysearchext\Utilities\ConfigurationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,10 +40,19 @@ class MyIndexController extends ActionController
      */
     protected $searchFilter;
 
-    public function __construct(?FallBackNormalizer $fallBackNormalizer = null, ?SearchFilter $searchFilter = null)
+    /**
+     * @var HelperResulterService
+     */
+    protected $helperResulterService;
+
+    public function __construct(?FallBackNormalizer $fallBackNormalizer = null,
+        ?SearchFilter $searchFilter = null,
+        ?HelperResulterService $helperResulterService = null
+    )
     {
         $this->fallBackNormalizer = $fallBackNormalizer ?? new FallBackNormalizer();
         $this->searchFilter = $searchFilter ?? new SearchFilter();
+        $this->helperResulterService = $helperResulterService ?? new HelperResulterService();
     }
 
 
@@ -98,9 +108,11 @@ class MyIndexController extends ActionController
             $resulter->mapForOutput($allResults, $this->searchfilter, $settings);
         }
 
+        $hallo = $this->helperResulterService->getCurrentIndexes();
         $this->view->assignMultiple([
             'results' => $allResults,
             'searchfilter' => $this->searchfilter,
+            'searchIndices' => $this->helperResulterService->getCurrentIndexes(),
         ]);
     }
 

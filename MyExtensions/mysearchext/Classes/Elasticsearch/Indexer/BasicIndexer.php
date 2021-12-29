@@ -49,7 +49,7 @@ class BasicIndexer implements IndexerInterface
      */
     public function makeDataModelExtend(array &$data):void
     {
-
+            // this basic will do nothing.
     }
 
     /**
@@ -75,6 +75,9 @@ class BasicIndexer implements IndexerInterface
      */
     public function normalizeRequest(array &$requestData):bool
     {
+        if (!empty($requestData[SelfConst::ADDON_BASIC_LINKS])) {
+            $this->urls = $requestData[SelfConst::ADDON_BASIC_LINKS];
+        }
         return true;
     }
 
@@ -84,9 +87,6 @@ class BasicIndexer implements IndexerInterface
      */
     public function rebuildRequest(array &$requestData):bool
     {
-        if (!empty($requestData[SelfConst::ADDON_BASIC_LINKS])) {
-            $this->urls = $requestData[SelfConst::ADDON_BASIC_LINKS];
-        }
         return true;
     }
 
@@ -122,7 +122,9 @@ class BasicIndexer implements IndexerInterface
     public function indexName(array &$data):?string
     {
         // force an own name
-        return $data[SelfConst::ADDON_BASIC_INDEX_KEY];
+        return !empty($data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_INDEX_KEY])?
+            $data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_INDEX_KEY]:
+            SelfConst::ADDON_BASIC_INDEX_NAME  ;
     }
 
     /**
@@ -132,7 +134,10 @@ class BasicIndexer implements IndexerInterface
     public function typeName(array &$data):?string
     {
         // force the default type
-        return SelfConst::ADDON_BASIC_TYPE_NAME;
+        return (!empty($data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_TYPE_KEY])?
+            $data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_TYPE_KEY]:
+            SelfConst::ADDON_BASIC_TYPE_NAME
+            );
     }
 
     /**
@@ -178,14 +183,8 @@ class BasicIndexer implements IndexerInterface
         try{
             // everything has worked 8-)
             return $this->elasticSearch->index($indexParam);
-        } catch (BadRequest400Exception $e) {
+        } catch (\Exception $e) {
             // indexing failed, because of badrequest failed  %-(
-            return false;
-        } catch (Missing404Exception $e) {
-            // indexing failed, page does not exist or other 404-stuff  ?-(
-            return false;
-        } catch(Exception $e) {
-            // indexing failed, because of some other reasons
             return false;
         }
     }

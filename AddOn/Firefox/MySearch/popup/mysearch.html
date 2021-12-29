@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="mysearch.css"/>
+</head>
+
+<body>
+<div id="myseach-content">
+
+    <div class="switch">
+        <h2>Off - On?</h2>
+        <input id="mysearch-on-off" type="checkbox">
+        <label for="mysearch-on-off">
+            <span class="prepost-fix">Off</span>
+            <span class="buttonbackground">
+              <span class="buttonslider"></span>
+            </span>
+            <span class="prepost-fix">On</span>
+        </label>
+    </div>
+    <div class="list">
+
+        <label for="mysearch-index">
+            <h3>Index</h3>
+            <input id="mysearch-index"
+                   type="text"
+                   size="25"
+                   value="general"
+                   class="input-style"
+            />
+        </label>
+        <label for="mysearch-type">
+            <h3>Type</h3>
+            <input id="mysearch-type"
+                   type="text"
+                   size="25"
+                   value="general"
+                   class="input-style"
+            />
+        </label>
+    </div>
+        <div class="list">
+        <label for="mysearch-blacktext">
+            <h3>BlackList (Nix-Index)</h3>
+            <textarea id="mysearch-blacktext"
+                   type="text"
+                   cols="50"
+                   rows="5"
+                   class="textarea-style"
+            >bing.*,
+google.com|de,
+yahoo.com</textarea>
+        </label>
+    </div>
+</div>
+<div id="error-content" class="hidden">
+    <p>This add-on is part of the mysearch-projekt (porthd/mysearch). mysearch is a local search-engine, which use your browser-history.</p>
+</div>
+
+<script src="mysearch.js"></script>
+</body>
+
+</html>

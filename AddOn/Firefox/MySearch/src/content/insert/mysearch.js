@@ -1,24 +1,92 @@
-const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/';
+// why can't I import the code above as modules?
+/**
+ * needed for BOTH src/content/insert/mysearch.js and popup/mysearch.js
+ */
+const INDEXNAME = 'general',
+    TYPENAME = 'general',
+    ALL_ALLOWED = '*',
+    TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
+        'google.' + ALL_ALLOWED + ',' + "\n" +
+        'yahoo.com,' + "\n";
 
-const LINKS = 'links',
+/**
+ * needed for src/content/insert/mysearch.js
+ */
+const ELASTIC_LOCAL_URL = 'https://mysearch.ddev.site/search/',
+    ELASTIC_DOMAIN = 'mysearch.ddev.site',
+    LINKS = 'links',
     LINKGROUP_OWN = 'own',
     LINKGROUP_MENU = 'menu',
     LINKGROUP_FOREIGN = 'foreign',
-    INDEXNAME = 'general',
     FLAG_RESURF = 'flagResurf',
     URI_RESURF = 'uriResurf',
     DOC_KEY = 'docKey',
     INDEX_KEY = 'indexKey',
+    TYPE_KEY = 'typeKey',
     BODY_HTML = 'bodyHtml',
     BODY_TEXT = 'bodyText',
     HEADLINES = 'headlines',
     BORDER_DOC_WORKUP = 'solid 5px', // used in `markDocumentWorkupBorderStatus`
     BORDER_DOC_NOT_WORKED_YET = 'orange', // used in `markDocumentWorkupBorderStatus`
-    BORDER_DOC_FAILED = 'palevioletred',
+    BORDER_DOC_IN_PROGRESS = 'khaki', // used in `markDocumentWorkupBorderStatus`
+    BORDER_DOC_FAILED = 'darkmagenta',
     BORDER_DOC_SUCCESS = 'green',
-    BORDER_DOC_BLACKLISTED = 'black',
-    dummy = true;
+    BORDER_DOC_NOT_ACTIVE = 'blue',
+    BORDER_DOC_BLACKLISTED = 'black';
 
+/**
+ * needed for popup/mysearch.js
+ */
+const STORAGE_KEY_SETTINGS = 'mySettings',
+    ID_ON_OFF = 'mysearch-on-off',
+    ID_INDEX = 'mysearch-index',
+    ID_TYPE = 'mysearch-type',
+    ID_BLACKLIST = 'mysearch-blacklist',
+    ID_BLACKTEXT = 'mysearch-blacktext',
+    ID_BLACKTEST_FIRST = 'first',
+    ID_BLACKTEST_SECOND = 'second';
+
+
+function convertTextToList(listText) {
+    let rawList = listText.split(/[\n,]/),
+        list = [];
+    rawList.forEach(item => {
+        let test = item.trim().toLowerCase();
+        if (item !== '') {
+            let parts = test.split('.'),
+                firstLevel = (parts[(parts.length - 1)] ?? ''),
+                secondLevel = (parts[(parts.length - 2)] ?? ''),
+                check = {};
+            check[ID_BLACKTEST_FIRST] = firstLevel;
+            check[ID_BLACKTEST_SECOND] = secondLevel;
+
+            if (firstLevel === ALL_ALLOWED) {
+                check[ID_BLACKTEST_FIRST] = true;
+            } else if (firstLevel.indexOf('|') !== -1) {
+                check[ID_BLACKTEST_FIRST] = firstLevel.replace(/\s/g, '').split('|');
+            }
+            if (secondLevel === ALL_ALLOWED) {
+                check[ID_BLACKTEST_SECOND] = true;
+            } else if (secondLevel.indexOf('|') !== -1) {
+                check[ID_BLACKTEST_SECOND] = secondLevel.replace(/\s/g, '').split('|');
+            }
+            list.push(check);
+        }
+    });
+
+    return list;
+}
+
+/**
+ *
+ * Default storage-parameter
+ */
+var defaultSettings = {};
+defaultSettings[ID_ON_OFF] = false;
+defaultSettings[ID_INDEX] = INDEXNAME;
+defaultSettings[ID_TYPE] = TYPENAME;
+defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
+defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
 function markDocumentWorkupBorderStatus(color) {
     document.body.style.border = BORDER_DOC_WORKUP + ' ' + color + ' ';
@@ -35,20 +103,28 @@ function postAjax(url, data) {
         },
         body: JSON.stringify(data),
     }).then((response) => {
-        console.log(response);
         markDocumentWorkupBorderStatus(BORDER_DOC_SUCCESS); // sign success
         return response.json();
     }).then((data) => {
         if ((data[FLAG_RESURF]) && (data[URI_RESURF])) {
+            console.log(data[URI_RESURF]+' resurf-data');
+            /**
+             * surf one more time. => this is the part for your search-robot, if you want that.
+             * remeber: you should respect the robots.txt and the restrictions ind the meta-datas of the
+             * current html-website.
+             */
             markDocumentWorkupBorderStatus(BORDER_DOC_NOT_WORKED_YET);
             document.location.href = data[URI_RESURF];
         } else {
             markDocumentWorkupBorderStatus(BORDER_DOC_SUCCESS);
         }
     }).catch(function (error) {
-        markDocumentWorkupBorderStatus(BORDER_DOC_FAILED);
-        console.log('A postAjax: MySearch-AddOn with following object of error');
-        console.log(error);
+        if (!!error) {
+            markDocumentWorkupBorderStatus(BORDER_DOC_FAILED);
+            console.log('A postAjax: MySearch-AddOn with following object of error. ');
+            alert('MySearch-AddOn-Error: ' + "\n" + 'Not Started ElasticSearch => (bash/console/pcshell:ddev restart) ' + "\n" + 'Unwished indexing? => Deactivate it.')
+            console.log(error);
+        }
     });
 
 }
@@ -111,9 +187,12 @@ function getLinkList() {
     return result;
 }
 
-// @todo add a logik to allow/unallow the index
-function getIndexListFromStorage() {
-    return INDEXNAME;
+function getIndexListFromStorage(indexName) {
+    return indexName ?? INDEXNAME;
+}
+
+function getTypeListFromStorage(typeName) {
+    return typeName ?? TYPENAME;
 }
 
 function getHeadlineList() {
@@ -132,47 +211,102 @@ function getHeadlineList() {
 }
 
 // @todo: This function should contain a individual blacklist, It should be part of a file with domainnames
-function domainInBlacklist(testUriRaw) {
-    let testUri = testUriRaw.hostname.toLowerCase(),
+function domainInBlacklist(testUriRaw,mySettings) {
+    let parts = testUriRaw.hostname.toLowerCase().split('.'),
+        // list = globalThis.mySettings[ID_BLACKLIST],
+        list = mySettings[ID_BLACKLIST],
+        firstTest = (parts[(parts.length - 1)] ?? ''),
+        secondTest = (parts[(parts.length - 2)] ?? ''),
         flag = false,
-        list = ['www.bing.com', 'www.bing.de', 'www.google.com', 'www.google.de',];
+        flagFirst, flagSecond, checkFirst, checkSecond;
 
-    flag = flag || (testUri === 'mysearch.ddev.site');
-    flag = flag || checkDomainInList(testUri, list);
-    return flag;
+    list.forEach((item) => {
+        if (!flag) {
+            flagFirst = false;
+            flagSecond = false;
+            checkFirst = item[ID_BLACKTEST_FIRST];
+            checkSecond = item[ID_BLACKTEST_SECOND];
+            if (firstTest === '') {
+                flagFirst = true;
+            } else {
+                if (Array.isArray(checkFirst)) {
+                    flagFirst = checkFirst.includes(firstTest);
+                } else {
+                    flagFirst = (checkFirst === firstTest);
+                }
+            }
+            if (secondTest === '') {
+                flagSecond = true;
+            } else {
+                if (Array.isArray(checkSecond)) {
+                    flagSecond = checkSecond.includes(secondTest);
+                } else {
+                    flagSecond = (checkSecond === secondTest);
+                }
+            }
+            flag = flag || (
+                flagFirst && flagSecond
+            );
+        }
+
+    })
+    return flag || (testUriRaw.hostname.indexOf(ELASTIC_DOMAIN) !== -1);
 }
 
-// @todo: the flaglist should allow the detection of regular expressions like '*.google.(de|com|org|gov)'
-function checkDomainInList(testUriRaw, list) {
-    return list.includes(testUriRaw);
-}
 
-function dataForIndex(uri, index) {
+
+function dataForIndex(uri, index, type) {
     // parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
     let content = {};
 
     content[DOC_KEY] = uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'];
     content[INDEX_KEY] = index;
+    content[TYPE_KEY] = type;
     content[BODY_HTML] = document.body.innerHTML;
     content[BODY_TEXT] = document.body.innerText;
     content[LINKS] = getLinkList();
     content[HEADLINES] = getHeadlineList();
     postAjax(ELASTIC_LOCAL_URL, content);
-
 }
 
+function initPage(mySettings) {
+    console.log(mySettings);
+    if (!!mySettings[ID_ON_OFF]) {
+        markDocumentWorkupBorderStatus(BORDER_DOC_NOT_WORKED_YET);
 
-
-// initial color
-markDocumentWorkupBorderStatus(BORDER_DOC_NOT_WORKED_YET);
-
-let uri = document.location;
-if (domainInBlacklist(uri)) {
-    markDocumentWorkupBorderStatus(BORDER_DOC_BLACKLISTED); // sign failure of blacklist
-} else {
-    let index = getIndexListFromStorage();
-    if (index) {
-        dataForIndex(uri, index);
+        let uri = document.location;
+        if (domainInBlacklist(uri,mySettings)) {
+            markDocumentWorkupBorderStatus(BORDER_DOC_BLACKLISTED); // sign failure of blacklist
+        } else {
+            let index = getIndexListFromStorage(mySettings[ID_INDEX]),
+                type = getTypeListFromStorage(mySettings[ID_TYPE]);
+            if (index) {
+                dataForIndex(uri, index, type);
+            }
+            markDocumentWorkupBorderStatus(BORDER_DOC_IN_PROGRESS); // sign failure of blacklist
+        }
+    } else {
+        console.log('nothing to do');
+        markDocumentWorkupBorderStatus(BORDER_DOC_NOT_ACTIVE); // sign failure of blacklist
     }
 }
-markDocumentWorkupBorderStatus('blue'); // sign failure of blacklist
+
+/**
+ * Single -Call for page API to local storage in browser
+ */
+var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+settingsStored.then((item) =>{
+    console.log('readStore');
+    if (!item) {
+        initPage(defaultSettings);
+    } else {
+        initPage(item[STORAGE_KEY_SETTINGS]);
+    }
+}).catch((err) =>{
+    if (!err) {
+
+        console.log('Ends without error.');
+    } else {
+        console.log('Stop, there was an error:' + "\n" + err);
+    }
+});

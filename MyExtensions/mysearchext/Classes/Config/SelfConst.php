@@ -20,7 +20,6 @@ namespace Porthd\Mysearchext\Config;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 class SelfConst
 {
 
@@ -30,7 +29,7 @@ class SelfConst
     public const ELASTIC_INDEX_DOMAIN_NAME = 'ELASTIC_INDEX_DOMAIN';
     public const ELASTIC_INDEX_DOMAIN_VALUE = 'mysearch.ddev.site';
     public const ELASTIC_INDEX_ROUTE_NAME = 'DOMAIN_NAME';
-    public const ELASTIC_INDEX_ROUTE_VALUE = 'http://'.self::ELASTIC_INDEX_DOMAIN_VALUE;
+    public const ELASTIC_INDEX_ROUTE_VALUE = 'http://' . self::ELASTIC_INDEX_DOMAIN_VALUE;
     public const ELASTIC_INDEX_SUB_NAME = 'ELASTIC_INDEX_ROUTE_NAME';
     public const ELASTIC_INDEX_SUB_VALUE = 'search';
     public const GLOBALS_SUBKEY_CUSTOMINDEXER = 'customIndexer';
@@ -41,10 +40,10 @@ class SelfConst
     public const SELF_DOMAIN_NAME = 'http://mysearchext.ddev.site';
     public const SELF_DOMAIN_ELASTIC_ADDPORT = ':9200';
 
-    public const METHOD_NORMALIZE =  'normalizeRequest';
-    public const METHOD_REBUILD =  'rebuildRequest';
-    public const METHOD_GET_URLS =  'getUrls';
-    public const METHOD_GET_ERRORMESSAGES =  'getErrorMessages';
+    public const METHOD_NORMALIZE = 'normalizeRequest';
+    public const METHOD_REBUILD = 'rebuildRequest';
+    public const METHOD_GET_URLS = 'getUrls';
+    public const METHOD_GET_ERRORMESSAGES = 'getErrorMessages';
 
     public const BASIC_REQUEST_KEY_LIST = [
         'indexKey',
@@ -53,7 +52,7 @@ class SelfConst
         'bodyText',
         'links',
         'headlines',
-        ];
+    ];
 
     public const INDEX_NAME_BASIC_RESULTER = 'Porthd_Mysearchext_BasicResulter';
     public const INDEX_NAME_BASIC_INDEXER = 'Porthd_Mysearchext_BasicIndexer';
@@ -64,18 +63,18 @@ class SelfConst
     public const ELASTIC_INDEXER_BODY = 'body';
 
     // constants used in the add-on for the JSON-API to the indexer-middle-ware
-    public const ADDON_BASIC_INDEXNAME = 'general';
+    public const ADDON_BASIC_INDEX_NAME = 'general';
     public const ADDON_BASIC_TYPE_NAME = 'general';
     public const ADDON_BASIC_LINKS = 'links';
     public const ADDON_BASIC_LINKGROUP_OWN = 'own';
     public const ADDON_BASIC_LINKGROUP_MENU = 'menu';
     public const ADDON_BASIC_LINKGROUP_FOREIGN = 'foreign';
     public const ADDON_BASIC_STATUS_NAME = 'status';
-    public const ADDON_BASIC_STATUS_OK = 'ok';
     public const ADDON_BASIC_FLAG_RESURF = 'flagResurf';
     public const ADDON_BASIC_URI_RESURF = 'uriResurf';
     public const ADDON_BASIC_DOC_KEY = 'docKey';
     public const ADDON_BASIC_INDEX_KEY = 'indexKey';
+    public const ADDON_BASIC_TYPE_KEY = 'typeKey';
     public const ADDON_BASIC_BODY_HTML = 'bodyHtml';
     public const ADDON_BASIC_BODY_TEXT = 'bodyText';
     public const ADDON_BASIC_HEADLINES = 'headlines';
@@ -86,10 +85,10 @@ class SelfConst
             'foreign' => [],
         ],
         'indexKey' => 'general',
-    'docKey' => 'https://test.com/',
-            'bodyHtml' => 'Lorem ipsum dolor sit amet',
-            'bodyText' => 'Consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc!',
-            'headlines' => '<h1>HTML Ipsum Quaerteras</h1>
+        'docKey' => 'https://test.com/',
+        'bodyHtml' => 'Lorem ipsum dolor sit amet',
+        'bodyText' => 'Consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc!',
+        'headlines' => '<h1>HTML Ipsum Quaerteras</h1>
 
 				<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
 
@@ -121,8 +120,8 @@ class SelfConst
 
     public const TRANS_INDEXER_LIST = 'list';
     public const TRANS_INDEXRESULTER_LIST_TEXTFIELDS = [
-        self::TRANS_INDEXER_HEADER ,
-        self::TRANS_INDEXER_TEXT ,
+        self::TRANS_INDEXER_HEADER,
+        self::TRANS_INDEXER_TEXT,
     ];
     public const TRANS_INDEXER_SELF = 'self';
     public const TRANS_INDEXER_HEADER = 'header';

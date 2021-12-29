@@ -11,7 +11,7 @@ class SearchFilter
 
     /** @var array $indexList */
     protected $indexList = [
-        SelfConst::ADDON_BASIC_INDEXNAME,
+        SelfConst::ADDON_BASIC_INDEX_NAME,
     ];
 
     /** @var array $typeList */
