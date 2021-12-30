@@ -73,7 +73,13 @@
                              extensionName="mysearchext"
                 />
             </label></th>
-            <td><f:form.select id="indexList" property="indexList" options="{searchIndices}" /></td>
+            <td>
+                <f:form.select id="indexList"
+                               property="indexList"
+                               options="{searchIndices}"
+                               multiple="true"
+                />
+            </td>
             <td> </td>
         </tr>
             <tr>

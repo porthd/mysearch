@@ -45,11 +45,11 @@ class MyIndexController extends ActionController
      */
     protected $helperResulterService;
 
-    public function __construct(?FallBackNormalizer $fallBackNormalizer = null,
+    public function __construct(
+        ?FallBackNormalizer $fallBackNormalizer = null,
         ?SearchFilter $searchFilter = null,
         ?HelperResulterService $helperResulterService = null
-    )
-    {
+    ) {
         $this->fallBackNormalizer = $fallBackNormalizer ?? new FallBackNormalizer();
         $this->searchFilter = $searchFilter ?? new SearchFilter();
         $this->helperResulterService = $helperResulterService ?? new HelperResulterService();
