@@ -47,14 +47,6 @@ interface IndexerInterface
      * @return string|null
      *
      */
-    public function typeName(array &$data):?string;
-    /**
-     * return null,if the default should be used
-     *
-     * @param array $data
-     * @return string|null
-     *
-     */
     public function idName(array &$data):?string;
     /**
      * return null,if the default should be used

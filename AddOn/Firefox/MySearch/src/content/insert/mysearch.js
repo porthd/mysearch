@@ -10,7 +10,6 @@
  * needed for BOTH src/content/insert/mysearch.js and popup/mysearch.js
  */
 const INDEXNAME = 'general',
-    TYPENAME = 'general',
     ALL_ALLOWED = '*',
     TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
         'google.' + ALL_ALLOWED + ',' + "\n" +
@@ -22,8 +21,6 @@ const INDEXNAME = 'general',
  * needed for src/content/insert/mysearch.js
  */
 const ELASTIC_DOMAIN = 'mysearch.ddev.site',
-    // ELASTIC_PORT = ':9200',
-    ELASTIC_PORT = '',
     ELASTIC_PROTOKOL = 'https://',
     LINKS = 'links',
     LINKGROUP_OWN = 'own',
@@ -32,8 +29,7 @@ const ELASTIC_DOMAIN = 'mysearch.ddev.site',
     FLAG_RESURF = 'flagResurf',
     URI_RESURF = 'uriResurf',
     DOC_KEY = 'docKey',
-    INDEX_KEY = 'indexKey',
-    TYPE_KEY = 'typeKey',
+    INDEX_KEY = 'indexKey'
     BODY_HTML = 'bodyHtml',
     BODY_TEXT = 'bodyText',
     HEADLINES = 'headlines',
@@ -52,7 +48,6 @@ const STORAGE_KEY_SETTINGS = 'mySettings',
     ID_PING = 'mysearch-ping',
     ID_ON_OFF = 'mysearch-on-off',
     ID_INDEX = 'mysearch-index',
-    ID_TYPE = 'mysearch-type',
     ID_BLACKLIST = 'mysearch-blacklist',
     ID_BLACKTEXT = 'mysearch-blacktext',
     ID_BLACKTEST_FIRST = 'first',
@@ -97,7 +92,6 @@ var defaultSettings = {};
 defaultSettings[ID_PING] = true;
 defaultSettings[ID_ON_OFF] = false;
 defaultSettings[ID_INDEX] = INDEXNAME;
-defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
@@ -146,7 +140,7 @@ function switchIcon(elasticDomain, settings) {
 // @todo allow the user, to send his datas to an other elastic-server
 function getAlternativeElasticServerSearch(defaultServer) {
     // return 'https://' + defaultServer + '/search/';
-    return ELASTIC_PROTOKOL + ELASTIC_DOMAIN + ELASTIC_PORT + '/search/';
+    return ELASTIC_PROTOKOL + ELASTIC_DOMAIN + '/search/';
 }
 
 
@@ -157,10 +151,9 @@ function markDocumentWorkupBorderStatus(color) {
 function postAjax(url, data) {
     var jsonData = new FormData();
     jsonData.append("json", JSON.stringify(data));
+    console.log(url);
     return fetch(url, {
         method: "POST",
-        mode: 'no-cors',
-        url: ELASTIC_PROTOKOL + ELASTIC_DOMAIN + ELASTIC_PORT,
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
@@ -255,9 +248,6 @@ function getIndexListFromStorage(indexName) {
     return indexName ?? INDEXNAME;
 }
 
-function getTypeListFromStorage(typeName) {
-    return typeName ?? TYPENAME;
-}
 
 function getHeadlineList() {
     let list = document.body.querySelectorAll('h1,h2,h3,h4'),
@@ -321,12 +311,11 @@ function domainInBlacklist(testUriRaw, mySettings) {
     return flag || (testUriRaw.hostname.indexOf(ELASTIC_DOMAIN) !== -1);
 }
 
-function dataForIndex(uri, index, type, elasticServer) {
+function dataForIndex(uri, index, elasticServer) {
     // parameter of content listed in file \web\typo3conf\ext\mysearch\Classes\Config\SelfConst.php for check-proposes
     let content = {};
     content[DOC_KEY] = uri['protocol'] + "//" + uri['hostname'] + (!uri['port'] ? ':' + uri['port'] : '') + uri['pathname'] + uri['search'] + uri['hash'];
     content[INDEX_KEY] = index;
-    content[TYPE_KEY] = type;
     content[BODY_HTML] = document.body.innerHTML;
     content[BODY_TEXT] = document.body.innerText;
     content[LINKS] = getLinkList();
@@ -344,10 +333,9 @@ function initPage(mySettings) {
             markDocumentWorkupBorderStatus(BORDER_DOC_BLACKLISTED); // sign failure of blacklist
         } else {
             console.log('register');
-            let index = getIndexListFromStorage(mySettings[ID_INDEX]),
-                type = getTypeListFromStorage(mySettings[ID_TYPE]);
+            let index = getIndexListFromStorage(mySettings[ID_INDEX]);
             if (index) {
-                dataForIndex(uri, index, type, myElasticServer);
+                dataForIndex(uri, index,  myElasticServer);
             }
             markDocumentWorkupBorderStatus(BORDER_DOC_IN_PROGRESS); // sign failure of blacklist
         }

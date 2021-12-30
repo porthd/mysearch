@@ -44,12 +44,11 @@ interface ResulterInterface
 
     /**
      * @param string $index
-     * @param string $type
      * @param SearchFilter $searchwords
      * @param int $max
      * @return array|false
      */
-    public function search(string $index, string $type, SearchFilter $searchfilter, int $max);
+    public function search(string $index, SearchFilter $searchfilter, int $max);
 
     /**
      * If the method return false, the fallbackfunction will take the falus of elasticsearch.

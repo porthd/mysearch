@@ -14,11 +14,6 @@ class SearchFilter
         SelfConst::ADDON_BASIC_INDEX_NAME,
     ];
 
-    /** @var array $typeList */
-    protected $typeList = [
-        SelfConst::ADDON_BASIC_TYPE_NAME,
-    ];
-
     /** @var string $wordsForbidden */
     protected $wordsForbidden = '';
 
@@ -64,21 +59,6 @@ class SearchFilter
     public function addTypeList(string $type): void
     {
         $this->typeList[] = $type;
-    }
-    /**
-     * @return array
-     */
-    public function getTypeList(): array
-    {
-        return $this->typeList;
-    }
-
-    /**
-     * @param array $typeList
-     */
-    public function setTypeList(array $typeList): void
-    {
-        $this->typeList = $typeList;
     }
 
     /**

@@ -158,17 +158,17 @@ class BasicIndexer implements IndexerInterface
     public function bodyList(array &$data, $searchWordList = []):array
     {
 
-        $dataList = $data[SelfConst::TRANS_INDEXER_LIST];
-        $dataLinksList = $data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_LINKS];
+
+        $dataLinks = $data[SelfConst::ADDON_BASIC_LINKS];
         return [
-            SelfConst::TRANS_INDEXER_SELF => $dataList[SelfConst::ADDON_BASIC_DOC_KEY],
-            SelfConst::TRANS_INDEXER_HEADER => $dataList[SelfConst::ADDON_BASIC_HEADLINES],
-            SelfConst::TRANS_INDEXER_TEXT => $dataList[SelfConst::ADDON_BASIC_BODY_TEXT],
-            SelfConst::TRANS_INDEXER_HTML => $dataList[SelfConst::ADDON_BASIC_BODY_HTML],
+            SelfConst::TRANS_INDEXER_SELF => $data[SelfConst::ADDON_BASIC_DOC_KEY],
+            SelfConst::TRANS_INDEXER_HEADER => $data[SelfConst::ADDON_BASIC_HEADLINES],
+            SelfConst::TRANS_INDEXER_TEXT => $data[SelfConst::ADDON_BASIC_BODY_TEXT],
+            SelfConst::TRANS_INDEXER_HTML => $data[SelfConst::ADDON_BASIC_BODY_HTML],
             SelfConst::TRANS_INDEXER_LINKS => [
-                SelfConst::TRANS_INDEXER_L_FOREIGN => $dataLinksList[SelfConst::ADDON_BASIC_LINKGROUP_FOREIGN],
-                SelfConst::TRANS_INDEXER_L_OWN => $dataLinksList[SelfConst::ADDON_BASIC_LINKGROUP_OWN],
-                SelfConst::TRANS_INDEXER_L_MENU => $dataLinksList[SelfConst::ADDON_BASIC_LINKGROUP_MENU],
+                SelfConst::TRANS_INDEXER_L_FOREIGN => $dataLinks[SelfConst::ADDON_BASIC_LINKGROUP_FOREIGN],
+                SelfConst::TRANS_INDEXER_L_OWN => $dataLinks[SelfConst::ADDON_BASIC_LINKGROUP_OWN],
+                SelfConst::TRANS_INDEXER_L_MENU => $dataLinks[SelfConst::ADDON_BASIC_LINKGROUP_MENU],
             ],
         ];
     }

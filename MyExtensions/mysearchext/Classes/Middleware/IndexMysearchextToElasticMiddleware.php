@@ -101,8 +101,9 @@ class IndexMysearchextToElasticMiddleware implements MiddlewareInterface
                         if ($flagFlow) {
                             // each indexer will store the error itself in the object. the errors mus be requested later
                             $params = [
-                                SelfConst::INDEXER_BASIC_INDEX => $indexerObject->indexName($insertData) ?? SelfConst::ADDON_BASIC_INDEX_NAME,
-                                SelfConst::INDEXER_BASIC_TYPE_KEY => $indexerObject->typeName($insertData) ?? SelfConst::ADDON_BASIC_TYPE_NAME,
+                                SelfConst::INDEXER_BASIC_INDEX => strtolower(
+                                    $indexerObject->indexName($insertData) ?? SelfConst::ADDON_BASIC_INDEX_NAME
+                                ),
                                 'id' => $indexerObject->idName($insertData) ?? hash(
                                         'sha512',
                                         SelfConst::SELF_NAME . $myJson . SelfConst::SELF_NAME .

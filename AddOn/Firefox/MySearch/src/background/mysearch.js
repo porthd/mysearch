@@ -10,7 +10,6 @@
  * needed for BOTH src/content/insert/mysearch.js and popup/mysearch.js
  */
 const INDEXNAME = 'general',
-    TYPENAME = 'general',
     ALL_ALLOWED = '*',
     TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
         'google.' + ALL_ALLOWED + ',' + "\n" +
@@ -22,8 +21,6 @@ const INDEXNAME = 'general',
  * needed for src/content/insert/mysearch.js
  */
 const ELASTIC_DOMAIN = 'mysearch.ddev.site',
-    // ELASTIC_PORT = ':9200',
-    ELASTIC_PORT = '',
     ELASTIC_PROTOKOL = 'https://',
     LINKS = 'links',
     LINKGROUP_OWN = 'own',
@@ -33,7 +30,6 @@ const ELASTIC_DOMAIN = 'mysearch.ddev.site',
     URI_RESURF = 'uriResurf',
     DOC_KEY = 'docKey',
     INDEX_KEY = 'indexKey',
-    TYPE_KEY = 'typeKey',
     BODY_HTML = 'bodyHtml',
     BODY_TEXT = 'bodyText',
     HEADLINES = 'headlines',
@@ -52,7 +48,6 @@ const STORAGE_KEY_SETTINGS = 'mySettings',
     ID_PING = 'mysearch-ping',
     ID_ON_OFF = 'mysearch-on-off',
     ID_INDEX = 'mysearch-index',
-    ID_TYPE = 'mysearch-type',
     ID_BLACKLIST = 'mysearch-blacklist',
     ID_BLACKTEXT = 'mysearch-blacktext',
     ID_BLACKTEST_FIRST = 'first',
@@ -90,13 +85,12 @@ function convertTextToList(listText) {
 }
 
 /**
-* Default storage-parameter
-*/
+ * Default storage-parameter
+ */
 var defaultSettings = {};
 defaultSettings[ID_PING] = true;
 defaultSettings[ID_ON_OFF] = false;
 defaultSettings[ID_INDEX] = INDEXNAME;
-defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
@@ -112,6 +106,7 @@ function browserIconSet(svgPath) {
         }
     });
 }
+
 function browserIconOn() {
     browserIconSet(ICON_PATH_ON);
 
@@ -129,7 +124,7 @@ function switchIcon(elasticDomain, settings) {
     var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
     settingsStored.then((item) => {
         if (!item) {
-            if ((settings[ID_ON_OFF]) && (settings[ID_PING])){
+            if ((settings[ID_ON_OFF]) && (settings[ID_PING])) {
                 browserIconOn();
             } else {
                 browserIconOff();
@@ -158,8 +153,7 @@ function switchIcon(elasticDomain, settings) {
 
 // @todo allow the user, to send his datas to an other elastic-server
 function getAlternativeElasticServerIndices(defaultDomain) {
-    // return 'https://'+defaultDomain+'/_cat/indices/';
-    return ELASTIC_PROTOKOL +defaultDomain+    ELASTIC_PORT +'/_cat/indices/';
+    return ELASTIC_PROTOKOL + defaultDomain + '/_cat/indices/';
 }
 
 /**
@@ -167,17 +161,14 @@ function getAlternativeElasticServerIndices(defaultDomain) {
  */
 var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
 settingsStored.then((item) => {
-
+    let elasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
     if (!item) {
-        let eleasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
-        switchIcon(elasticDomain,defaultSettings);
+        switchIcon(elasticDomain, defaultSettings);
     } else {
-        let eleasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
-        switchIcon(elasticDomain,item[STORAGE_KEY_SETTINGS]);
+        switchIcon(elasticDomain, item[STORAGE_KEY_SETTINGS]);
     }
 }).catch((err) => {
     if (!err) {
-
         console.log('Ends without error.');
     } else {
         console.log('Stop, there was an error:' + "\n" + err);

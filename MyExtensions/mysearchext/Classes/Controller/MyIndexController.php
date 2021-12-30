@@ -92,7 +92,7 @@ class MyIndexController extends ActionController
                 $this->searchFilter,
                 $this->searchFilter->getTypeList()
             );
-            if (($myBlocks = $resulter->search($index, $type, $this->searchFilter, $max)) !== false) {
+            if (($myBlocks = $resulter->search($index, $this->searchFilter, $max)) !== false) {
                 // each resulter rebuild its own hits in the rwa resultlist
                 if ($this->fallBackNormalizer->extractHits($rawHits, $myBlocks, $resulter)) {
                     $allBlocks[] = $rawHits;

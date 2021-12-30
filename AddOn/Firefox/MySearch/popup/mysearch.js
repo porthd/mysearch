@@ -10,7 +10,6 @@
  * needed for BOTH src/content/insert/mysearch.js and popup/mysearch.js
  */
 const INDEXNAME = 'general',
-    TYPENAME = 'general',
     ALL_ALLOWED = '*',
     TEXT_BLACKDOMAINS = 'bing.com|de,' + "\n" +
         'google.' + ALL_ALLOWED + ',' + "\n" +
@@ -22,8 +21,6 @@ const INDEXNAME = 'general',
  * needed for src/content/insert/mysearch.js
  */
 const ELASTIC_DOMAIN = 'mysearch.ddev.site',
-    // ELASTIC_PORT = ':9200',
-    ELASTIC_PORT = '',
     ELASTIC_PROTOKOL = 'https://',
     LINKS = 'links',
     LINKGROUP_OWN = 'own',
@@ -33,7 +30,6 @@ const ELASTIC_DOMAIN = 'mysearch.ddev.site',
     URI_RESURF = 'uriResurf',
     DOC_KEY = 'docKey',
     INDEX_KEY = 'indexKey',
-    TYPE_KEY = 'typeKey',
     BODY_HTML = 'bodyHtml',
     BODY_TEXT = 'bodyText',
     HEADLINES = 'headlines',
@@ -52,7 +48,6 @@ const STORAGE_KEY_SETTINGS = 'mySettings',
     ID_PING = 'mysearch-ping',
     ID_ON_OFF = 'mysearch-on-off',
     ID_INDEX = 'mysearch-index',
-    ID_TYPE = 'mysearch-type',
     ID_BLACKLIST = 'mysearch-blacklist',
     ID_BLACKTEXT = 'mysearch-blacktext',
     ID_BLACKTEST_FIRST = 'first',
@@ -97,69 +92,65 @@ var defaultSettings = {};
 defaultSettings[ID_PING] = true;
 defaultSettings[ID_ON_OFF] = false;
 defaultSettings[ID_INDEX] = INDEXNAME;
-defaultSettings[ID_TYPE] = TYPENAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
-
-function browserIconSet(svgPath) {
-    browser.browserAction.setIcon({
-        path: {
-            "16": svgPath,
-            "19": svgPath,
-            "32": svgPath,
-            "48": svgPath,
-            "128": svgPath,
-        }
-    });
-}
-
-function browserIconOn() {
-    browserIconSet(ICON_PATH_ON);
-
-}
-
-function browserIconOff() {
-    browserIconSet(ICON_PATH_OFF);
-}
-
-/**
- * Single -Call for page API to local storage in browser
- */
-function switchIcon(elasticDomain, settings) {
-    var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-    settingsStored.then((item) => {
-        if (!item) {
-            if ((settings[ID_ON_OFF]) && (settings[ID_PING])){
-                browserIconOn();
-            } else {
-                browserIconOff();
-            }
-        } else {
-            if ((!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) &&
-                (!!item[STORAGE_KEY_SETTINGS][ID_PING])
-            ) {
-                browserIconOn();
-            } else {
-                browserIconOff();
-            }
-        }
-    }).catch((err) => {
-        if (!err) {
-            console.log('Ends without error.');
-        } else {
-            browserIconOff();
-            console.log('Stop, there was an error:' + "\n" + err);
-        }
-    });
-}
+//
+// function browserIconSet(svgPath) {
+//     browser.browserAction.setIcon({
+//         path: {
+//             "16": svgPath,
+//             "19": svgPath,
+//             "32": svgPath,
+//             "48": svgPath,
+//             "128": svgPath,
+//         }
+//     });
+// }
+//
+// function browserIconOn() {
+//     browserIconSet(ICON_PATH_ON);
+//
+// }
+//
+// function browserIconOff() {
+//     browserIconSet(ICON_PATH_OFF);
+// }
+//
+// /**
+//  * Single -Call for page API to local storage in browser
+//  */
+// function switchIcon(elasticDomain, settings) {
+//     var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+//     settingsStored.then((item) => {
+//         if (!item) {
+//             if (settings[ID_ON_OFF]) {
+//                 browserIconOn();
+//             } else {
+//                 browserIconOff();
+//             }
+//         } else {
+//             if (!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) {
+//                 browserIconOn();
+//             } else {
+//                 browserIconOff();
+//             }
+//         }
+//     }).catch((err) => {
+//         if (!err) {
+//             console.log('Ends without error.');
+//         } else {
+//             browserIconOff();
+//             console.log('Stop, there was an error:' + "\n" + err);
+//         }
+//     });
+// }
 
 // <<< end-Block --- How cann i Import the following code like a module?
 
 
 // @todo allow the user, to send his datas to an other elastic-server
 function getAlternativeElasticServerIndices(defaultDomain) {
-    // return 'https://'+defaultDomain+'/_cat/indices/';
-    return     ELASTIC_PROTOKOL +defaultDomain+    ELASTIC_PORT +'/_cat/indices/';
+    return ELASTIC_PROTOKOL + defaultDomain + '/_cat/indices/';
 }
 
 /**
@@ -169,7 +160,6 @@ function getAlternativeElasticServerIndices(defaultDomain) {
 var mySettings = {...defaultSettings};
 
 
-
 /**
  *
  * Needed DOM-Objects
@@ -177,13 +167,11 @@ var mySettings = {...defaultSettings};
 var $myLocation = {};
 $myLocation[ID_ON_OFF] = document.getElementById(ID_ON_OFF);
 $myLocation[ID_INDEX] = document.getElementById(ID_INDEX);
-$myLocation[ID_TYPE] = document.getElementById(ID_TYPE);
 $myLocation[ID_BLACKTEXT] = document.getElementById(ID_BLACKTEXT);
 
 function updateView() {
     $myLocation[ID_ON_OFF].checked = (!!mySettings[ID_ON_OFF]);
     $myLocation[ID_INDEX].value = (mySettings[ID_INDEX] ?? INDEXNAME);
-    $myLocation[ID_TYPE].value = (mySettings[ID_TYPE] ?? TYPENAME);
     $myLocation[ID_BLACKTEXT].value = (mySettings[ID_BLACKTEXT] ?? TEXT_BLACKDOMAINS);
 }
 
@@ -191,10 +179,10 @@ function updateView() {
  * API to local storage in browser
  */
 var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-settingsStored.then((item) =>{
+settingsStored.then((item) => {
     mySettings = {...item[STORAGE_KEY_SETTINGS]};
     updateView();
-}).catch(() =>{
+}).catch(() => {
     mySettings = {...defaultSettings};
     updateView();
 });
@@ -213,7 +201,7 @@ function getSettings() {
     })
 }
 
-function setSettings( key, value) {
+function setSettings(key, value) {
     if (key === ID_BLACKTEXT) {
         mySettings[ID_BLACKTEXT] = value;
         mySettings[ID_BLACKLIST] = convertTextToList(value);
@@ -226,26 +214,20 @@ function setSettings( key, value) {
 }
 
 
-function changeSwitchSettings(settings,location) {
+function changeSwitchSettings(settings, location) {
     let onSearch = (!!document.getElementById(ID_ON_OFF).checked);
     console.log('Check ' + (onSearch ? 'true' : 'false'));
     setSettings(ID_ON_OFF, onSearch);
     updateView();
 }
 
-function changeTypeSettings() {
-    let typeName = document.getElementById(ID_TYPE).value ?? TYPENAME;
-    setSettings( ID_TYPE, typeName);
-    updateView();
-}
-
-function changeIndexSettings(settings,location) {
+function changeIndexSettings(settings, location) {
     let indexName = document.getElementById(ID_INDEX).value ?? INDEXNAME;
-    setSettings( ID_INDEX, indexName);
+    setSettings(ID_INDEX, indexName);
     updateView();
 }
 
-function changeBlacklistSettings(settings,location) {
+function changeBlacklistSettings(settings, location) {
     let rawTextListing = ((document.getElementById(ID_BLACKTEXT).value !== '') ?
             document.getElementById(ID_BLACKTEXT).value :
             TEXT_BLACKDOMAINS
@@ -256,11 +238,8 @@ function changeBlacklistSettings(settings,location) {
 }
 
 function initValues() {
-    $myLocation[ID_ON_OFF].addEventListener('change', ()=> {
+    $myLocation[ID_ON_OFF].addEventListener('change', () => {
         changeSwitchSettings()
-    });
-    $myLocation[ID_TYPE].addEventListener('change', () => {
-        changeTypeSettings();
     });
     $myLocation[ID_INDEX].addEventListener('change', () => {
         changeIndexSettings();
@@ -284,7 +263,23 @@ window.addEventListener('blur', function (event) {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
         }
-    }).then(function(response) {
+    }).then(function (response) {
         setSettings(ID_PING, (response.status === 200));
+        let settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
+        settingsStored.then((item) => {
+            let elasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
+            if (!item) {
+                switchIcon(elasticDomain, defaultSettings);
+            } else {
+                switchIcon(elasticDomain, item[STORAGE_KEY_SETTINGS]);
+            }
+        }).catch((err) => {
+            if (!err) {
+                console.log('Ends without error.');
+            } else {
+                console.log('Stop, there was an error:' + "\n" + err);
+            }
+        });
+
     });
 });

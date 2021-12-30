@@ -20,10 +20,6 @@ class BasicResulter implements ResulterInterface
      * @var string
      */
     protected $indexes = SelfConst::ADDON_BASIC_INDEX_NAME;
-    /**
-     * @var string
-     */
-    protected $type = SelfConst::ADDON_BASIC_TYPE_NAME;
 
     /**
      * There is only one index defined for this resulter.
@@ -46,26 +42,6 @@ class BasicResulter implements ResulterInterface
         return [SelfConst::ADDON_BASIC_INDEX_NAME];
     }
 
-    /**
-     * There is only one type defined for this resulter.
-     *
-     * @param SearchFilter $searchFilter
-     * @param array $param
-     * @return string
-     */
-    public function extractType(SearchFilter $searchFilter, array $param = []): string
-    {
-        return SelfConst::ADDON_BASIC_TYPE_NAME;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTypes(): array
-    {
-        return [SelfConst::ADDON_BASIC_TYPE_NAME];
-    }
-
     function __construct()
     {
         $domain = getenv('DOMAIN_NAME') ?? SelfConst::SELF_DOMAIN_NAME;
@@ -82,12 +58,11 @@ class BasicResulter implements ResulterInterface
 
     /**
      * @param string $index
-     * @param string $type
      * @param SearchFilter $searchFilter
      * @param int $max
      * @return array|false
      */
-    public function search(string $index, string $type, SearchFilter $searchFilter, int $max)
+    public function search(string $index, SearchFilter $searchFilter, int $max)
     {
         $searchWords = $searchFilter->getWordsMain() . ',' .
             $searchFilter->getWordsSecond() . ',' .
@@ -113,7 +88,6 @@ class BasicResulter implements ResulterInterface
             $queryString = empty($queryString) ? '*' : $queryString;
             $params = [
                 'from' => 0,
-                'type' => $type,
                 'index' => $index,
                 'size' => $max,
                 'body' => [
@@ -128,7 +102,6 @@ class BasicResulter implements ResulterInterface
         } else {
             $params = [
                 'index' => $index,
-                'type' => $type,
                 // https://stackoverflow.com/questions/67652344/elasticsearch-php-7-return-all-documents-of-a-given-mapping remove Body
 //                    https://stackoverflow.com/questions/67652344/elasticsearch-php-7-return-all-documents-of-a-given-mapping
 

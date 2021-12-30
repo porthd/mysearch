@@ -58,13 +58,11 @@ class SelfConst
     public const INDEX_NAME_BASIC_INDEXER = 'Porthd_Mysearchext_BasicIndexer';
 
     public const ELASTIC_INDEXER_INDEX = 'index';
-    public const ELASTIC_INDEXER_TYPE = 'type';
     public const ELASTIC_INDEXER_ID = 'id';
     public const ELASTIC_INDEXER_BODY = 'body';
 
     // constants used in the add-on for the JSON-API to the indexer-middle-ware
     public const ADDON_BASIC_INDEX_NAME = 'general';
-    public const ADDON_BASIC_TYPE_NAME = 'general';
     public const ADDON_BASIC_LINKS = 'links';
     public const ADDON_BASIC_LINKGROUP_OWN = 'own';
     public const ADDON_BASIC_LINKGROUP_MENU = 'menu';
@@ -74,7 +72,6 @@ class SelfConst
     public const ADDON_BASIC_URI_RESURF = 'uriResurf';
     public const ADDON_BASIC_DOC_KEY = 'docKey';
     public const ADDON_BASIC_INDEX_KEY = 'indexKey';
-    public const ADDON_BASIC_TYPE_KEY = 'typeKey';
     public const ADDON_BASIC_BODY_HTML = 'bodyHtml';
     public const ADDON_BASIC_BODY_TEXT = 'bodyText';
     public const ADDON_BASIC_HEADLINES = 'headlines';
@@ -133,7 +130,6 @@ class SelfConst
     public const TRANS_INDEXER_L_MENU = 'menu';
     // keys neede for the indexer
     public const INDEXER_BASIC_INDEX = 'index';
-    public const INDEXER_BASIC_TYPE_KEY = 'type';
 
     // objekt-key-names for results used in the fluid-template
     public const INCOME_NAME_BASIC_HEADER = 'header'; //
