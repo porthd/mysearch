@@ -131,19 +131,6 @@ class BasicIndexer implements IndexerInterface
      * @param array $data
      * @return string|null
      */
-    public function typeName(array &$data):?string
-    {
-        // force the default type
-        return (!empty($data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_TYPE_KEY])?
-            $data[SelfConst::TRANS_INDEXER_LIST][SelfConst::ADDON_BASIC_TYPE_KEY]:
-            SelfConst::ADDON_BASIC_TYPE_NAME
-            );
-    }
-
-    /**
-     * @param array $data
-     * @return string|null
-     */
     public function idName(array &$data):?string
     {
         // force the default hash-method to get an id

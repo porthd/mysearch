@@ -22,10 +22,6 @@ class FallBackNormalizer
      * @var string
      */
     protected $indexes = '';
-    /**
-     * @var string
-     */
-    protected $type = '';
 
     /**
      *
@@ -48,26 +44,6 @@ class FallBackNormalizer
     }
 
     /**
-     * @param SearchFilter $searchFilter
-     * @param array $param
-     * @return string
-     */
-    public function extractType(SearchFilter $searchFilter, array $param = []): string
-    {
-        return '';
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function getTypes(): array
-    {
-        return [];
-    }
-
-
-    /**
      *
      * @return string
      */
@@ -79,12 +55,11 @@ class FallBackNormalizer
     /**
      *
      * @param string $index
-     * @param string $type
      * @param SearchFilter $searchFilter
      * @param int $max
      * @return array|false
      */
-    public function search(string $index, string $type, SearchFilter $searchFilter, int $max)
+    public function search(string $index,  SearchFilter $searchFilter, int $max)
     {
         return false;
     }

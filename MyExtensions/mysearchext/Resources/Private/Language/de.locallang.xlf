@@ -20,8 +20,8 @@
 				<target>Haupt Suchbegriffe</target>
 			</trans-unit>
 			<trans-unit id="plugin.myform.searchfilter.form.wordsSecond" resname="plugin.myform.searchfilter.form.wordsSecond">
-				<source>secondSearchWords</source>
-				<target>Neben Suchbegriffe</target>
+				<source>secondSearchWords (Variations)</source>
+				<target>Variationsbegriffe zu Hauptsuche</target>
 			</trans-unit>
 			<trans-unit id="plugin.myform.searchfilter.form.wordsOptional" resname="plugin.myform.searchfilter.form.wordsOptional">
 				<source>optionalSearchWords</source>

@@ -18,11 +18,9 @@ class ElasticsearchIndexed
                 ->build();
     }
 
-    public function insert($p,$type='blog'){
-        if($type == 'blog'){
+    public function insert($p){
             $params = [
                 'index' => $p->shopUrl.'-'.$p->lang,
-                'type' => $type,
                 'id' => $p->blogID,
                 'body' => [
                     'lang' => $p->lang,
@@ -33,7 +31,6 @@ class ElasticsearchIndexed
                     'content' => $p->content
                 ]
             ];
-        }
         /*....*/
         try{
             // Alles hat geklappt

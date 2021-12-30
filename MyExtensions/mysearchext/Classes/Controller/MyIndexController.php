@@ -88,10 +88,6 @@ class MyIndexController extends ActionController
             $index = $resulter->extractIndex($this->searchFilter,
                 $this->searchFilter->getIndexList()
             );
-            $type = $resulter->extractType(
-                $this->searchFilter,
-                $this->searchFilter->getTypeList()
-            );
             if (($myBlocks = $resulter->search($index, $this->searchFilter, $max)) !== false) {
                 // each resulter rebuild its own hits in the rwa resultlist
                 if ($this->fallBackNormalizer->extractHits($rawHits, $myBlocks, $resulter)) {
@@ -109,7 +105,7 @@ class MyIndexController extends ActionController
         }
 
         $listOfIndicesRaw = $this->helperResulterService->getCurrentIndexes();
-        $listOfIndices = $listOfIndicesRaw;
+        $listOfIndices = array_column($listOfIndicesRaw, 'index');
         $this->view->assignMultiple([
             'results' => $allResults,
             'searchfilter' => $this->searchfilter,

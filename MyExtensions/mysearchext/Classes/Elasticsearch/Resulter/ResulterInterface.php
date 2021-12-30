@@ -27,22 +27,6 @@ interface ResulterInterface
     public function extractIndex(SearchFilter $searchFilter, array $param = []): string;
 
     /**
-     * return the list of allowed names for types
-     * @return array
-     */
-    public function getTypes(): array;
-
-    /**
-     * if the definition is empty, the default-type will be used
-     * extract the index from the parameter
-     *
-     * @param SearchFilter $searchFilter
-     * @param array $param
-     * @return string
-     */
-    public function extractType(SearchFilter $searchFilter,array $param = []): string;
-
-    /**
      * @param string $index
      * @param SearchFilter $searchwords
      * @param int $max

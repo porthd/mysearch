@@ -95,52 +95,12 @@ defaultSettings[ID_INDEX] = INDEXNAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
 
-function browserIconOn() {
-    browserIconSet(ICON_PATH_ON);
-
-}
-
-function browserIconOff() {
-    browserIconSet(ICON_PATH_OFF);
-}
-
-/**
- * Single -Call for page API to local storage in browser
- */
-function switchIcon(elasticDomain, settings) {
-    var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-    settingsStored.then((item) => {
-        if (!item) {
-            if ((settings[ID_ON_OFF]) && (settings[ID_PING])) {
-                browserIconOn();
-            } else {
-                browserIconOff();
-            }
-        } else {
-            if ((!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) &&
-                (!!item[STORAGE_KEY_SETTINGS][ID_PING])
-            ) {
-                browserIconOn();
-            } else {
-                browserIconOff();
-            }
-        }
-    }).catch((err) => {
-        if (!err) {
-            console.log('Ends without error.');
-        } else {
-            browserIconOff();
-            console.log('Stop, there was an error:' + "\n" + err);
-        }
-    });
-}
 
 // <<< end-Block --- How cann i Import the following code like a module?
 
 // @todo allow the user, to send his datas to an other elastic-server
 function getAlternativeElasticServerSearch(defaultServer) {
-    // return 'https://' + defaultServer + '/search/';
-    return ELASTIC_PROTOKOL + ELASTIC_DOMAIN + '/search/';
+    return ELASTIC_PROTOKOL + ELASTIC_DOMAIN + '/search/'; // push the data to the TYPO3-middleware
 }
 
 
@@ -179,7 +139,9 @@ function postAjax(url, data) {
         if (!!error) {
             markDocumentWorkupBorderStatus(BORDER_DOC_FAILED);
             console.log('A postAjax: MySearch-AddOn with following object of error. ');
-            alert('MySearch-AddOn-Error: ' + "\n" + 'Not Started ElasticSearch => (bash/console/pcshell:ddev restart) ' + "\n" + 'Unwished indexing? => Deactivate it.')
+            console.log('MySearch-AddOn-Error: ' + "\n" + 'Not Started ElasticSearch => (bash/console/pcshell:ddev restart) ' +
+                "\n" + 'Unwished indexing? => Deactivate it. '+
+                '(For developer) Perhaps there is an javascript or an error in the middleware [php] error. Check it');
             console.log(error);
         }
     });
@@ -272,39 +234,44 @@ function domainInBlacklist(testUriRaw, mySettings) {
         secondTest = (parts[(parts.length - 2)] ?? ''),
         flag = false,
         flagFirst, flagSecond, checkFirst, checkSecond;
-    console.log(list);
+    console.log('list'+firstTest);
+    console.log('list' + secondTest);
     if (!Array.isArray(list)) {
         list = convertTextToList(defaultSettings[ID_BLACKTEXT]);
-        console.log('list');
-        console.log(list);
     }
+    console.log(list );
     list.forEach((item) => {
         if (!flag) {
             flagFirst = false;
             flagSecond = false;
             checkFirst = item[ID_BLACKTEST_FIRST];
             checkSecond = item[ID_BLACKTEST_SECOND];
+
             if (firstTest === '') {
                 flagFirst = true;
             } else {
                 if (Array.isArray(checkFirst)) {
-                    flagFirst = checkFirst.includes(firstTest);
+                    flagFirst = checkFirst.includes(firstTest) || checkFirst.includes('*');
                 } else {
-                    flagFirst = (checkFirst === firstTest);
+                    flagFirst = (checkFirst === firstTest) || (checkFirst === '*') || (checkFirst=== true);
                 }
             }
             if (secondTest === '') {
                 flagSecond = true;
             } else {
                 if (Array.isArray(checkSecond)) {
-                    flagSecond = checkSecond.includes(secondTest);
+                    flagSecond = checkSecond.includes(secondTest) || checkSecond.includes('*');
                 } else {
-                    flagSecond = (checkSecond === secondTest);
+                    flagSecond = (checkSecond === secondTest) || (checkSecond ==='*') || (checkSecond === true);
                 }
             }
+            console.log('check first second ' + firstTest + ' - '+secondTest);
+            console.log(checkFirst );
+            console.log(checkSecond);
             flag = flag || (
                 flagFirst && flagSecond
             );
+            console.log('flag '+(flag?'true':'false') + 'für '+ secondTest+ '.'+firstTest);
         }
 
     })

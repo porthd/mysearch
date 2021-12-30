@@ -116,63 +116,59 @@ function browserIconOff() {
     browserIconSet(ICON_PATH_OFF);
 }
 
-
-/**
- * Single -Call for page API to local storage in browser
- */
-function switchIcon(elasticDomain, settings) {
-    var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-    settingsStored.then((item) => {
-        if (!item) {
-            if ((settings[ID_ON_OFF]) && (settings[ID_PING])) {
-                browserIconOn();
-            } else {
-                browserIconOff();
-            }
-        } else {
-            if ((!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) &&
-                (!!item[STORAGE_KEY_SETTINGS][ID_PING])
-            ) {
-                browserIconOn();
-            } else {
-                browserIconOff();
-            }
-        }
-    }).catch((err) => {
-        if (!err) {
-            console.log('Ends without error.');
-        } else {
-            browserIconOff();
-            console.log('Stop, there was an error:' + "\n" + err);
-        }
-    });
-}
-
 // <<< end-Block --- How cann i Import the following code like a module?
 
 
 // @todo allow the user, to send his datas to an other elastic-server
 function getAlternativeElasticServerIndices(defaultDomain) {
-    return ELASTIC_PROTOKOL + defaultDomain + '/_cat/indices/';
+    return ELASTIC_PROTOKOL + defaultDomain;
 }
 
-/**
- * Single -Call for page API to local storage in browser
- */
-var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-settingsStored.then((item) => {
-    let elasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
-    if (!item) {
-        switchIcon(elasticDomain, defaultSettings);
-    } else {
-        switchIcon(elasticDomain, item[STORAGE_KEY_SETTINGS]);
-    }
-}).catch((err) => {
-    if (!err) {
-        console.log('Ends without error.');
-    } else {
-        console.log('Stop, there was an error:' + "\n" + err);
-    }
-});
+// @todo how do i switch the icon to not-allwed, if the Button is set to Notallowed or idf the Site is down
+// Listener wont work good
+// timeout seems not to work
+// I hate javascript :-( The debugging is horrible.
+//
+// /**
+//  * Single -Call for page API to local storage in browser
+//  */
+// function switchIcon(elasticDomain,settings) {
+//     console.log('startSwitch');
+//     console.log(elasticDomain);
+//     fetch(elasticDomain, {mode: 'no-cors'}).then(r => {
+//         if (settings[ID_ON_OFF]) {
+//             console.log('active and on');
+//             browserIconOn();
+//         } else {
+//             console.log('active and off');
+//             browserIconOff();
+//         }
+//     }).catch(e => {
+//         console.log('in-active');
+//         browserIconOff();
+//     });
+// }
+//
+//
+// /**
+//  * Single -Call for page API to local storage in browser
+//  */
+// function switchBySettings(elasticDomain) {
+//     /**
+//      * API to local storage in browser
+//      */
+//     var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS),
+//         settings;
+//     settingsStored.then((item) => {
+//         settings = {...item[STORAGE_KEY_SETTINGS]};
+//         switchIcon(elasticDomain, settings);
+//     }).catch(() => {
+//         settings = {...defaultSettings};
+//         switchIcon(elasticDomain, settings);
+//     });
+//
+// }
+//
+// setTimeout(switchBySettings, 2000,getAlternativeElasticServerIndices(ELASTIC_DOMAIN));
 
-
+browserIconOn();

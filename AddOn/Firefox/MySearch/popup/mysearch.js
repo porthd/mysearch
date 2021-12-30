@@ -94,56 +94,6 @@ defaultSettings[ID_ON_OFF] = false;
 defaultSettings[ID_INDEX] = INDEXNAME;
 defaultSettings[ID_BLACKLIST] = convertTextToList(TEXT_BLACKDOMAINS);
 defaultSettings[ID_BLACKTEXT] = TEXT_BLACKDOMAINS;
-//
-// function browserIconSet(svgPath) {
-//     browser.browserAction.setIcon({
-//         path: {
-//             "16": svgPath,
-//             "19": svgPath,
-//             "32": svgPath,
-//             "48": svgPath,
-//             "128": svgPath,
-//         }
-//     });
-// }
-//
-// function browserIconOn() {
-//     browserIconSet(ICON_PATH_ON);
-//
-// }
-//
-// function browserIconOff() {
-//     browserIconSet(ICON_PATH_OFF);
-// }
-//
-// /**
-//  * Single -Call for page API to local storage in browser
-//  */
-// function switchIcon(elasticDomain, settings) {
-//     var settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-//     settingsStored.then((item) => {
-//         if (!item) {
-//             if (settings[ID_ON_OFF]) {
-//                 browserIconOn();
-//             } else {
-//                 browserIconOff();
-//             }
-//         } else {
-//             if (!!item[STORAGE_KEY_SETTINGS][ID_ON_OFF]) {
-//                 browserIconOn();
-//             } else {
-//                 browserIconOff();
-//             }
-//         }
-//     }).catch((err) => {
-//         if (!err) {
-//             console.log('Ends without error.');
-//         } else {
-//             browserIconOff();
-//             console.log('Stop, there was an error:' + "\n" + err);
-//         }
-//     });
-// }
 
 // <<< end-Block --- How cann i Import the following code like a module?
 
@@ -254,32 +204,3 @@ document.addEventListener('DOMContentLoaded', () => {
     initValues()
 });
 
-
-window.addEventListener('blur', function (event) {
-    let uri = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
-    fetch(uri, {
-        method: "GET",
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-        }
-    }).then(function (response) {
-        setSettings(ID_PING, (response.status === 200));
-        let settingsStored = browser.storage.local.get(STORAGE_KEY_SETTINGS);
-        settingsStored.then((item) => {
-            let elasticDomain = getAlternativeElasticServerIndices(ELASTIC_DOMAIN);
-            if (!item) {
-                switchIcon(elasticDomain, defaultSettings);
-            } else {
-                switchIcon(elasticDomain, item[STORAGE_KEY_SETTINGS]);
-            }
-        }).catch((err) => {
-            if (!err) {
-                console.log('Ends without error.');
-            } else {
-                console.log('Stop, there was an error:' + "\n" + err);
-            }
-        });
-
-    });
-});
