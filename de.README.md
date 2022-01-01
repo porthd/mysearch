@@ -1,3 +1,5 @@
+Das Projekt ist noch in Entwicklung. Die Suche funktioniert noch nicht korrekt (1.1.2022)
+
 # mysearch - ein persönlicher Suchindex für die Surf-Historie
 ##Vorwort
 Das Projekt ist in Entwicklung. Wenn etwas nicht funktioniert, so scheuen sie sich bitte nicht, es im Issue bei Github zu diesem Projekt porthd/mysearch zu veröffentlichen

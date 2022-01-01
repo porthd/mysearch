@@ -1,4 +1,6 @@
 (I trust in googles translations)
+The development ist still in progress. The Seach-request won't work currently (1.1.2022).
+
 # mysearch - a personal search index for surfing history
 ## Foreword
 The project is under development. If something doesn't work, please don't hesitate to publish it in the issue on Github for this project porthd / mysearch
