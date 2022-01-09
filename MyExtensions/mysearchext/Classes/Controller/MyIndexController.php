@@ -74,6 +74,7 @@ class MyIndexController extends ActionController
             $this->searchfilter = GeneralUtility::makeInstance(SearchFilter::class);
         }
         $max = getenv('INDEX_MAX_RESULT') ?? SelfConst::SELF_MAX_RESULT;
+        $max = ($max> 0) ? $max: SelfConst::SELF_MAX_RESULT;
         $resulterList = ConfigurationUtility::extractCustomClassesForExtension(
             SelfConst::SELF_NAME,
             SelfConst::GLOBALS_SUBKEY_CUSTOMRESULTER,

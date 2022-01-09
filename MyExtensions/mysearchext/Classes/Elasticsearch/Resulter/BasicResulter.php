@@ -80,6 +80,7 @@ class BasicResulter implements ResulterInterface
             )
         );
         $resultList = array_filter(array_diff($searchList, $removeList));
+        $fieldName = SelfConst::INCOME_NAME_BASIC_TEXT;
         if (!empty($resultList)) {
             $queryString = implode(
                 ' OR ',
@@ -91,10 +92,15 @@ class BasicResulter implements ResulterInterface
                 'index' => $index,
                 'size' => $max,
                 'body' => [
+//                    'query' => [
+//                        "query_string" => [
+//                            "query" => $queryString,
+//                            "fields" => SelfConst::TRANS_INDEXRESULTER_LIST_TEXTFIELDS,
+//                        ],
+//                    ],
                     'query' => [
-                        "query_string" => [
-                            "query" => $queryString,
-                            "fields" => SelfConst::TRANS_INDEXRESULTER_LIST_TEXTFIELDS,
+                        'match' => [
+                           $fieldName => $queryString,
                         ],
                     ],
                 ],
@@ -198,7 +204,7 @@ class BasicResulter implements ResulterInterface
                     }
                 }
                 // Starttext as a teaser-text
-                $results[$key][SelfConst::OUTPUTNAME_BASIC_SELF] =$itemData[SelfConst::INCOME_NAME_BASIC_SELF]??'#';
+                $results[$key][SelfConst::OUTPUTNAME_BASIC_SELF] = $itemData[SelfConst::INCOME_NAME_BASIC_SELF] ?? '#';
                 if (empty($itemData[SelfConst::INCOME_NAME_BASIC_TEXT])) {
                     if (!empty($searchWordList)) {
                         $results[$key][SelfConst::OUTPUTNAME_BASIC_TEXT] = ResulterUtility::findTextAroundFirstFound(
