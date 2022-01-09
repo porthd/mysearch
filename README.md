@@ -1,6 +1,14 @@
 (I trust in googles translations)
 The development ist still in progress. The Seach-request won't work currently (1.1.2022).
 
+# Roadmap für Weiterentwicklung
+1. Zusammenführen von Abfrage-Varianten im Basic-Resulter
+2. Verschiedene Index-Abfragen
+3. Optimieren der Suchfenster
+4. Spezialabfragen mit Zusätzlichen Suchoptionen (Zweiter Resulter)
+5. Spezialisierte Indexierungen (zuusätzlicher Indexer + Resulter)
+6. Verwaltung von mehreren Resulter
+
 # mysearch - a personal search index for surfing history
 ## Foreword
 The project is under development. If something doesn't work, please don't hesitate to publish it in the issue on Github for this project porthd / mysearch

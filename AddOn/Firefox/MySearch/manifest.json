@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Mysearch",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Send the data from your opened tabs to the API of your lokal search-engine and open additionally your searchengine with the token from your adressbar in a second tab.",
   "permissions": [
     "contextMenus",
@@ -22,7 +22,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "{245ce236-6e7b-4342-a488-42c185b1a1b8}",
+      "id": "{8a144b40-65f5-47ab-9871-412d59e607c4}",
       "strict_min_version": "95.0"
     }
   },

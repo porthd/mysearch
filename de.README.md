@@ -1,5 +1,14 @@
 Das Projekt ist noch in Entwicklung. Die Suche funktioniert noch nicht korrekt (1.1.2022)
 
+# Roadmap für Weiterentwicklung
+1. Zusammenführen von Abfrage-Varianten im Basic-Resulter
+2. Verschiedene Index-Abfragen
+3. Optimieren der Suchfenster
+4. Spezialabfragen mit Zusätzlichen Suchoptionen (Zweiter Resulter)
+5. Spezialisierte Indexierungen (zuusätzlicher Indexer + Resulter)
+6. Verwaltung von mehreren Resulter
+
+
 # mysearch - ein persönlicher Suchindex für die Surf-Historie
 ##Vorwort
 Das Projekt ist in Entwicklung. Wenn etwas nicht funktioniert, so scheuen sie sich bitte nicht, es im Issue bei Github zu diesem Projekt porthd/mysearch zu veröffentlichen
