@@ -11,6 +11,7 @@ $EM_CONF[$_EXTKEY] = [
         'depends' => [
             'bootstrap_package' => '11.5.0-11.5.99',
             'typo3' => '11.5.0-11.5.99',
+            'mysearchext' => '11.1.0-11.1.99',
         ],
         'conflicts' => [
         ],
@@ -27,5 +28,5 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Dr. Dieter Porth',
     'author_email' => 'info@mobger.de',
     'author_company' => 'private',
-    'version' => '11.1.0',
+    'version' => '11.1.1',
 ];

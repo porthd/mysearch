@@ -9,7 +9,6 @@
     "composer.json"
   ],
   "license": "GPL-2.0-or-later",
-  "version": "11.1.0",
   "authors": [
     {
       "name": "Dr. Dieter Porth",
