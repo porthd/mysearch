@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a3bf2d4cd5f78168f4aa147c6e5b6c5",
+    "content-hash": "1fe16fac00f50f5f1f692aa6e6f26a04",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1130,16 +1130,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.4.1",
+            "version": "7.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "ee0a041b1760e6a53d2a39c8c34115adc2af2c79"
+                "reference": "ac1ec1cd9b5624694c3a40be801d94137afb12b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ee0a041b1760e6a53d2a39c8c34115adc2af2c79",
-                "reference": "ee0a041b1760e6a53d2a39c8c34115adc2af2c79",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/ac1ec1cd9b5624694c3a40be801d94137afb12b4",
+                "reference": "ac1ec1cd9b5624694c3a40be801d94137afb12b4",
                 "shasum": ""
             },
             "require": {
@@ -1234,7 +1234,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.4.1"
+                "source": "https://github.com/guzzle/guzzle/tree/7.4.2"
             },
             "funding": [
                 {
@@ -1250,7 +1250,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-06T18:43:05+00:00"
+            "time": "2022-03-20T14:16:28+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2061,11 +2061,11 @@
         },
         {
             "name": "porthd/mysearchext",
-            "version": "11.1.0",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./MyExtensions/mysearchext",
-                "reference": "bef1f99e4cf048f9fa786c1f9b084ab2daf64068"
+                "reference": "d71e1e151f4ff2ac628befcf74801311c9f5e98e"
             },
             "require": {
                 "ext-json": "*",
@@ -2115,11 +2115,11 @@
         },
         {
             "name": "porthd/mysearchsite",
-            "version": "11.1.0",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./MyExtensions/mysearchsite",
-                "reference": "0f98341432182b3540277736b793b08c2084f7ce"
+                "reference": "40709bc8acff84dfa64dfd01c9f40a736e0c912e"
             },
             "require": {
                 "bk2k/bootstrap-package": "^12.0",
@@ -10402,7 +10402,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "porthd/mysearchext": 20,
+        "porthd/mysearchsite": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
