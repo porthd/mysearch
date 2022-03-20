@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<head>
+    <title> Template for Result of Faktorize </title>
+    <!--
+        /**
+        *
+        * This file is part of the "dreipunktnull Glossar" Extension for TYPO3 CMS.
+        *
+        * For the full copyright and license information, please read the
+        * LICENSE.txt file that was distributed with this source code.
+        * This  is part of the example-extension `mysearchext`.
+        *
+        * (c) Mai 2021 Dr. Dieter Porth <info@mobger.de> - TYPO3-Developer, Bremen.
+        *
+        ***/
+    -->
+</head>
+<body>
+
+<f:section name="Main">
+    <h3>
+        <f:translate key="factorize.template.factorize.resultPart.factorResult.title.fixed"
+                     extensionName="mysearchext"
+        />
+    </h3>
+    <div>
+        <div>
+            <f:if condition="{okayElsePrim}">
+                <f:then>
+                    <f:translate key="factorize.template.factorize.resultPart.notify.factorize.product"
+                                 extensionName="mysearchext"
+                    />
+                </f:then>
+                <f:else>
+                    <f:translate key="factorize.template.factorize.resultPart.notify.prime.product"
+                                 extensionName="mysearchext"
+                    />
+                </f:else>
+            </f:if>
+        </div>
+        <table class="tx_mysearchext">
+            <tr>
+                <th scope="row">
+                    <f:translate key="factorize.template.factorize.resultPart.factor.row.product"
+                                 extensionName="mysearchext"
+                    />
+                </th>
+                <td>
+                    {productNumber}
+                </td>
+                <td>
+                    <br/><em>
+                    {rawProduct}
+                    <br/>
+                    <f:for each="{bitProduct}" as="bit" iteration="iter" reverse="true">
+                        <f:cycle values="{0: '&nbsp;', 1: '&nbsp;', 2: '&nbsp;',3:'&nbsp;&nbsp;-&nbsp;&nbsp;'}"
+                                 as="addProduct"
+                        >
+                            <f:if condition="{iter.isLast}" >
+                                <f:then>
+                                    {bit}
+                                </f:then>
+                                <f:else>
+                                    {bit}{addProduct->f:format.raw()}
+                                </f:else>
+                            </f:if>
+                        </f:cycle>
+                    </f:for>
+                </em></td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <f:translate key="factorize.template.factorize.resultPart.factor.row.smalFactor"
+                                 extensionName="mysearchext"
+                    />
+                </th>
+                <td>
+                    {leftNumber}
+                </td>
+                <td><em>
+                    <f:for each="{leftBits}" as="bit" iteration="iter" reverse="true">
+                        <f:cycle values="{0: '&nbsp;', 1: '&nbsp;', 2: '&nbsp;',3:'&nbsp;&nbsp;-&nbsp;&nbsp;'}"
+                                 as="addLeft">
+                            <f:if condition="{iter.isLast}" >
+                                <f:then>
+                                    {bit}
+                                </f:then>
+                                <f:else>
+                                    {bit}{addLeft->f:format.raw()}
+                                </f:else>
+                            </f:if>
+                        </f:cycle>
+                    </f:for>
+                </em></td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <f:translate key="factorize.template.factorize.resultPart.factor.row.bigFactor"
+                                 extensionName="mysearchext"
+                    />
+                </th>
+                <td>
+                    {rightNumber}
+                </td>
+                <td><em>
+                    <f:for each="{rightBits}" as="bit" iteration="iter" reverse="true">
+                        <f:cycle values="{0: '&nbsp;', 1: '&nbsp;', 2: '&nbsp;',3:'&nbsp;&nbsp;-&nbsp;&nbsp;'}"
+                                 as="addRight">
+                            <f:if condition="{iter.isLast}" >
+                                <f:then>
+                                    {bit}
+                                </f:then>
+                                <f:else>
+                                    {bit}{addRight->f:format.raw()}
+                                </f:else>
+                            </f:if>
+                        </f:cycle>
+                    </f:for>
+                </em></td>
+            </tr>
+            <f:if condition="{info.left.number}">
+                <tr>
+                    <th scope="row">
+                        <f:translate key="factorize.template.factorize.resultPart.factor.row.infoLeft"
+                                     extensionName="mysearchext"
+                        />
+                    </th>
+                    <td>
+                        {info.left.number}
+                    </td>
+                    <td><em>
+                        <f:for each="{info.left.bits}" as="bit" iteration="iter" reverse="true">
+                            <f:cycle values="{0: '&nbsp;', 1: '&nbsp;', 2: '&nbsp;',3:'&nbsp;&nbsp;-&nbsp;&nbsp;'}"
+                                     as="addILeft"
+                            >
+                                <f:if condition="{iter.isLast}" >
+                                    <f:then>
+                                        {bit}
+                                    </f:then>
+                                    <f:else>
+                                        {bit}{addILeft->f:format.raw()}
+                                    </f:else>
+                                </f:if>
+                            </f:cycle>
+                        </f:for>
+                    </em></td>
+                </tr>
+            </f:if>
+            <f:if condition="{info.right.number}">
+                <tr>
+                    <th scope="row">
+                        <f:translate key="factorize.template.factorize.resultPart.factor.row.infoRight"
+                                     extensionName="mysearchext"
+                        />
+                    </th>
+                    <td>
+                        {info.right.number}
+                    </td>
+                    <td><em>
+                        <f:for each="{info.right.bits}" as="bit" iteration="iter" reverse="true">
+                            <f:cycle values="{0: '&nbsp;', 1: '&nbsp;', 2: '&nbsp;',3:'&nbsp;&nbsp;-&nbsp;&nbsp;'}"
+                                     as="addIRight"
+                            >
+                                <f:if condition="{iter.isLast}" >
+                                    <f:then>
+                                        {bit}
+                                    </f:then>
+                                    <f:else>
+                                        {bit}{addIRight->f:format.raw()}
+                                    </f:else>
+                                </f:if>
+                            </f:cycle>
+                        </f:for>
+                    </em></td>
+                </tr>
+            </f:if>
+
+        </table>
+    </div>
+
+</f:section>
+</body>
+</html>
+

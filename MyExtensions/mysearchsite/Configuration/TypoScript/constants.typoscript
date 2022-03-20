@@ -2,7 +2,7 @@
 #### DEPENDENCIES ####
 ######################
 @import 'EXT:bootstrap_package/Configuration/TypoScript/constants.typoscript'
-
+@import 'EXT:mysearchext/Configuration/TypoScript/constants.typoscript'
 
 ############
 ### PAGE ###

@@ -2,6 +2,7 @@
 defined('TYPO3_MODE') || die('Access denied.');
 
 use Porthd\Mysearchext\Controller\MyIndexController;
+use Porthd\Mysearchext\Controller\FactorizeController;
 call_user_func(
     function () {
 
@@ -64,5 +65,50 @@ call_user_func(
                 $classTypes
             );
         }
+
+        /**
+         * Controller Factorize
+         */
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'Mysearchext',
+            'Factorize',
+            [
+                FactorizeController::class => 'factorize',
+            ],
+            // non-cacheable actions
+            [
+                FactorizeController::class => 'factorize',
+            ]
+        );
+
+        // wizards
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+
+        // Fun-Plugin factorize
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+            'mod {
+                wizards.newContentElement.wizardItems.plugins {
+                    elements {
+                        factorize {
+                            iconIdentifier = mysearchext-plugin-factorize
+                            description = LLL:EXT:mysearchext/Resources/Private/Language/locallang_db.xlf:tx_mysearchext_factorize.description
+                            title = LLL:EXT:mysearchext/Resources/Private/Language/locallang_db.xlf:tx_mysearchext_factorize.name
+                            tt_content_defValues {
+                                CType = list
+                                list_type = mysearchext_factorize
+                            }
+                        }
+                    }
+                    show = *
+                }
+           }'
+        );
+        $iconRegistry->registerIcon(
+            'mysearchext-plugin-factorize',
+            \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+            ['source' => 'EXT:mysearchext/Resources/Public/Icons/user_plugin_factorize.svg']
+        );
+
     }
 );
+

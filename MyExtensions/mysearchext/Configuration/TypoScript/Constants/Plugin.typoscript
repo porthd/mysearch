@@ -1,25 +1,25 @@
 plugin.tx_mysearchext_mysearchext {
-    view {
-        # cat=plugin.tx_mysearchext_mysearchext/file; type=string; label=Path to template root (FE)
-        templateRootPath = EXT:mysearchext/Resources/Private/Templates/
-        # cat=plugin.tx_mysearchext_mysearchext/file; type=string; label=Path to template partials (FE)
-        partialRootPath = EXT:mysearchext/Resources/Private/Partials/
-        # cat=plugin.tx_mysearchext_mysearchext/file; type=string; label=Path to template layouts (FE)
-        layoutRootPath = EXT:mysearchext/Resources/Private/Layouts/
+  view {
+    # cat=plugin.tx_mysearchext_mysearchext/file; type=string; label=Path to template root (FE)
+    templateRootPath = EXT:mysearchext/Resources/Private/Templates/
+    # cat=plugin.tx_mysearchext_mysearchext/file; type=string; label=Path to template partials (FE)
+    partialRootPath = EXT:mysearchext/Resources/Private/Partials/
+    # cat=plugin.tx_mysearchext_mysearchext/file; type=string; label=Path to template layouts (FE)
+    layoutRootPath = EXT:mysearchext/Resources/Private/Layouts/
+  }
+  settings {
+    teaser{
+      # cat=plugin.tx_mysearchext_mysearchext/settings; type=string; label=character for ellipse/`more charakters`
+      ellipse = &hellip;
+      # cat=plugin.tx_mysearchext_mysearchext/settings; type=string; label=length of teaser-starttext
+      length = 200
+      # cat=plugin.tx_mysearchext_mysearchext/settings; type=string; label=length of text before and after an search-word
+      nearLength = 60
     }
-    settings {
-      teaser{
-       # cat=plugin.tx_mysearchext_mysearchext/settings; type=string; label=character for ellipse/`more charakters`
-        ellipse = &hellip;
-       # cat=plugin.tx_mysearchext_mysearchext/settings; type=string; label=length of teaser-starttext
-        length = 200
-       # cat=plugin.tx_mysearchext_mysearchext/settings; type=string; label=length of text before and after an search-word
-        nearLength = 60
-      }
-    }
+  }
 
-    persistence {
-        # cat=plugin.tx_mysearchext_mysearchext//a; type=string; label=Default storage PID
-        storagePid =
-    }
+  persistence {
+    # cat=plugin.tx_mysearchext_mysearchext//a; type=string; label=Default storage PID
+    storagePid =
+  }
 }

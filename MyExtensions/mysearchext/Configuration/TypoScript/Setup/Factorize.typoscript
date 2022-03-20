@@ -1,0 +1,20 @@
+###########################################################################
+# plugin factorize definition                                                #
+###########################################################################
+plugin.tx_mysearchext_factorize {
+  view {
+    templateRootPaths.0 = EXT:mysearchext/Resources/Private/Templates/Factorize/
+    templateRootPaths.1 = {$plugin.tx_mysearchext_factorize.view.templateRootPath}
+    partialRootPaths.0 = EXT:mysearchext/Resources/Private/Partials/Factorize/
+    partialRootPaths.1 = {$plugin.tx_mysearchext_factorize.view.partialRootPath}
+    layoutRootPaths.0 = EXT:mysearchext/Resources/Private/Layouts/Factorize/
+    layoutRootPaths.1 = {$plugin.tx_mysearchext_factorize.view.layoutRootPath}
+  }
+  features {
+    # if set to 1, the enable fields are ignored in BE context
+    ignoreAllEnableFieldsInBe = 0
+    # Should be on by default, but can be disabled if all action in the plugin are uncached
+    requireCHashArgumentForActionArguments = 1
+  }
+}
+

@@ -11,6 +11,14 @@
 				<source>A simple expandable extension to make elasticsearch-request with TYPO3</source>
 				<target>Eine leicht erweiterbare Extension zur Abfrage von elasticsearch mit TYPO3</target>
 			</trans-unit>
+				<trans-unit id="tx_mysearchext_factorize.name" resname="tx_mysearchext_factorize.name">
+				<source>factorize an integer</source>
+				<target>factorize an integer</target>
+			</trans-unit>
+			<trans-unit id="tx_mysearchext_factorize.description" resname="tx_mysearchext_factorize.description">
+				<source>A simple first approch to solve the factorization aof an integer by a bitwise working algorithm</source>
+				<target>Ein einfacher erster Versuch, das Problem mit der bitwise erprobung eines produkts zu versuchen.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

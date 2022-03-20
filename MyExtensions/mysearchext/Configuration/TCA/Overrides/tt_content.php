@@ -16,3 +16,13 @@ defined('TYPO3') or die();
 
 })();
 
+(static function() {
+        ExtensionUtility::registerPlugin(
+            'Porthd.Mysearchext',
+            'Factorize',
+            'Factorize an integer bitwise',
+            'EXT:mysearchext/Resources/Public/Icons/user_plugin_factorize.svg'
+        );
+
+})();
+

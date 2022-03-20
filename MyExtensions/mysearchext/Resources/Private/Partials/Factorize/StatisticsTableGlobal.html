@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<head>
+    <title> Template for statistics of the factorize-algorithm </title>
+    <!--
+        /**
+        *
+        * This file is part of the "dreipunktnull Glossar" Extension for TYPO3 CMS.
+        *
+        * For the full copyright and license information, please read the
+        * LICENSE.txt file that was distributed with this source code.
+        * This  is part of the example-extension `mysearchext`.
+        *
+        * (c) Mai 2021 Dr. Dieter Porth <info@mobger.de> - TYPO3-Developer, Bremen.
+        *
+        ***/
+    -->
+</head>
+<body>
+
+<f:section name="Main">
+    <h4>
+        <f:translate key="factorize.template.factorize.resultPart.statistic.title.global"
+                     extensionName="mysearchext"
+        />
+    </h4>
+
+    <table class="tx_mysearchext">
+        <caption>global statistic for resolve-processe of factorizing</caption>
+        <tr>
+            <th scope="col">
+                <f:translate key="factorize.template.factorize.resultPart.tableHeader.count.deep"
+                             extensionName="mysearchext"
+                />
+            </th>
+            <th scope="col">
+                <f:translate key="factorize.template.factorize.resultPart.tableHeader.count.logger"
+                             extensionName="mysearchext"
+                />
+            </th>
+            <th scope="col">
+                <f:translate key="factorize.template.factorize.resultPart.tableHeader.count.okay"
+                             extensionName="mysearchext"
+                />
+            </th>
+            <th scope="col">
+                <f:translate key="factorize.template.factorize.resultPart.tableHeader.count.fail"
+                             extensionName="mysearchext"
+                />
+            </th>
+            <th scope="col">
+                <f:translate key="factorize.template.factorize.resultPart.tableHeader.count.never"
+                             extensionName="mysearchext"
+                />
+            </th>
+        </tr>
+        <f:for each="{logStatistics.globalByIndex}" as="bitLayer" >
+            <tr>
+                <td>{bitLayer.bitindex}</td>
+                <td>{bitLayer.logger}</td>
+                <td>{bitLayer.okay}</td>
+                <td>{bitLayer.fail}</td>
+                <td>{bitLayer.never}</td>
+            </tr>
+
+        </f:for>
+    </table>
+
+</f:section>
+</body>
+</html>

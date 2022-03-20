@@ -19,10 +19,6 @@
 				<source>mainSearchWords</source>
 				<target>Haupt Suchbegriffe</target>
 			</trans-unit>
-			<trans-unit id="plugin.myform.searchfilter.form.wordsMain" resname="plugin.myform.searchfilter.form.wordsMain">
-				<source>mainSearchWords</source>
-				<target>Haupt Suchbegriffe</target>
-			</trans-unit>
 			<trans-unit id="plugin.myform.searchfilter.form.wordsSecond" resname="plugin.myform.searchfilter.form.wordsSecond">
 				<source>secondSearchWords (Variations)</source>
 				<target>Variationsbegriffe zu Hauptsuche</target>
@@ -51,12 +47,145 @@
 			<!-- plugin - partila: result -->
 			<trans-unit id="plugin.mysearchext.results.title" resname="plugin.mysearchext.results.title">
 				<source>results</source>
-				<target>Erghebnisse</target>
+				<target>Ergebnisse</target>
 			</trans-unit>
 			<trans-unit id="plugin.mysearchext.results.nothingFound" resname="plugin.mysearchext.results.nothingFound">
 				<source>Sorry. There was nothing found.</source>
 				<target>Entschuldigung. Mit den Suchbegriffen wurde nichts gefunden.</target>
 			</trans-unit>
+
+		<!-- funmodule factorize -->
+			<trans-unit id="factorize.template.factorize.mainHeader.title.fixed" resname="factorize.template.factorize.mainHeader.title.fixed">
+				<source>Fun-Module Factorize</source>
+				<target>Fun-Modul Faktorisierung</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.warning.recalulated.number.title.fixed" resname="factorize.template.factorize.warning.recalulated.number.title.fixed">
+				<source>The number was recaluclated. Only use digits and make sure, that your number is odd. (input: %s => base of caluclation: %s )</source>
+				<target>Die Eingabe wurde umgearbeitet. Bitte sicherstellen, dass nur Ziffer verwendet werden und dass die Nummer ungerade ist. (Eingabe: %s => Zahl in berechnung: %s )</target>
+			</trans-unit>
+		<!-- partial for the inputform -->
+			<trans-unit id="factorize.template.factorize.mainPart.form.title.fixed" resname="factorize.template.factorize.mainPart.form.title.fixed">
+				<source>Inputform for number to factorize</source>
+				<target>Eingabeformular für zu faktorisierende Zahl</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.form.labelNumber" resname="factorize.template.factorize.resultPart.factor.form.labelNumber">
+				<source>Input odd number</source>
+				<target>Ungrade ganze Zahl eingeben</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.form.remark" resname="factorize.template.factorize.resultPart.factor.form.remark">
+				<source><![CDATA[
+					Please note the following when entering:
+					<ol>
+						<li> All characters except digits will be deleted before factorization. </li>
+						<li> Grade numbers are reduced to an odd factor in advance. </li>
+						<li> If necessary, the PHP time limit can prevent a calculation. </li>
+					</ol>
+				]]></source>
+				<target><![CDATA[
+					Folgendes ist bei der Eingabe zu beachten:
+					<ol>
+						<li>Alle Zeichen außer Ziffern wird vorm Faktorisieren gelöscht. </li>
+						<li>Grade Zahlen werden vorab auf ungraden Faktor reduziert.</li>
+						<li>Gegebenefalls kann das PHP-Zeitlimit eine Berechnung verhindern.</li>
+					</ol>
+				]]></target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.form.submit" resname="factorize.template.factorize.resultPart.factor.form.submit">
+				<source>Start Factorizing</source>
+				<target>Start Faktorisierung</target>
+			</trans-unit>
+		<!-- partial for the results -->
+			<trans-unit id="factorize.template.factorize.mainPart.result.title.fixed" resname="factorize.template.factorize.mainPart.result.title.fixed">
+				<source>Results</source>
+				<target>Ergebnisse</target>
+			</trans-unit>
+		<!-- partial for the results -->
+			<trans-unit id="factorize.template.factorize.resultPart.factor.title.fixed" resname="factorize.template.factorize.resultPart.factor.title.fixed">
+				<source>First Factorizing</source>
+				<target>Erste Faktorisierung</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factorResult.title.fixed" resname="factorize.template.factorize.resultPart.factorResult.title.fixed">
+				<source>First Factorizing</source>
+				<target>Erste Faktorisierung</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.remark.timegap.1" resname="factorize.template.factorize.resultPart.factor.remark.timegap.1">
+				<source>It needed %s seconds for calculation.</source>
+				<target>Die Berechnung dauerte %s Sekunden.</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.notify.factorize.product" resname="factorize.template.factorize.resultPart.notify.factorize.product">
+				<source>The product could be factored successfully. The specific products can possibly. further factorized.</source>
+				<target>Das Produkt konnte erfolgreich faktorisiert werden. Die bestimmten Produkten können ggfls. weiter faktorisiert werden.</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.notify.prime.product" resname="factorize.template.factorize.resultPart.notify.prime.product">
+				<source>The product could not be factored successfully. The number is prime.</source>
+				<target>Das Produkt konnte nicht erfolgreich faktorisiert werden. Die Zahl ist prim.</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.row.product" resname="factorize.template.factorize.resultPart.factor.row.product">
+				<source>Raw input for the number</source>
+				<target>Roh-Eingabe für die Zahl</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.row.smalFactor" resname="factorize.template.factorize.resultPart.factor.row.smalFactor">
+				<source>Factor with a maximum of half the bit length of the product</source>
+				<target>Faktor mit höchstens halber Bitlänge des Produkts</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.row.bigFactor" resname="factorize.template.factorize.resultPart.factor.row.bigFactor">
+				<source>Factor rounded off at least half the bit length of the product</source>
+				<target>Faktor mit mindestens abgerundet halber Bitlänge des Produkts</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.form.labelFactorLeft" resname="factorize.template.factorize.resultPart.factor.form.labelFactorLeft">
+				<source>Info about used factor left</source>
+				<target>Information zum genutzten Faktor links</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.form.labelFactorRight" resname="factorize.template.factorize.resultPart.factor.form.labelFactorRight">
+				<source>Info about used factor right</source>
+				<target>Information zum genutzten Faktor rechts</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.row.infoLeft" resname="factorize.template.factorize.resultPart.factor.row.infoLeft">
+				<source>Info about used factor left</source>
+				<target>Information zum genutzten Faktor links</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.factor.row.infoRight" resname="factorize.template.factorize.resultPart.factor.row.infoRight">
+				<source>Info about used factor right</source>
+				<target>Information zum genutzten Faktor rechts</target>
+			</trans-unit>
+		<!-- partial for the calulationssatistics -->
+			<trans-unit id="factorize.template.factorize.resultPart.statistic.title.fixed" resname="factorize.template.factorize.resultPart.statistic.title.fixed">
+				<source>statistics about factorizing</source>
+				<target>Statistiken zur Faktorisierung</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.statistic.title.global" resname="factorize.template.factorize.resultPart.statistic.title.global">
+				<source>Counts over all bit-length-variations </source>
+				<target>Zählungen gemeinsam für alle Bit-Längen-Proportionen</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.statistic.title.vary" resname="factorize.template.factorize.resultPart.statistic.title.vary">
+				<source>Counts for each bit-length-variation </source>
+				<target>Zählungen für Ereignisse separat für jede Bit-Längen-Variation</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.tableHeader.count.deep" resname="factorize.template.factorize.resultPart.tableHeader.count.deep">
+				<source>Bit-Index</source>
+				<target>Bit-Index</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.tableHeader.count.vary" resname="factorize.template.factorize.resultPart.tableHeader.count.vary">
+				<source>bit-length-variation</source>
+				<target>Bit-Längen-Verhältnis</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.tableHeader.count.logger" resname="factorize.template.factorize.resultPart.tableHeader.count.logger">
+				<source>checks</source>
+				<target>checks</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.tableHeader.count.okay" resname="factorize.template.factorize.resultPart.tableHeader.count.okay">
+				<source>okay-checks</source>
+				<target>Okay-Checks</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.tableHeader.count.fail" resname="factorize.template.factorize.resultPart.tableHeader.count.fail">
+				<source>fail-checks</source>
+				<target>Fehler-Check</target>
+			</trans-unit>
+			<trans-unit id="factorize.template.factorize.resultPart.tableHeader.count.never" resname="factorize.template.factorize.resultPart.tableHeader.count.never">
+				<source>never-check</source>
+				<target>niemals-Check</target>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>

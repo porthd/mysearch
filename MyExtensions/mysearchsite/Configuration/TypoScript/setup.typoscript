@@ -9,6 +9,7 @@
 @import 'EXT:fluid_styled_content/Configuration/TypoScript/Styling/'
 @import 'EXT:form/Configuration/TypoScript/'
 @import 'EXT:bootstrap_package/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:mysearchext/Configuration/TypoScript/setup.typoscript'
 
 ##############
 #### PAGE ####

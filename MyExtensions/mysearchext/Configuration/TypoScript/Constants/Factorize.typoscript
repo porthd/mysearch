@@ -1,0 +1,14 @@
+
+###########################################################################
+# plugin factorize definition                                                #
+###########################################################################
+plugin.tx_mysearchext_factorize {
+  view {
+    # cat=plugin.tx_mysearchext_factorize/file; type=string; label=Path to template root (FE) for fun-plugin factorize
+    templateRootPath = EXT:mysearchext/Resources/Private/Templates/Factorize/
+    # cat=plugin.tx_mysearchext_factorize/file; type=string; label=Path to template partials (FE) for fun-plugin factorize
+    partialRootPath = EXT:mysearchext/Resources/Private/Partials/Factorize/
+    # cat=plugin.tx_mysearchext_factorize/file; type=string; label=Path to template layouts (FE) for fun-plugin factorize
+    layoutRootPath = EXT:mysearchext/Resources/Private/Layouts/Factorize/
+  }
+}

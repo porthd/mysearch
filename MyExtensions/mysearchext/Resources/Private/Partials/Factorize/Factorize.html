@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<head>
+    <title> Template for Factorize-form </title>
+    <!--
+        /**
+        *
+        * This file is part of the "dreipunktnull Glossar" Extension for TYPO3 CMS.
+        *
+        * For the full copyright and license information, please read the
+        * LICENSE.txt file that was distributed with this source code.
+        * This  is part of the example-extension `mysearchext`.
+        *
+        * (c) Mai 2021 Dr. Dieter Porth <info@mobger.de> - TYPO3-Developer, Bremen.
+        *
+        ***/
+    -->
+</head>
+<body>
+
+<f:section name="Main">
+    <h3>
+        <f:translate key="factorize.template.factorize.resultPart.factor.title.fixed"
+                     extensionName="mysearchext"
+        />
+    </h3>
+<div>
+    <f:translate key="factorize.template.factorize.resultPart.factor.remark.timegap.1"
+                 extensionName="mysearchext"
+                 arguments="{gap:gap}"
+    />
+
+</div>
+    <div>
+        <f:form action="factorize">
+            <table>
+                <tr>
+                    <td>
+                        <label for="testvalue-{data.uid}">
+                            <f:translate key="factorize.template.factorize.resultPart.factor.form.labelNumber"
+                                         extensionName="mysearchext"
+                            />
+                        </label>
+                    </td>
+                    <td>
+                        <f:form.textfield name="testvalue" id="testvalue-{data.uid}"
+                                          value="{f:if(condition:productNumber,then:productNumber, else:'42')}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="testvalue-left-{data.uid}">
+                            <f:translate key="factorize.template.factorize.resultPart.factor.form.labelFactorLeft"
+                                         extensionName="mysearchext"
+                            />
+                        </label>
+                    </td>
+                    <td>
+                        <f:form.textfield name="testleft" id="testvalue-left-{data.uid}" value="{info.left.number}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="testvalue-right-{data.uid}">
+                            <f:translate key="factorize.template.factorize.resultPart.factor.form.labelFactorRight"
+                                         extensionName="mysearchext"
+                            />
+                        </label>
+                    </td>
+                    <td>
+                        <f:form.textfield name="testright" id="testvalue-right-{data.uid}" value="{info.right.number}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <f:format.raw>
+                                <f:translate key="factorize.template.factorize.resultPart.factor.form.remark"
+                                             extensionName="mysearchext"
+                                />
+                            </f:format.raw>
+                        </div>
+                        <f:form.submit
+                            value="{f:translate(key:'factorize.template.factorize.resultPart.factor.form.submit',extensionName:'mysearchext')}"/>
+                    </td>
+                </tr>
+            </table>
+        </f:form>
+
+    </div>
+
+</f:section>
+</body>
+</html>

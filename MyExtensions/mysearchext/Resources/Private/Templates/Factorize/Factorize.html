@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<head>
+    <title>template for factorize-funny-module</title>
+    <!--
+        /**
+        *
+        * This file is part of the "dreipunktnull Glossar" Extension for TYPO3 CMS.
+        *
+        * For the full copyright and license information, please read the
+        * LICENSE.txt file that was distributed with this source code.
+        * This  is part of the example-extension `mysearchext`.
+        *
+        * (c) April 2021 Dr. Dieter Porth <info@mobger.de> - TYPO3-Developer, Bremen.
+        *
+        ***/
+    -->
+</head>
+<body>
+<f:layout name="Default"/>
+
+<f:section name="content">
+
+    <f:flashMessages/>
+    <f:if condition="{flagWarning}">
+        <div style="width:100%; background-color: rgba(250,209,173,0.49)">
+            {flagWarning}
+        </div>
+    </f:if>
+
+    <h1>
+        <f:translate key="factorize.template.factorize.mainHeader.title.fixed"
+                     extensionName="mysearchext"
+        />
+    </h1>
+    <h2>
+        <f:translate key="factorize.template.factorize.mainPart.form.title.fixed"
+                     extensionName="mysearchext"
+        />
+    </h2>
+    <f:render partial="Factorize"
+              section="Main"
+              arguments="{_all}"
+    />
+    <h2>
+        <f:translate key="factorize.template.factorize.mainPart.result.title.fixed"
+                     extensionName="mysearchext"
+        />
+    </h2>
+    <f:render partial="ResultFactor"
+              section="Main"
+              arguments="{_all}"
+    />
+    <f:render partial="Statistics"
+              section="Main"
+              arguments="{_all}"
+    />
+
+
+</f:section>
+</body>
+</html>
